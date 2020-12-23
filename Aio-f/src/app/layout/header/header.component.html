@@ -1,0 +1,51 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: #091313;">
+	<div class="container">
+    	<a class="navbar-brand" href="#">
+		  Aio
+		</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<div class="navbar-nav mr-auto">
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../home">Home</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../contests">Contests</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../problems">Problems</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../submissions">Submissions</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../discussion">Discussion</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../groups">Groups</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../users">Users</a>
+				<a class="nav-item nav-link" routerLinkActive="active"
+					routerLink="../protected">Wiki</a>
+			</div>
+
+			<div class="navbar-nav ml-auto">
+				<a class="nav-item nav-link" *ngIf="!currentUser"
+					 routerLinkActive="active" routerLink="../../login">Login</a>
+				<a class="nav-item nav-link" *ngIf="!currentUser"
+					 routerLinkActive="active" routerLink="../../register">Register</a>
+				<div class="btn-group" ngbDropdown *ngIf="currentUser"
+					 display="dynamic" role="group" aria-label="Button group with nested dropdown">
+					<button class="btn nav-item nav-link" ngbDropdownToggle>
+						{{ currentUser.username }}
+					</button>
+					<div class="dropdown-menu dropdown-menu-righ" ngbDropdownMenu>
+						<button ngbDropdownItem>Profile</button>
+						<button ngbDropdownItem>Profile</button>
+						<div class="dropdown-divider"></div>
+						<button ngbDropdownItem (click)="logout()">Logout</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
