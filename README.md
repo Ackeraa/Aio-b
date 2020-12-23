@@ -796,9 +796,13 @@ end
 |     Attribute     |  Type   | Description |
 | :---------------: | :-----: | :---------: |
 |        id         | integer | primary key |
+|      source       | string  |             |
 |      creater      | string  |             |
 |       name        | string  |             |
-|  description_id   | integer |             |
+|    description    |  text   |             |
+|       input       |  text   |             |
+|      output       |  text   |             |
+|       hint        |  text   |             |
 |    time_limit     | integer |             |
 |   memory_limit    | integer |             |
 |    difficulty     | string  |             |
