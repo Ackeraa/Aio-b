@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProblemRoutingModule } from '.';
+import { ProblemRoutingModule } from './problem-routing.module';
 
 @NgModule({
 	declarations: [

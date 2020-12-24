@@ -39,7 +39,7 @@ const routes: Routes = [
 	{ path: 'users', component: UsersComponent },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },
-    { path: '**', redirectTo: '' }
+    //{ path: '**', redirectTo: '' }
 ];
 
 @NgModule({
