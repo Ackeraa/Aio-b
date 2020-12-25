@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { environment } from "../environments/environment";
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from './_services';
 import { User } from './users';
+import {Angular2TokenService} from "angular2-token";
 
 @Component({
 	selector: 'app-root',
@@ -14,13 +14,15 @@ export class AppComponent {
 
     constructor(
 		private router: Router,
-        private authenticationService: AuthenticationService) {
+		private authToken: Angular2TokenService) {
 
-        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+		this.authToken.init(environment.token_auth_config);
     }
+}
 
-    logout() {
-        this.authenticationService.logout();
-        this.router.navigate(['/login']);
+declare module "@angular/core" {
+    interface ModuleWithProviders<T = any> {
+        ngModule: Type<T>;
+        providers?: Provider[];
     }
 }

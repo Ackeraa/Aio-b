@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, AuthenticationService } from '../_services';
+import { AlertService, AuthService } from '../_services';
 
 @Component({
   selector: 'app-login',
@@ -20,11 +20,11 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
-        private alertService: AlertService
+        private alertService: AlertService,
+		private authService:AuthService
     ) {
         // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) {
+        if (this.authService.getCurrentUser()) {
             this.router.navigate(['/']);
         }
     }
@@ -55,15 +55,18 @@ export class LoginComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authenticationService.login(this.f.email.value, this.f.password.value)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.router.navigate([this.returnUrl]);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    }
+		this.authService.logIn({email: this.f.email.value, password: this.f.password.value})
+		.subscribe(
+			res => {
+			  if(res.status == 200){
+				  this.router.navigate([this.returnUrl]);
+			  }
+			},
+			err => {
+				console.log('err:', err);
+				this.alertService.error(err);
+				this.loading = false;
+			}
+		);
+	}
 }

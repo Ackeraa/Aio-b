@@ -24,6 +24,8 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { fakeBackendProvider } from './_helpers';
 import { AlertComponent } from './_components';
+import { Angular2TokenService } from 'angular2-token';
+import {AuthService} from "./_services/auth.service"
 
 @NgModule({
     imports: [
@@ -57,6 +59,8 @@ import { AlertComponent } from './_components';
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
+		Angular2TokenService,
+		AuthService
         //fakeBackendProvider
     ],
     bootstrap: [AppComponent]

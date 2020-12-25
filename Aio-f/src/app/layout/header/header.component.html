@@ -29,19 +29,19 @@
 
 			<div class="navbar-nav ml-auto">
 				<a class="nav-item nav-link" *ngIf="!currentUser"
-					 routerLinkActive="active" routerLink="../../login">Login</a>
+					 routerLinkActive="active" routerLink="/login">Login</a>
 				<a class="nav-item nav-link" *ngIf="!currentUser"
-					 routerLinkActive="active" routerLink="../../register">Register</a>
+					 routerLinkActive="active" routerLink="/register">Register</a>
 				<div class="btn-group" ngbDropdown *ngIf="currentUser"
 					 display="dynamic" role="group" aria-label="Button group with nested dropdown">
 					<button class="btn nav-item nav-link" ngbDropdownToggle>
-						{{ currentUser.username }}
+						{{ currentUser.name }}
 					</button>
 					<div class="dropdown-menu dropdown-menu-righ" ngbDropdownMenu>
 						<button ngbDropdownItem>Profile</button>
 						<button ngbDropdownItem>Profile</button>
 						<div class="dropdown-divider"></div>
-						<button ngbDropdownItem (click)="logout()">Logout</button>
+						<button ngbDropdownItem (click)="logOut()">Logout</button>
 					</div>
 				</div>
 			</div>
