@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-md-4">
+		<form class="" action="index.html" method="post">
+			<span>Title: </span>
+			<input type="text"/>
+		</form>
+	</div>
+	<div class="col-md-4">
+		<span>Memory Limit: </span>
+		<input type="text" class=""/>
+	</div>
+	<div class="col-md-4">
+		<span>Time Limit: </span>
+		<input type="text" class=""/>
+	</div>
+</div>
+
+<br/>
+<markdown [data]="katexMarkdown" katex>
+</markdown>
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>Description</h3>
+		<markdown [data]="description" katex [katexOptions]="options"></markdown>
+		<form class="" action="index.html" method="post">
+			<textarea name="name" style="overflow-y:auto; height: 30vh"
+					  id="textbox" class="form-control" [(ngModel)]="description">
+			</textarea>
+		</form>
+
+	</div>
+</div>
+<br/>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Input</h3>
+		<markdown [data]="input" katex [katexOptions]="options"></markdown>
+		<form class="" action="index.html" method="post">
+			<textarea name="name" style="overflow-y:auto; height: 10vh"
+					  id="textbox" class="form-control" [(ngModel)]="input">
+			</textarea>
+		</form>
+	</div>
+</div>
+<br/>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Output</h3>
+		<markdown [data]="output" katex [katexOptions]="options"></markdown>
+		<form class="" action="index.html" method="post">
+			<textarea name="name" style="overflow-y:auto; height: 10vh"
+					  id="textbox" class="form-control" [(ngModel)]="output">
+			</textarea>
+		</form>
+	</div>
+</div>
+<br/>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Samples</h3>
+		<markdown [data]="marked" katex [katexOptions]="options"></markdown>
+		<form class="" action="index.html" method="post">
+			<textarea name="name" style="overflow-y:auto; height: 10vh"
+					  id="textbox" class="form-control" [(ngModel)]="marked">
+			</textarea>
+		</form>
+	</div>
+</div>
+<br/>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Hint</h3>
+		<markdown [data]="hint" katex [katexOptions]="options"></markdown>
+		<form class="" action="index.html" method="post">
+			<textarea name="name" style="overflow-y:auto; height: 10vh"
+					  id="textbox" class="form-control" [(ngModel)]="hint">
+			</textarea>
+		</form>
+	</div>
+</div>
+

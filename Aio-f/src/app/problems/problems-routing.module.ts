@@ -5,7 +5,8 @@ import {
 	LocalComponent,
 	OnlineComponent, 
 	SetsComponent,
-	BetaComponent 
+	BetaComponent,
+	CreateComponent,
 } from '.';
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
 			{ path: 'local', component: LocalComponent },
 			{ path: 'online', component: OnlineComponent }, 
 			{ path: 'sets', component: SetsComponent }, 
-			{ path: 'beta', component: BetaComponent } 
+			{ path: 'beta', component: BetaComponent },
+			{ path: 'create', component: CreateComponent },
 		]
 	},
 ];

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MarkdownModule} from 'ngx-markdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
@@ -25,10 +26,11 @@ import { RegisterComponent } from './register';
 import { fakeBackendProvider } from './_helpers';
 import { AlertComponent } from './_components';
 import { Angular2TokenService } from 'angular2-token';
-import {AuthService} from "./_services/auth.service"
+import { AuthService } from "./_services/auth.service"
 
 @NgModule({
     imports: [
+		MarkdownModule.forRoot(),
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
@@ -40,6 +42,7 @@ import {AuthService} from "./_services/auth.service"
 		NgbModule
     ],
     declarations: [
+
         AppComponent,
         HomeComponent,
         LoginComponent,
