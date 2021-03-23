@@ -65,7 +65,7 @@ import { AuthService } from "./_services/auth.service"
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
 		Angular2TokenService,
-		AuthService
+		AuthService,
         //fakeBackendProvider
     ],
     bootstrap: [AppComponent]

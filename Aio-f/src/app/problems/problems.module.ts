@@ -10,12 +10,14 @@ import {
 	CreateComponent,
 	BetaComponent,
 	UploadComponent,
+	LocalComponent,
 } from '.';
 
 @NgModule({
 	declarations: [
 		CreateComponent,
 		BetaComponent,
+		LocalComponent,
 		UploadComponent
 	],
 	imports: [
@@ -30,6 +32,7 @@ import {
 		CreateComponent,
 		BetaComponent,
 		UploadComponent,
-	]
+		LocalComponent,
+	],
 })
 export class ProblemsModule { }

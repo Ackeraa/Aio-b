@@ -29,21 +29,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row">
-					<td class="col">1</td>
-					<td class="col"><a href="#">Test</a></td>
-					<td class="col">1/100</td>
-					<td class="col">Hard</td>
-				</tr>
-				<tr class="row">
-					<td class="col">1</td>
-					<td class="col"><a href="#">Test</a></td>
-					<td class="col">1/100</td>
-					<td class="col">Hard</td>
-				</tr>
-				<tr class="row">
-					<td class="col">1</td>
-					<td class="col"><a href="#">Test</a></td>
+				<tr *ngFor="let problem of problems" routerLink="/problem/{{problem.id}}" class="row">
+					<td class="col">{{problem.id}}</td>
+					<td class="col">{{problem.name}}</td>
 					<td class="col">1/100</td>
 					<td class="col">Hard</td>
 				</tr>

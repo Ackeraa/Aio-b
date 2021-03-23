@@ -29,8 +29,8 @@ const routes: Routes = [
 		loadChildren: () => import('./problems/problems.module').then(m => m.ProblemsModule)
 	},
 	{
-		path: 'problem',
-		data: {preload: true },
+		path: 'problem/:id',
+		data: { preload: true },
 		loadChildren: () => import('./problem/problem.module').then(m => m.ProblemModule)
 	},
 	{ path: 'submissions', component: SubmissionsComponent },

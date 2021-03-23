@@ -1,1 +1,58 @@
-<p>description works!</p>
+<div *ngIf="problem">
+	<div class="d-flex justify-content-center">
+		<h2>{{problem.name}}</h2>
+	</div>
+	<div class="d-flex justify-content-center">
+		<h6><var>Time Limit: {{problem.time_limit}} MS</var></h6>
+	</div>
+	<div class="d-flex justify-content-center">
+		<h6><var>Memory Limit: {{problem.memory_limit}} MB</var></h6>
+	</div>
+	<br/>
+
+	<h3>Description</h3>
+	<markdown [data]="problem.description" katex></markdown>
+
+	<h3>Input</h3>
+	<markdown [data]="problem.input" katex></markdown>
+	<br/>
+
+	<h3>Output</h3>
+	<markdown [data]="problem.output" katex></markdown>
+
+	<h3>Samples</h3>
+
+	<div *ngFor="let sample of problem.samples let i=index"> 
+		<div class="card-group">
+			<div class="card shadow-sm">
+				<div class="card-header" style="background-color:#FCFCFC">
+					Input{{i + 1}} 
+				</div>
+				<div class="card-body">
+					{{sample.sampleInput}}
+				</div>
+			</div>
+			<div class="col-1"> </div>
+			<div class="card shadow-sm">
+				<div class="card-header" style="background-color:#FCFCFC">
+					Output{{i + 1}} 
+				</div>
+				<div class="card-body">
+					{{sample.sampleOutput}}
+				</div>
+			</div>
+			<div class="col-1"> </div>
+		</div>
+		<br/><br/>
+	</div>
+	<div *ngIf="problem.hint">
+		<h4>Hint</h4>
+		{{problem.hint}}
+	</div>
+	<br/> <br/>
+</div>
+
+<div *ngIf="!problem">
+	Loading.....
+</div>
+

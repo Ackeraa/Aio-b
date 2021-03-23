@@ -11,19 +11,19 @@
 		</div>
 		<div class="col-md-4">
 			<label class="form-label"><h5>Time Limit(MS)</h5></label>
-			<div *ngIf="time.hasError('required') && time.touched"
+			<div *ngIf="time_limit.hasError('required') && time_limit.touched"
 						class="alert alert-danger" role="alert">
 				Time Limit is required.
 			</div>
-			<input type="text" [formControl]="time" class="form-control"/>
+			<input type="text" [formControl]="time_limit" class="form-control"/>
 		</div>
 		<div class="col-md-4">
 			<label class="form-label"><h5>Memory Limit(MB)</h5> </label>
-			<div *ngIf="memory.hasError('required') && memory.touched"
+			<div *ngIf="memory_limit.hasError('required') && memory_limit.touched"
 						class="alert alert-danger" role="alert">
 				Memory Limit is required.
 			</div>
-			<input type="text" [formControl]="memory" class="form-control"/>
+			<input type="text" [formControl]="memory_limit" class="form-control"/>
 		</div>
 	</div>
 
@@ -142,7 +142,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<span class="form-label"><h5>Tags </h5></span>
-			<button *ngFor="let tag of tags" class="btn btn-outline-dark"
+			<button type="button" *ngFor="let tag of all_tags" class="btn btn-outline-dark"
 					#btn (click)="selectTag($event.target, tag);">
 				{{tag}}
 			</button>
@@ -174,7 +174,7 @@
 		</div>
 		<div class="col-md-7">
 			<span class="form-label"><h5>Allowed Languages </h5></span>
-				<div *ngIf="allowedLanguages.length == 0"
+				<div *ngIf="allowed_languages.length == 0"
 						class="alert alert-danger" role="alert">
 					Please select at least one language.
 				</div>
@@ -188,7 +188,7 @@
 	</div>
 	<br/>
 	<br/>
-	<app-upload></app-upload>
+	<app-upload (uploadEvent)="setToken($event)"></app-upload>
 	<br/>
 
 	<div class="row">

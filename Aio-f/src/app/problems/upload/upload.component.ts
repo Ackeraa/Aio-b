@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileUploader } from 'ng2-file-upload';
 
@@ -12,6 +12,7 @@ const BASE_URL = 'http://127.0.0.1:3000'
 
 export class UploadComponent implements OnInit {
 
+	@Output() uploadEvent = new EventEmitter<string>();
 	@ViewChild('templateInput', { static: true }) templateInput: ElementRef;
 	@ViewChild('spjInput', { static: true }) spjInput: ElementRef;
 	@ViewChild('dataInput', { static: true }) dataInput: ElementRef;
@@ -76,6 +77,7 @@ export class UploadComponent implements OnInit {
 		this.data.onCompleteItem = (item: any, response: any, status: any, headers:any)=>  {
 			if (status == 200) {
 				this.token = response;
+				this.uploadEvent.emit(this.token);
 			}
 		};
 		this.data.onAfterAddingFile = () => {
@@ -99,12 +101,7 @@ export class UploadComponent implements OnInit {
 		} else {
 
 		}
-	}
-	onSpjRemove() {
-
-	}
-	onDataRemove() {
-
+		this.template.queue[0].remove();
 	}
 
 	onSpjChange() {
@@ -112,10 +109,38 @@ export class UploadComponent implements OnInit {
 			this.spj.removeFromQueue(this.spj.queue[0]);
 		}
 	}
+	onSpjRemove() {
+		if (this.spj.queue[0].isUploaded){
+			let url = BASE_URL + '/problems/delete_spj';
+			this.http.post<any>(url, { token: this.token })
+				.subscribe( data => {
+					console.log(data);
+				}
+			)
+		} else {
+
+		}
+		this.spj.queue[0].remove();
+	}
+
 	onDataChange() {
 		if (this.data.queue.length != 1){
 			this.data.removeFromQueue(this.data.queue[0]);
 		}
+	}
+	onDataRemove() {
+		if (this.data.queue[0].isUploaded){
+			let url = BASE_URL + '/problems/delete_data';
+			this.http.post<any>(url, { token: this.token })
+				.subscribe( data => {
+					console.log(data);
+				}
+			)
+		} else {
+
+		}
+
+		this.data.queue[0].remove();
 	}
 
 	ngOnInit(): void {

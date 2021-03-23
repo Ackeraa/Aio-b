@@ -1,8 +1,20 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Subject, Observable } from 'rxjs';
+import { Response } from '@angular/http';
+import { map } from 'rxjs/operators'; 
 import { MarkdownModule, MarkedOptions, MarkedRenderer } from 'ngx-markdown';
-import { Problem } from '../problem';
-import { FormBuilder, FormGroup, FormArray, Validators,
-		 AbstractControl, FormControl } from '@angular/forms';
+import {
+	FormBuilder,
+	FormGroup,
+	FormArray,
+	Validators,
+	AbstractControl,
+	FormControl
+} from '@angular/forms';
+
+const BASE_URL = 'http://127.0.0.1:3000';
 
 @Component({
 	selector: 'app-create',
@@ -13,55 +25,54 @@ export class CreateComponent implements OnInit {
 
 	form: FormGroup;
 	name: AbstractControl;
-	memory: AbstractControl;
-	time: AbstractControl;
+	memory_limit: AbstractControl;
+	time_limit: AbstractControl;
 	description: AbstractControl;
 	input: AbstractControl;
 	output: AbstractControl;
 	samples: FormArray;
 	hint: AbstractControl;
+	all_tags: Array<string>;
 	tags: Array<string>;
-	selectedTags: Array<string>;
 	rule: string;
 	visible: boolean;
 	languages: Array<string>;
-	allowedLanguages: Array<string>;
-	template: any;
-	onSubmit(form?: any): void{ 
-		console.log(form);
-	}
+	allowed_languages: Array<string>;
+	token: string;
 
-	constructor(private fb: FormBuilder, private renderer: Renderer2) { 
+	private routeSub:any;
+
+	constructor(private fb: FormBuilder, private renderer: Renderer2,
+				private router: Router, private http: HttpClient) { 
 		this.form = fb.group({
 			name: ['', Validators.required],
-			memory: ['', Validators.required],
-			time: ['', Validators.required],
+			memory_limit: ['', Validators.required],
+			time_limit: ['', Validators.required],
 			description:  ['', Validators.required],
 			input:  ['', Validators.required],
 			output:  ['', Validators.required],
 			samples: fb.array([this.createSample()]),
 			hint:  ['', Validators.required],
-			template: null
 		});
 
 		this.name = this.form.controls['name'];
-		this.memory = this.form.controls['memory'];
-		this.time = this.form.controls['time'];
+		this.memory_limit = this.form.controls['memory_limit'];
+		this.time_limit = this.form.controls['time_limit'];
 		this.description = this.form.controls['description'];
 		this.input = this.form.controls['input'];
 		this.output = this.form.controls['output'];
 		this.samples = this.form.get('samples') as FormArray;
 		this.hint = this.form.controls['hint'];
-		this.tags = ['DP', 'Greedy', 'DFS', 'BFS', 'Geometry', 'Brute Force'];
-		this.selectedTags = [];
+		this.all_tags = ['DP', 'Greedy', 'DFS', 'BFS', 'Geometry', 'Brute Force'];
+		this.tags = [];
 		this.rule = 'acm';
 		this.visible = null;
 		this.languages = ['C', 'Cpp', 'Java', 'Python'];
-		this.allowedLanguages = ['C', 'Cpp', 'Java', 'Python'];
-		this.template = this.form.controls['template'];
+		this.allowed_languages = ['C', 'Cpp', 'Java', 'Python'];
+		this.token = '';
+
 		this.samples.valueChanges.subscribe(
 			(value: any) => {
-				console.log('memory changed to: ', value);
 			}
 		);
 
@@ -87,17 +98,16 @@ export class CreateComponent implements OnInit {
 	//Tag
 	selectTag(btn: any, tag: string){
 		console.log(btn.class);
-		let index = this.selectedTags.indexOf(tag);
+		let index = this.tags.indexOf(tag);
 		if (index == -1){
-			this.selectedTags.push(tag);
+			this.tags.push(tag);
 			this.renderer.removeClass(btn, 'btn-outline-dark');
 			this.renderer.addClass(btn, 'btn-primary');
 		} else {
-			this.selectedTags.splice(index, 1);
+			this.tags.splice(index, 1);
 			this.renderer.removeClass(btn, 'btn-primary');
 			this.renderer.addClass(btn, 'btn-outline-dark');
 		}
-		console.log(this.selectedTags);
 	}
 	//Rule
 	selectRule(rule: any) {
@@ -106,25 +116,53 @@ export class CreateComponent implements OnInit {
 	//Visible
 	selectVisible(visible: boolean) {
 		this.visible = visible;
+		let a = [1, 2, 3];
 	}
 
 	//Language
 	selectLan(check: boolean, lan: string) {
 		if (check) {
-			this.allowedLanguages.push(lan);
+			this.allowed_languages.push(lan);
 		} else {
-			let index = this.allowedLanguages.indexOf(lan);
-			this.allowedLanguages.splice(index, 1);
+			let index = this.allowed_languages.indexOf(lan);
+			this.allowed_languages.splice(index, 1);
+		}
+	}
+	//token
+	setToken(token: string) {
+		this.token = token;
+	}
+
+	onSubmit(form: any): void {
+		if (this.token === '') {
+			
+		} else {
+			let data: any = form
+			data.allowed_languages = this.allowed_languages;
+			data.tags = this.tags;
+			data.token = this.token;
+			this.http
+				.post(
+					BASE_URL + '/problems',
+					data
+				)
+				.subscribe(data => {
+					console.log(data)
+				});
 		}
 	}
 	ngOnInit(): void {
-
+		/*
+		this.routeSub = this.router.events.subscribe((event) => {
+			if (event instanceof NavigationStart) {
+				//do something.
+				console.log(event.url);
+			}
+		});
+		*/
+	}
+	ngOnDestroy() {
 	}
 
 }
 
-function skuValidator(control: FormControl): { [s: string]: boolean } {
-	if (!control.value.match(/^123/)) {
-		return {invalidSku: true};
-	}
-}
