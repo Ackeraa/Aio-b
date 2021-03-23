@@ -796,6 +796,7 @@ end
 |     Attribute     |  Type   | Description |
 | :---------------: | :-----: | :---------: |
 |        id         | integer | primary key |
+|       token       | string  |             |
 |      source       | string  |             |
 |      creater      | string  |             |
 |       name        | string  |             |
@@ -808,14 +809,11 @@ end
 |    difficulty     | string  |             |
 |       tags        |  jsonb  |             |
 |      samples      |  jsonb  |             |
-|      data_id      | integer |             |
+|       data        | string  |             |
 |    data_score     |  jsonb  |             |
 | allowed_languages |  jsonb  |             |
-|   has_templete    | boolean |             |
-|     templete      |  jsonb  |             |
-|      has_spj      | boolean |             |
-|   spj_language    | string  |             |
-|     spj_code      |  text   |             |
+|     templete      | string  |             |
+|        spj        | string  |             |
 |     rule_type     | string  |             |
 |    is_visible     | boolean |             |
 |    submissions    | integer |             |

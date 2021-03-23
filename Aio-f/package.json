@@ -26,6 +26,7 @@
     "bootstrap": "^4.5.0",
     "http": "0.0.1-security",
     "katex": "^0.12.0",
+    "ng2-file-upload": "^1.4.0",
     "ngx-markdown": "^11.0.1",
     "ngx-md": "^8.1.6",
     "rxjs": "~6.6.0",

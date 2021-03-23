@@ -1,6 +1,7 @@
 class CreateProblems < ActiveRecord::Migration[6.0]
   def change
     create_table :problems do |t|
+      t.string :token
       t.string :creater
       t.string :name
       t.text :description
@@ -13,14 +14,11 @@ class CreateProblems < ActiveRecord::Migration[6.0]
       t.string :difficulty
       t.jsonb :tags
       t.jsonb :samples
-      t.integer :data_id
+      t.string :data
       t.jsonb :data_score
       t.jsonb :allowed_languages
-      t.boolean :has_templete
-      t.jsonb :templete
-      t.boolean :has_spj
-      t.string :spj_language
-      t.text :spj_code
+      t.string :templete
+      t.string :spj
       t.string :rule_type
       t.boolean :is_visible
       t.integer :submissions

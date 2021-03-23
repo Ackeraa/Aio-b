@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_23_150612) do
+ActiveRecord::Schema.define(version: 2021_03_22_122227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,14 @@ ActiveRecord::Schema.define(version: 2020_12_23_150612) do
     t.index ["user_id"], name: "index_groups_users_on_user_id"
   end
 
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "picture"
+  end
+
   create_table "oi_contest_ranks", force: :cascade do |t|
     t.integer "submissions"
     t.integer "accepts"
@@ -165,6 +173,7 @@ ActiveRecord::Schema.define(version: 2020_12_23_150612) do
   end
 
   create_table "problems", force: :cascade do |t|
+    t.string "token"
     t.string "creater"
     t.string "name"
     t.text "description"
@@ -177,14 +186,11 @@ ActiveRecord::Schema.define(version: 2020_12_23_150612) do
     t.string "difficulty"
     t.jsonb "tags"
     t.jsonb "samples"
-    t.integer "data_id"
+    t.string "data"
     t.jsonb "data_score"
     t.jsonb "allowed_languages"
-    t.boolean "has_templete"
-    t.jsonb "templete"
-    t.boolean "has_spj"
-    t.string "spj_language"
-    t.text "spj_code"
+    t.string "template"
+    t.string "spj"
     t.string "rule_type"
     t.boolean "is_visible"
     t.integer "submissions"

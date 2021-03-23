@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule} from 'ngx-markdown';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
@@ -34,12 +35,13 @@ import { AuthService } from "./_services/auth.service"
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
+		FileUploadModule,
         AppRoutingModule,
 
 		FormsModule,
 		HttpModule,
 		LayoutModule,
-		NgbModule
+		NgbModule,
     ],
     declarations: [
 
