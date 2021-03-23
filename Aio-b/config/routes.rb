@@ -12,11 +12,15 @@ Rails.application.routes.draw do
   resources :contests
   mount_devise_token_auth_for 'User', at: 'auth'
 
+
   post 'problems/upload_template' => 'problems#upload_template'
   post 'problems/delete_template' => 'problems#delete_template'
 
   post 'problems/upload_spj' => 'problems#upload_spj'
+  post 'problems/delete_spj' => 'problems#delete_spj'
+
   post 'problems/upload_data' => 'problems#upload_data'
+  post 'problems/delete_data' => 'problems#delete_data'
 
 end
 

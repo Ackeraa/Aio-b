@@ -15,16 +15,16 @@ class ProblemsController < ApplicationController
     render json: @problem
   end
 
-  # POST /problems
   def create
-    @problem = Problem.new(problem_params)
+    @problem = Problem.find_by(token: params[:token])
 
-    if @problem.save
-      render json: @problem, status: :created, location: @problem
+    if @problem.update(problem_params)
+      render json: @problem.token, status: :ok, location: @problem
     else
       render json: @problem.errors, status: :unprocessable_entity
     end
   end
+
 
   # PATCH/PUT /problems/1
   def update
@@ -60,17 +60,31 @@ class ProblemsController < ApplicationController
     self.upload(:template)
   end
 
+  def delete_template
+    @problem = Problem.find_by(token: params[:token]) 
+    @problem.remove_template!
+    @problem.save
+    render json: @problem, status: :ok
+  end
+
   def upload_spj
     self.upload(:spj)
+  end
+
+  def delete_spj
+    @problem = Problem.find_by(token: params[:token]) 
+    @problem.remove_spj!
+    @problem.save
+    render json: @problem, status: :ok
   end
 
   def upload_data
     self.upload(:data)
   end
 
-  def delete_template
+  def delete_data
     @problem = Problem.find_by(token: params[:token]) 
-    @problem.remove_template!
+    @problem.remove_data!
     @problem.save
     render json: @problem, status: :ok
   end
@@ -83,7 +97,7 @@ class ProblemsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def problem_params
-      puts Problem.column_names
-      params.permit(Problem.column_names - ['created_at', 'updated_at'])
+      params.permit(Problem.column_names - ['created_at', 'updated_at'],
+                    allowed_languages:[], tags:[], samples:[:sampleInput, :sampleOutput])
     end
 end
