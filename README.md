@@ -722,7 +722,7 @@ end
 |  end_time   |  date   |             |
 |  rule_type  | string  |             |
 |  password   | string  |             |
-|   visible   | boolean |             |
+| is_visible  | boolean |             |
 | created_at  |  date   |             |
 | updated_at  |  date   |             |
 

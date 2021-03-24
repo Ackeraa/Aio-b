@@ -46,6 +46,6 @@ class ContestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def contest_params
-      params.fetch(:contest, {})
+      params.permit(Contest.column_names - ['created_at', 'updated_at'])
     end
 end

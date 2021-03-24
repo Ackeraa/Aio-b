@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_22_122227) do
+ActiveRecord::Schema.define(version: 2021_03_23_155534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2021_03_22_122227) do
     t.date "end_time"
     t.string "rule_type"
     t.string "password"
-    t.boolean "visible"
+    t.boolean "is_visible"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

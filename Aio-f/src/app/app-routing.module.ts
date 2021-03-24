@@ -21,7 +21,11 @@ const routes: Routes = [
     //{ path: '', component: HomeComponent, canActivate: [AuthGuard] },
 	{ path: '', redirectTo: 'home', pathMatch: 'full' },
 	{ path: 'home', component: HomeComponent },
-	{ path: 'contests', component: ContestsComponent },
+	{
+		path: 'contests',
+		data: { preload: true },
+		loadChildren: () => import('./contests/contests.module').then(m => m.ContestsModule)
+	},
 	{ path: 'contest', component: ContestComponent },
 	{
 		path: 'problems',

@@ -1,3 +1,9 @@
+<div class="d-flex justify-content-end">
+	<button class="btn btn-primary" routerLink="/contests/create">
+		Create
+	</button>
+</div>
+<br/>
 <div class="card shadow-sm">
 	<div class="card-header">
 		Recent or Current Contests
@@ -18,22 +24,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row">
-					<td class="col-5"><a href="#">Test</a></td>
-					<td class="col-4">2011/04/25</td>
+				<tr *ngFor="let contest of contests" routerLink="/contest/{{contest.id}}" class="row">
+					<td class="col-5">{{contest.name}}</td>
+					<td class="col-4">{{contest.start_time}}</td>
 					<td class="col">Admin</td>
 				</tr>
-				<tr class="row">
-					<td class="col-5">Test</td>
-					<td class="col-4">2011/04/25</td>
-					<td class="col">Admin</td>
-				</tr>
-				<tr class="row">
-					<td class="col-5">Test</td>
-					<td class="col-4">2011/04/25</td>
-					<td class="col">Admin</td>
-				</tr>
-
 			</tbody>
 
 		</table>

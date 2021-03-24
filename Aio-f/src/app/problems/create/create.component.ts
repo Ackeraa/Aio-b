@@ -34,8 +34,8 @@ export class CreateComponent implements OnInit {
 	hint: AbstractControl;
 	all_tags: Array<string>;
 	tags: Array<string>;
-	rule: string;
-	visible: boolean;
+	rule_type: string;
+	is_visible: boolean;
 	languages: Array<string>;
 	allowed_languages: Array<string>;
 	token: string;
@@ -65,8 +65,8 @@ export class CreateComponent implements OnInit {
 		this.hint = this.form.controls['hint'];
 		this.all_tags = ['DP', 'Greedy', 'DFS', 'BFS', 'Geometry', 'Brute Force'];
 		this.tags = [];
-		this.rule = 'acm';
-		this.visible = null;
+		this.rule_type = 'acm';
+		this.is_visible = null;
 		this.languages = ['C', 'Cpp', 'Java', 'Python'];
 		this.allowed_languages = ['C', 'Cpp', 'Java', 'Python'];
 		this.token = '';
@@ -80,8 +80,8 @@ export class CreateComponent implements OnInit {
 	//Sample
 	createSample(): FormGroup {
 		return this.fb.group({
-			sampleInput: ['', Validators.required],
-			sampleOutput: ['', Validators.required]
+			sample_input: ['', Validators.required],
+			sample_output: ['', Validators.required]
 		});
 	}
 	addSample(): void {
@@ -111,12 +111,11 @@ export class CreateComponent implements OnInit {
 	}
 	//Rule
 	selectRule(rule: any) {
-		this.rule = rule;
+		this.rule_type = rule;
 	}
 	//Visible
 	selectVisible(visible: boolean) {
-		this.visible = visible;
-		let a = [1, 2, 3];
+		this.is_visible = visible;
 	}
 
 	//Language
@@ -141,6 +140,8 @@ export class CreateComponent implements OnInit {
 			data.allowed_languages = this.allowed_languages;
 			data.tags = this.tags;
 			data.token = this.token;
+			data.is_visible = this.is_visible;
+			data.rule_type = this.rule_type;
 			this.http
 				.post(
 					BASE_URL + '/problems',

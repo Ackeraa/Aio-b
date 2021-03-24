@@ -88,13 +88,13 @@
 			</button>
 			<div class="row">
 				<div class="col-md-12">
-					<div *ngIf="sample.controls['sampleInput'].hasError('required') &&
-								sample.controls['sampleInput'].touched"
+					<div *ngIf="sample.controls['sample_input'].hasError('required') &&
+								sample.controls['sample_input'].touched"
 								class="alert alert-danger" role="alert">
 						Input sample is required.
 					</div>
-					<div *ngIf="sample.controls['sampleOutput'].hasError('required') &&
-								sample.controls['sampleOutput'].touched"
+					<div *ngIf="sample.controls['sample_output'].hasError('required') &&
+								sample.controls['sample_output'].touched"
 								class="alert alert-danger" role="alert">
 						Output sample is required.
 					</div>
@@ -105,7 +105,7 @@
 							</div>
 							<div class="card-body">
 								<textarea style="overflow-y:auto; height:15vh; border:0"
-										  class="form-control" formControlName="sampleInput">
+										  class="form-control" formControlName="sample_input">
 								</textarea>
 							</div>
 						</div>
@@ -116,7 +116,7 @@
 							</div>
 							<div class="card-body">
 								<textarea style="overflow-y:auto; height:15vh; border:0"
-										  class="form-control" formControlName="sampleOutput">
+										  class="form-control" formControlName="sample_output">
 								</textarea>
 							</div>
 						</div>
@@ -154,13 +154,13 @@
 		<div class="col-md-3">
 			<span class="form-label"><h5>Rule </h5></span>
 			<label class="form-check form-check-inline">
-				<input class="form-check-input" type="radio" name="rule" value="acm" checked
-						(click)="selectRule($event.target)">
+				<input class="form-check-input" type="radio" name="rule_type" value="acm" checked
+						(click)="selectRule($event.target.value)">
 				<span class="form-check-label">ACM</span>
 			</label>
 			<label class="form-check form-check-inline">
-				<input class="form-check-input" type="radio" name="rule" value="oi"
-						(click)="selectRule($event.target)">
+				<input class="form-check-input" type="radio" name="rule_type" value="oi"
+						(click)="selectRule($event.target.value)">
 				<span class="form-check-label">OI</span>
 			</label>
 		</div>

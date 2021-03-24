@@ -27,7 +27,7 @@ import { RegisterComponent } from './register';
 import { fakeBackendProvider } from './_helpers';
 import { AlertComponent } from './_components';
 import { Angular2TokenService } from 'angular2-token';
-import { AuthService } from "./_services/auth.service"
+import { AuthService } from "./_services/auth.service";
 
 @NgModule({
     imports: [
