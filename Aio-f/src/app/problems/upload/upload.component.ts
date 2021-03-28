@@ -5,7 +5,7 @@ import { FileUploader } from 'ng2-file-upload';
 const BASE_URL = 'http://127.0.0.1:3000'
 
 @Component({
-	selector: 'app-upload',
+	selector: 'app-problems-upload',
 	templateUrl: './upload.component.html',
 	styleUrls: ['./upload.component.scss']
 })

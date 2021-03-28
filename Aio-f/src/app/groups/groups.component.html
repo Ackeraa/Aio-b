@@ -1,92 +1,13 @@
-<style>
-    .my-drop-zone { border: dotted 3px lightgray; }
-    .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
-    .another-file-over-class { border: dotted 3px green; }
- 
-    html, body { height: 100%; }
-</style>
-<div class="col-md-9" style="margin-bottom: 40px">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Type</th>
-				<th>Name</th>
-				<th>Size</th>
-				<th width="50%">Progress</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngIf="template.queue[0] as item">
-				<td><strong>Template</strong></td>
-				<td>{{item.file.name}}</td>
-				<td *ngIf="template.options.isHTML5" nowrap>
-					{{ item.file.size/1024/1024 | number:'.2' }} MB
-				</td>
-				<td *ngIf="template.options.isHTML5">
-					<div class="progress" style="margin-bottom: 0;">
-						<div class="progress-bar" role="progressbar"
-							[ngStyle]="{ 'width': item.progress + '%' }">
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr *ngIf="spj.queue[0] as item">
-				<td><strong>SPJ</strong></td>
-				<td>{{item.file.name}}</td>
-				<td *ngIf="spj.options.isHTML5" nowrap>
-					{{ item.file.size/1024/1024 | number:'.2' }} MB
-				</td>
-				<td *ngIf="spj.options.isHTML5">
-					<div class="progress" style="margin-bottom: 0;">
-						<div class="progress-bar" role="progressbar"
-							[ngStyle]="{ 'width': item.progress + '%' }">
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr *ngIf="data.queue[0] as item">
-				<td><strong>Data</strong></td>
-				<td>{{item.file.name}}</td>
-				<td *ngIf="data.options.isHTML5" nowrap>
-					{{ item.file.size/1024/1024 | number:'.2' }} MB
-				</td>
-				<td *ngIf="data.options.isHTML5">
-					<div class="progress" style="margin-bottom: 0;">
-						<div class="progress-bar" role="progressbar"
-							[ngStyle]="{ 'width': item.progress + '%' }">
-						</div>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<label class="btn btn-primary">
-	Browse
-	<input type="file" hidden ng2FileSelect [uploader]="template" (change)="onTemplateChange()" />
-</label>
-
-<label class="btn btn-primary">
-	Browse
-	<input type="file" hidden ng2FileSelect [uploader]="spj" (change)="onSpjChange()" />
-</label>
-<label class="btn btn-primary">
-	Browse
-	<input type="file" hidden ng2FileSelect [uploader]="data" (change)="onDataChange()" />
-</label>
-
-<div *ngIf="template.queue[0] as item">
-	<button type="button" class="btn btn-success btn-xs"
-						  (click)="item.upload(); onTemplateSubmit()"
-						  [disabled]="item.isReady || item.isUploading || item.isSuccess">
-		Upload
-	</button>
-	<button type="button" class="btn btn-warning btn-xs"
-						  (click)="item.cancel()" [disabled]="!item.isUploading">
-		Cancel
-	</button>
-	<button type="button" class="btn btn-danger btn-xs"
-						  (click)="item.remove()">
-		Remove
-	</button>
-</div> 
+<nav class="navbar navbar-expand-lg navbar-light">
+	<a class="navbar-brand" href="#">
+	</a>
+	<div class="collapse navbar-collapse">
+		<div class="navbar-nav mr-auto">
+			<a class="nav-item nav-link" routerLinkActive="active"
+				routerLink="./my-groups">My Groups</a>
+			<a class="nav-item nav-link" routerLinkActive="active"
+				routerLink="./explore">Explore</a>
+		</div>
+	</div>
+</nav>
+<router-outlet></router-outlet>

@@ -9,23 +9,18 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
 	public signedIn$:Subject<boolean> = new Subject();
-
+	
 	constructor(public authService: Angular2TokenService) {
+
 		this.authService.validateToken().subscribe(
 			res => res.status == 200 ? this.signedIn$.next(res.json().success)
 				: this.signedIn$.next(false)
 		)
 	}
 
-	register(signUpData: {email:string, password:string, passwordConfirmation:string}):
+	register(data: {name: string, email:string, password:string, passwordConfirmation:string}):
 		Observable<Response>{
-		return this.authService.registerAccount({
-			email: "fuck@ab.com",
-			name: "fuck",
-			password: "000000",
-			passwordConfirmation: "000000"
-		}
-		).pipe(map(
+		return this.authService.registerAccount(data).pipe(map(
 			res => {
 				this.signedIn$.next(true);
 				return res
@@ -33,13 +28,26 @@ export class AuthService {
 		));
 	}
 
-	logIn(data: {email:string, password:string}):Observable<Response>{
+
+	logIn(data: {email: string, password:string}):Observable<Response>{
+
+		return this.authService.post(
+			'auth/sign_in',
+			data
+		).pipe(map(
+			res => {
+				this.signedIn$.next(true);
+				return res;
+			}
+		));
+		/*
 		return this.authService.signIn(data).pipe(map(
 			res => {
 				this.signedIn$.next(true);
 				return res
 			}
 		));
+		*/
 	}
 
 	logOut():Observable<Response>{
@@ -51,6 +59,13 @@ export class AuthService {
 		));
 	}
 
+	getValidateToken():any{
+		let token: any;
+		this.authService.validateToken().subscribe(
+			res => token = res
+		);
+		return token;
+	}
 	getCurrentUser(): any{
 		return this.authService.currentUserData;
 	}

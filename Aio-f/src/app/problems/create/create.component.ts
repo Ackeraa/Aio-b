@@ -17,7 +17,7 @@ import {
 const BASE_URL = 'http://127.0.0.1:3000';
 
 @Component({
-	selector: 'app-create',
+	selector: 'app-problems-create',
 	templateUrl: './create.component.html',
 	styleUrls: ['./create.component.scss']
 })

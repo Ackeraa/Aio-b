@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-online',
-  templateUrl: './online.component.html',
-  styleUrls: ['./online.component.scss']
+	selector: 'app-problems-online',
+	templateUrl: './online.component.html',
+	styleUrls: ['./online.component.scss']
 })
 export class OnlineComponent implements OnInit {
 
-  constructor() { }
+	constructor() { }
 
-  ngOnInit(): void {
-  }
+	ngOnInit(): void {
+	}
 
 }

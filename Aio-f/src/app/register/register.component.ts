@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+	FormBuilder,
+	FormGroup,
+	Validators,
+	FormControl,
+	AbstractControl
+} from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthService } from '../_services';
@@ -11,7 +17,12 @@ import { AlertService, AuthService } from '../_services';
 	styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-    registerForm: FormGroup;
+    form: FormGroup;
+	name: AbstractControl;
+	email: AbstractControl; 
+	password: AbstractControl;
+	password_confirmation: AbstractControl;
+
     loading = false;
     submitted = false;
 
@@ -21,40 +32,73 @@ export class RegisterComponent implements OnInit {
         private authService: AuthService,
         private alertService: AlertService
     ) {
-        // redirect to home if already logged in
+        // Redirect to home if already logged in.
         if (this.authService.getCurrentUser()) {
             this.router.navigate(['/']);
         }
     }
 
     ngOnInit() {
-        this.registerForm = this.formBuilder.group({
-            email: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+        this.form = this.formBuilder.group({
+            name: ['', Validators.compose([Validators.required,
+										  Validators.minLength(5), 
+										  this.nameValidator])],
+            email: ['', Validators.compose([Validators.required,
+											this.emailValidator])],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            password_confirmation: ['', Validators.required]
         });
+		this.name = this.form.controls['name'];
+		this.email = this.form.controls['email'];
+		this.password = this.form.controls['password'];
+		this.password_confirmation = this.form.controls['password_confirmation'];
     }
 
-    // convenience getter for easy access to form fields
-    get f() { return this.registerForm.controls; }
+	// Validators for name.
+	nameValidator(name: FormControl): {[s: string]: boolean} {
+		if (!name.value.match(/^[A-Za-z]+[A-Za-z0-9\-]+$/)){
+			return { invalidName: true };
+		}
+	}
+
+	// Validators for email.
+	emailValidator(email: FormControl): {[s: string]: boolean} {
+		let regex = new RegExp(/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i);
+		if (!email.value.match(regex)){
+			return { invalidEmail: true };
+		}
+	}
+
+	// Validators for confirm_password.
+	confirmValidator(confirm_pwd: FormControl): {[s: string]: boolean} {
+		let pwd = this.form.get('password').value;
+		if (!confirm_pwd.value === pwd){
+			return { invalidConfirm: true };
+		}
+	}
+
+	
+    // Convenience getter for easy access to form fields
+    get f() { return this.form.controls; }
 
     onSubmit() {
         this.submitted = true;
 
-        // reset alerts on submit
+        // Reset alerts on submit
         this.alertService.clear();
 
-        // stop here if form is invalid
-        if (this.registerForm.invalid) {
+        // Stop here if form is invalid
+        if (this.form.invalid) {
             return;
         }
 
         this.loading = true;
-        this.authService.register(this.registerForm.value)
+        this.authService.register(this.form.value)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', true);
+                    this.alertService.success('Registration successful, Please confirm your\
+											   emali before login', true);
                     this.router.navigate(['/login']);
                 },
                 error => {

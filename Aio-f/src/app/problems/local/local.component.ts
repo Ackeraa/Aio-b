@@ -8,7 +8,7 @@ import { Problem } from '../problem.model';
 const BASE_URL = 'http://127.0.0.1:3000';
 
 @Component({
-	selector: 'app-local',
+	selector: 'app-problems-local',
 	templateUrl: './local.component.html',
 	styleUrls: ['./local.component.scss']
 })

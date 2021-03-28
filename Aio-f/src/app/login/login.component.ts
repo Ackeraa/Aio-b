@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+	FormBuilder,
+	FormGroup,
+	Validators,
+	FormControl,
+	AbstractControl
+} from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthService } from '../_services';
@@ -11,7 +17,10 @@ import { AlertService, AuthService } from '../_services';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
+    form: FormGroup;
+	name_email: AbstractControl;
+	password: AbstractControl;
+
     loading = false;
     submitted = false;
     returnUrl: string;
@@ -30,18 +39,20 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loginForm = this.formBuilder.group({
-            //username: ['', Validators.required],
-			email: ['', Validators.required],
+        this.form = this.formBuilder.group({
+			name_email: ['', Validators.required],
             password: ['', Validators.required]
         });
+		
+		this.name_email = this.form.controls['name_email'];
+		this.password = this.form.controls['password'];
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     // convenience getter for easy access to form fields
-    get f() { return this.loginForm.controls; }
+    get f() { return this.form.controls; }
 
     onSubmit() {
         this.submitted = true;
@@ -50,12 +61,19 @@ export class LoginComponent implements OnInit {
         this.alertService.clear();
 
         // stop here if form is invalid
-        if (this.loginForm.invalid) {
+        if (this.form.invalid) {
             return;
         }
 
         this.loading = true;
-		this.authService.logIn({email: this.f.email.value, password: this.f.password.value})
+		let data: any;
+		if (this.name_email.value.indexOf('@') === -1){
+			data = {name: this.name_email.value, password: this.password.value};
+		} else {
+			data = {email: this.name_email.value, password: this.password.value};
+		}
+
+		this.authService.logIn(data)
 		.subscribe(
 			res => {
 			  if(res.status == 200){

@@ -5,7 +5,7 @@ import { MarkdownModule, MarkedOptions, MarkedRenderer } from 'ngx-markdown';
 const BASE_URL = 'http://127.0.0.1:3000';
 
 @Component({
-	selector: 'app-description',
+	selector: 'app-problem-description',
 	templateUrl: './description.component.html',
 	styleUrls: ['./description.component.scss']
 })

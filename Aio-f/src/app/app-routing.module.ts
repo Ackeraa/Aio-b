@@ -26,7 +26,11 @@ const routes: Routes = [
 		data: { preload: true },
 		loadChildren: () => import('./contests/contests.module').then(m => m.ContestsModule)
 	},
-	{ path: 'contest', component: ContestComponent },
+	{
+		path: 'contest', 
+		data: { preload: true },
+		loadChildren: () => import('./contest/contest.module').then(m => m.ContestModule)
+	},
 	{
 		path: 'problems',
 		data: { preload: true },
@@ -37,10 +41,18 @@ const routes: Routes = [
 		data: { preload: true },
 		loadChildren: () => import('./problem/problem.module').then(m => m.ProblemModule)
 	},
+	{
+		path: 'groups',
+		data: { preload: true },
+		loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+	},
 	{ path: 'submissions', component: SubmissionsComponent },
 	{ path: 'discussion', component: DiscussionComponent },
-	{ path: 'groups', component: GroupsComponent },
-	{ path: 'users', component: UsersComponent },
+	{
+		path: 'users',
+		data: { preload: true },
+		loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
+	},
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },
     //{ path: '**', redirectTo: '' }
