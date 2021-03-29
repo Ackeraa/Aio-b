@@ -25,6 +25,8 @@ export class RegisterComponent implements OnInit {
 
     loading = false;
     submitted = false;
+	name_exists = false;
+	email_exists = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -41,11 +43,14 @@ export class RegisterComponent implements OnInit {
     ngOnInit() {
         this.form = this.formBuilder.group({
             name: ['', Validators.compose([Validators.required,
-										  Validators.minLength(5), 
+										  Validators.minLength(1), 
+										  Validators.maxLength(10),
 										  this.nameValidator])],
             email: ['', Validators.compose([Validators.required,
 											this.emailValidator])],
-            password: ['', [Validators.required, Validators.minLength(6)]],
+            password: ['', [Validators.required,
+							Validators.minLength(6),
+							Validators.maxLength(16)]],
             password_confirmation: ['', Validators.required]
         });
 		this.name = this.form.controls['name'];
@@ -56,7 +61,7 @@ export class RegisterComponent implements OnInit {
 
 	// Validators for name.
 	nameValidator(name: FormControl): {[s: string]: boolean} {
-		if (!name.value.match(/^[A-Za-z]+[A-Za-z0-9\-]+$/)){
+		if (!name.value.match(/^[A-Za-z]+[A-Za-z0-9_]+$/)){
 			return { invalidName: true };
 		}
 	}
@@ -93,16 +98,26 @@ export class RegisterComponent implements OnInit {
         }
 
         this.loading = true;
+		this.name_exists = false;
+		this.email_exists = false;
+
         this.authService.register(this.form.value)
             .pipe(first())
             .subscribe(
                 data => {
                     this.alertService.success('Registration successful, Please confirm your\
-											   emali before login', true);
+											   emali before login.', true);
                     this.router.navigate(['/login']);
                 },
                 error => {
-                    this.alertService.error(error);
+					let errors = JSON.parse(error["_body"]).errors;
+					console.log(errors);
+					if (errors.name) {
+						this.name_exists = true;
+					}
+					if (errors.email) {
+						this.email_exists = true;
+					}
                     this.loading = false;
                 });
     }

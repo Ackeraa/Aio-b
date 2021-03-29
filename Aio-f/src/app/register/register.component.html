@@ -19,11 +19,21 @@
 								User name is required.
 							</div>
 							<div *ngIf="name.hasError('minlength')">
-								User name must be at least 5 characters.
+								User name is too short (minimum is 5 characters).
+							</div>
+							<div *ngIf="name.hasError('maxlength')">
+								User name is too long (maximum is 10 characters).
 							</div>
 							<div *ngIf="!name.hasError('required') && name.hasError('invalidName')">
-								Should start with a letter and only
-								contain [A-Za-z0-9/-]. 
+								Must start with a letter and only
+								contain [A-Za-z0-9_].
+							</div>
+						</small>
+					</div>
+					<div *ngIf="submitted" class="text-danger">
+						<small>
+							<div *ngIf="name_exists">
+								User name has already been taken.
 							</div>
 						</small>
 					</div>
@@ -42,6 +52,13 @@
 							</div>
 						</small>
 					</div>
+					<div *ngIf="submitted" class="text-danger">
+						<small>
+							<div *ngIf="email_exists">
+								Email has already been taken.
+							</div>
+						</small>
+					</div>
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" [formControl]="password"
@@ -53,7 +70,10 @@
 								Password is required.
 							</div>
 							<div *ngIf="password.hasError('minlength')">
-								Password must be at least 6 characters.
+								Password is too short (minimum is 6 characters).
+							</div>
+							<div *ngIf="password.hasError('maxlength')">
+								Password is too long (maximum is 16 characters).
 							</div>
 						</small>
 					</div>
