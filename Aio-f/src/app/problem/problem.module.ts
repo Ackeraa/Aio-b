@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MarkdownModule } from 'ngx-markdown';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { FormsModule } from '@angular/forms';
 import { ProblemRoutingModule } from './problem-routing.module';
 import {
 	DescriptionComponent,
@@ -24,6 +26,8 @@ import {
 	imports: [
 		CommonModule,
         HttpClientModule,
+		FormsModule,
+		CodemirrorModule,
 		ProblemRoutingModule,
 		MarkdownModule.forChild(),
 	],

@@ -2,5 +2,7 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-@import '~open-iconic/font/css/open-iconic-bootstrap.css';
-
+@import '~codemirror/lib/codemirror';
+@import '~codemirror/theme/dracula';
+@import '~codemirror/theme/idea';
+@import '~codemirror/theme/eclipse';

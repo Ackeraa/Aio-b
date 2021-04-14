@@ -15,7 +15,6 @@ const BASE_URL = 'http://127.0.0.1:3000';
 export class LocalComponent implements OnInit {
 
 	problems: any;
-	problem: any;
 	constructor(private http: HttpClient) {
 		this.getProblems();
 	}
@@ -26,16 +25,6 @@ export class LocalComponent implements OnInit {
 			this.problems = data;
 		});
 	}
-
-	onSubmit(id: number): void {
-		let url = BASE_URL + '/problems/' + id;
-		this.http.get(url).subscribe(data => {
-			this.problem = data;
-			console.log(this.problem);
-		});
-
-	}
-
 
 	ngOnInit(): void {
 	}

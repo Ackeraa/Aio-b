@@ -1,23 +1,37 @@
+<br/>
 <div class="row">
-	<label for="language" class="col-2">
-		<h5> Language: </h5>
+	<label class="col-1 col-form-label">
+		Language:
 	</label>
-	<select class="custom-select col-2" id="language">
-		<option value="0">C</option>
-		<option value="1">C++</option>
-		<option value="2">Python</option>
-		<option value="3">Java</option>
+	<select class="custom-select col-2" (change)="selectLanguage($event.target.value)">
+		<option *ngFor="let language of languages let i = index" [value]="i">
+			{{language}}
+		</option>
+	</select>
+	&nbsp; 
+	<button type="button" class="btn btn-light col-1" (click)="clearCode()">Clear</button>
+	&nbsp; 
+	<input type="file" id="loadcode" (change)="loadCode($event.target.files[0])" style="display: none;"/>
+	<button type="button" class="btn btn-light col-1"
+			onclick="document.getElementById('loadcode').click();">
+		Upload
+	</button>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<label class="col-1 offset-md-3 col-form-label">
+		Theme:
+	</label>
+	<select class="custom-select col-2" (change)="selectTheme($event.target.value)">
+		<option *ngFor="let theme of themes let i = index" [value]="i">
+			{{theme}}
+		</option>
 	</select>
 </div>
 <br/>
-<form>
-	<div class="row">
-		<label for="code" class="col-2">
-			<h5> Code: </h5>
-		</label>
-		<textarea class="form-control col-7" id="code" rows="18"></textarea>
+<div class="row">
+	<div class="col-12">
+		<ngx-codemirror [(ngModel)]="code" [options]="options">
+		</ngx-codemirror>
 	</div>
-	<br/>
-	<button type="button" class="btn btn-success col-sm-1 offset-sm-5">Submit</button>
-</form>
-
+</div>
+<br/>
+<button type="button" class="btn btn-success col-sm-2 offset-sm-5">Submit</button>

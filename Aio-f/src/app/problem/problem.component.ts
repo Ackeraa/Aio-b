@@ -9,6 +9,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 export class ProblemComponent implements OnInit {
 
 	id: string;
+	content: string;
 	constructor(private route: ActivatedRoute) {
 		this.id = this.route.snapshot.paramMap.get('id');
 		console.log(this.id);
