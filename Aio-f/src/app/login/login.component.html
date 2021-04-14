@@ -33,6 +33,11 @@
 								</div>
 							</small>
 						</div>
+						<div *ngIf="submitted && errors" class="text-danger">
+							<small>
+								{{errors}}
+							</small>
+						</div>
 					</div>
 					<br/>
 					<div class="col-md-13 text-center mb-3">

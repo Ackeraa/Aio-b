@@ -2,12 +2,11 @@ require 'securerandom'
 
 class ProblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy]
-  before_action :authenticate_user!
+  #before_action :authenticate_user!
 
   # GET /problems
   def index
-    @user = current_user
-    puts "FICL", @user.name
+    #@user = current_user
     #UserMailer.with(user: @user).welcome_email.deliver
     @problems = Problem.all
 

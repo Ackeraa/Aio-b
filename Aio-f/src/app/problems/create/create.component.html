@@ -15,6 +15,10 @@
 						class="alert alert-danger" role="alert">
 				Time Limit is required.
 			</div>
+			<div *ngIf="!time_limit.hasError('required') && time_limit.hasError('invalidTimeLimit')
+					   && time_limit.touched" class="alert alert-danger" role="alert">
+				Time Limit should be integer value.
+			</div>
 			<input type="text" [formControl]="time_limit" class="form-control"/>
 		</div>
 		<div class="col-md-4">
@@ -22,6 +26,10 @@
 			<div *ngIf="memory_limit.hasError('required') && memory_limit.touched"
 						class="alert alert-danger" role="alert">
 				Memory Limit is required.
+			</div>
+			<div *ngIf="!memory_limit.hasError('required') && memory_limit.hasError('invalidMemoryLimit')
+					   && memory_limit.touched" class="alert alert-danger" role="alert">
+				Memory Limit should be integer value.
 			</div>
 			<input type="text" [formControl]="memory_limit" class="form-control"/>
 		</div>

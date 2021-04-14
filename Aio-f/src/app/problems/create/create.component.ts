@@ -45,9 +45,11 @@ export class CreateComponent implements OnInit {
 	constructor(private fb: FormBuilder, private renderer: Renderer2,
 				private router: Router, private http: HttpClient) { 
 		this.form = fb.group({
-			name: ['', Validators.required],
-			memory_limit: ['', Validators.required],
-			time_limit: ['', Validators.required],
+			name: ['', Validators.required, Validators.maxLength(15)],
+			memory_limit: ['', Validators.compose([Validators.required,
+												this.memoryValidator])],
+			time_limit: ['', Validators.compose([Validators.required,
+												this.timeValidator])],
 			description:  ['', Validators.required],
 			input:  ['', Validators.required],
 			output:  ['', Validators.required],
@@ -76,6 +78,20 @@ export class CreateComponent implements OnInit {
 			}
 		);
 
+	}
+	
+	// Validators for time_limit.
+	timeValidator(time_limit: FormControl): {[s: string]: boolean} {
+		if (!time_limit.value.match(/^[1-9]\d*$/)){
+			return { invalidTimeLimit: true };
+		}
+	}
+
+	// Validators for memory_limit.
+	memoryValidator(memory_limit: FormControl): {[s: string]: boolean} {
+		if (!memory_limit.value.match(/^[1-9]\d*$/)){
+			return { invalidMemoryLimit: true };
+		}
 	}
 	//Sample
 	createSample(): FormGroup {
