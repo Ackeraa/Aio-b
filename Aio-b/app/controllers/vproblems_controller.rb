@@ -4,6 +4,7 @@ class VproblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy]
 
   # GET /vproblems
+  # Need to be fixed.
   def index
     @problems = Problem.where(source: params[:source]).first(10)
     if @problems.nil?
@@ -18,21 +19,24 @@ class VproblemsController < ApplicationController
   end
 
   # GET /vproblems/search?source=source&vid=vid&name=name
+  # Need to be fixed when source is nil.
   def search
     source = params[:source]
-    vid = params[:vid]
-    name = params[:name]
-
-    if vid.nil? and name.nil?
-      @problems = Problem.where(source: source) 
-    elsif vid.nil?
-      @problems = Problem.where(source: source, name: name) 
-    elsif name.nil?
-      @problems = Problem.where(source: source, vid: vid) 
+    query = params[:query]
+    if query.nil? 
+      @problems = Problem.where(source: source).limit(10)
+      if @problems.nil?
+        spider = Spider.new
+        problems = spider.spide_problems
+        problems.each do |problem|
+          Problem.create(problem)
+        end
+        @problems = Problem.where(source: source).limit(10)
+      end
     else
-      @problems = Problem.where(source: source, vid: vid, name: name) 
+      @problems = Problem.where('source=? and lower(name) like (?)', 
+                                source.downcase, "%#{query.downcase}%").limit(10)
     end
-    @problems = Problem.where(source: source, name: name) 
     render json: @problems
   end
 
@@ -75,7 +79,7 @@ class VproblemsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def problem_params
-      params.permit(Problem.column_names - ['created_at', 'updated_at'],
+      params.permit(Problem.column_names - ['created_at', 'updated_at'], 
                     allowed_languages:[], tags:[], samples:[:sampleInput, :sampleOutput])
     end
 end

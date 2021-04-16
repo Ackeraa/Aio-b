@@ -1,16 +1,20 @@
+
 <div class="card shadow-sm">
 	<div class="card-body">
-		<div class="input-group mb-3 col-7 offset-2">
-			<input type="text" class="form-control" placeholder="Search Problems"
-				aria-label="Search Problem" aria-describedby="button-addon2">
-			<div class="input-group-append">
-				<button class="btn btn-outline-secondary" type="button" id="button-addon2">
-					Search
-				</button>
+			<div class="row">
+				<select #source class="custom-select col-2 offset-md-3">
+					<option *ngFor="let source of sources let i = index" (value)="i">
+						{{source}}
+					</option>
+				</select>
+				&nbsp;
+				<input #query type="text" class="form-control col-4" placeholder="Search Problems">
 			</div>
-		</div>
 		<br/>
-		<table class="table table-hover">
+		<div *ngIf="loading" class="row">
+			Loading...
+		</div>
+		<table *ngIf="!loading" class="table table-hover">
 			<thead>
 				<tr class="row">
 					<th class="col">
@@ -25,12 +29,11 @@
 					<th class="col">
 						DIFFICULTY
 					</th>
-
 				</tr>
 			</thead>
 			<tbody>
 				<tr *ngFor="let problem of problems" routerLink="/problem/{{problem.id}}" class="row">
-					<td class="col">{{problem.id}}</td>
+					<td class="col">{{problem.vid}}</td>
 					<td class="col">{{problem.name}}</td>
 					<td class="col">1/100</td>
 					<td class="col">Hard</td>

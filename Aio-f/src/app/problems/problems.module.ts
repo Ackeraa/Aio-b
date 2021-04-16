@@ -10,17 +10,15 @@ import {
 	CreateComponent,
 	BetaComponent,
 	UploadComponent,
-	LocalComponent,
-	OnlineComponent
+	CollectionComponent
 } from '.';
 
 @NgModule({
 	declarations: [
 		CreateComponent,
 		BetaComponent,
-		LocalComponent,
 		UploadComponent,
-		OnlineComponent
+		CollectionComponent
 	],
 	imports: [
 		CommonModule,
@@ -34,8 +32,7 @@ import {
 		CreateComponent,
 		BetaComponent,
 		UploadComponent,
-		LocalComponent,
-		OnlineComponent
+		CollectionComponent
 	],
 })
 export class ProblemsModule { }

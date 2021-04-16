@@ -13,6 +13,21 @@ class ProblemsController < ApplicationController
     render json: @problems
   end
 
+  # GET /problems/search?source=source&query=query
+  def search
+    #Need to be fixed if source is empty.
+    source = params[:source]
+    query = params[:query]
+    if query.nil? 
+      @problems = Problem.where(source: source) 
+    else
+      @problems = Problem.where('source=? and lower(name) like (?)',
+                                source.downcase, "%#{query.downcase}%") 
+    end
+
+    render json: @problems
+  end
+
   # GET /problems/1
   def show
     render json: @problem
