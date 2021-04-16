@@ -25,23 +25,39 @@ export class CollectionComponent implements OnInit {
 			.subscribe(problems => this.problems = problems);
 	}
 
+	updateProblems(): void {
+		this.query.nativeElement.value = "";
+		this.collectionService.search(this.source.nativeElement.value.toLowerCase, "")
+			.subscribe(problems => this.problems = problems);
+	}
+
 	ngOnInit(): void {
 
 		//Observer of source change.
 		fromEvent(this.source.nativeElement, 'change')
 		.pipe(
 			map((e: any) => e.target.value.toLowerCase()),
+			tap(() => this.loading = true),
 			map((source: string) => this.collectionService.search(
 						 source, this.query.nativeElement.value)))
-		.subscribe(obs => {
-			obs.subscribe( problems => this.problems = problems);
-		});
+		.subscribe(
+			(obs: any) => {
+				obs.subscribe( problems => this.problems = problems); 
+				this.loading = false;
+			},
+			(err: any) => {
+				this.loading = false;
+				console.log(err);
+			},
+			() => {
+				this.loading = false;
+			}
+		);
 
 		//Observer of query change.
 		fromEvent(this.query.nativeElement, 'keyup')
 		.pipe(
 			map((e: any) => e.target.value),
-			//filter((text: string) => text.length > 0),
 			debounceTime(250),
 			tap(() => this.loading = true),
 			map((query: string) => this.collectionService.search(

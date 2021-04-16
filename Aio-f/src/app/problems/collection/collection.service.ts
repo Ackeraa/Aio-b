@@ -13,7 +13,7 @@ export class CollectionService {
 
 	}
 
-	search(source: string, query: string): any {
+	search(source: string, query: string): Observable<any> {
 		let url: string;
 		let params: any;
 
@@ -30,4 +30,12 @@ export class CollectionService {
 		return this.tokenService.get(url, params)
 			       .pipe(map(res => res.json()));
 	}
+
+	updateProblems(source: string): Observable<any> {
+		return this.tokenService.get(
+					"vproblems/updates",
+					{ search: { source: source } }
+				).pipe(map(res => res.json()));
+	}
+
 }

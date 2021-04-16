@@ -21,7 +21,6 @@
 	<markdown [data]="problem.output" katex></markdown>
 
 	<h3>Samples</h3>
-
 	<div *ngFor="let sample of problem.samples let i=index"> 
 		<div class="card-group">
 			<div class="card shadow-sm">
@@ -29,7 +28,7 @@
 					Input{{i + 1}} 
 				</div>
 				<div class="card-body">
-					{{sample.sample_input}}
+					<markdown [data]="sample.sample_input" katex></markdown>
 				</div>
 			</div>
 			<div class="col-1"> </div>
@@ -38,16 +37,16 @@
 					Output{{i + 1}} 
 				</div>
 				<div class="card-body">
-					{{sample.sample_output}}
+					<markdown [data]="sample.sample_output" katex></markdown>
 				</div>
 			</div>
 			<div class="col-1"> </div>
 		</div>
-		<br/><br/>
+		<br/>
 	</div>
 	<div *ngIf="problem.hint">
-		<h4>Hint</h4>
-		{{problem.hint}}
+		<h3>Hint</h3>
+		<markdown [data]="problem.output" katex></markdown>
 	</div>
 	<br/> <br/>
 </div>

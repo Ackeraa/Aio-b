@@ -9,6 +9,9 @@
 				</select>
 				&nbsp;
 				<input #query type="text" class="form-control col-4" placeholder="Search Problems">
+				<button type="button" class="btn btn-primary" (click)="updateProblems()">
+					Update
+				</button>
 			</div>
 		<br/>
 		<div *ngIf="loading" class="row">
@@ -32,7 +35,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of problems" routerLink="/problem/{{problem.id}}" class="row">
+				<tr *ngFor="let problem of problems" routerLink="/problem/{{problem.id}}"
+				 [queryParams]="{source: problem.source }" class="row">
 					<td class="col">{{problem.vid}}</td>
 					<td class="col">{{problem.name}}</td>
 					<td class="col">1/100</td>

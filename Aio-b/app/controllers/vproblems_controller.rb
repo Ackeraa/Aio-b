@@ -3,12 +3,14 @@ require('spiders/codeforces_spider.rb')
 class VproblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy]
 
+  def initialize
+    @spider = Spider.new
+  end
   # GET /vproblems
   # Need to be fixed.
   def index
     @problems = Problem.where(source: params[:source]).first(10)
     if @problems.nil?
-      spider = Spider.new
       problems = spider.spide_problems
       problems.each do |problem|
         Problem.create(problem)
@@ -18,16 +20,15 @@ class VproblemsController < ApplicationController
     render json: @problems
   end
 
-  # GET /vproblems/search?source=source&vid=vid&name=name
+  # GET /vproblems/search
   # Need to be fixed when source is nil.
   def search
     source = params[:source]
     query = params[:query]
     if query.nil? 
-      @problems = Problem.where(source: source).limit(10)
-      if @problems.nil?
-        spider = Spider.new
-        problems = spider.spide_problems
+      @problems = Problem.where(source: source).limit(40)
+      if @problems.empty?
+        problems = @spider.spide_problems
         problems.each do |problem|
           Problem.create(problem)
         end
@@ -42,6 +43,10 @@ class VproblemsController < ApplicationController
 
   # GET /vproblems/1
   def show
+    if @problem.description.nil?
+      problem = @spider.spide_problem(@problem.vid) 
+      @problem.update(problem)
+    end
     render json: @problem
   end
 
@@ -63,6 +68,15 @@ class VproblemsController < ApplicationController
       render json: @problem
     else
       render json: @problem.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /vproblems/updates
+  def updates
+    n = Problem.where(source: params[:source]).count
+    problems = spider.spide_problems(n)
+    problems.each do |problem| 
+      Problem.create(problem)
     end
   end
 
