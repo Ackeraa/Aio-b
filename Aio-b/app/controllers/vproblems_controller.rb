@@ -5,15 +5,34 @@ class VproblemsController < ApplicationController
 
   # GET /vproblems
   def index
-    @problems = Problem.where("source = :source", { :source => params[:source] }).first(10)
+    @problems = Problem.where(source: params[:source]).first(10)
     if @problems.nil?
       spider = Spider.new
       problems = spider.spide_problems
       problems.each do |problem|
         Problem.create(problem)
       end
-      @problems = Problem.where("source = :source", { :source => params[:source] }).first(10)
+      @problems = Problem.where(source: params[:source]).first(10)
     end
+    render json: @problems
+  end
+
+  # GET /vproblems/search?source=source&vid=vid&name=name
+  def search
+    source = params[:source]
+    vid = params[:vid]
+    name = params[:name]
+
+    if vid.nil? and name.nil?
+      @problems = Problem.where(source: source) 
+    elsif vid.nil?
+      @problems = Problem.where(source: source, name: name) 
+    elsif name.nil?
+      @problems = Problem.where(source: source, vid: vid) 
+    else
+      @problems = Problem.where(source: source, vid: vid, name: name) 
+    end
+    @problems = Problem.where(source: source, name: name) 
     render json: @problems
   end
 

@@ -10,8 +10,8 @@ export class AuthService {
 
 	public signedIn$:Subject<string> = new Subject();
 	
-	constructor(public authService: Angular2TokenService) {
-		this.authService.validateToken().subscribe(
+	constructor(public tokenService: Angular2TokenService) {
+		this.tokenService.validateToken().subscribe(
 			res => {
 				if (res.status == 200){
 					this.signedIn$.next(res.json().data.name);
@@ -24,7 +24,7 @@ export class AuthService {
 
 	register(data: {name: string, email:string, password:string, passwordConfirmation:string}):
 		Observable<Response>{
-		return this.authService.registerAccount(data).pipe(map(
+		return this.tokenService.registerAccount(data).pipe(map(
 			res => {
 				return res
 			}
@@ -33,7 +33,7 @@ export class AuthService {
 
 	logIn(data):Observable<Response>{
 
-		return this.authService.post(
+		return this.tokenService.post(
 			'auth/sign_in',
 			data
 		).pipe(map(
@@ -45,7 +45,7 @@ export class AuthService {
 	}
 
 	logOut():Observable<Response>{
-		return this.authService.signOut().pipe(map(
+		return this.tokenService.signOut().pipe(map(
 			res => {
 				this.signedIn$.next(null);
 				return res;
@@ -55,13 +55,13 @@ export class AuthService {
 
 	getValidateToken(): any{
 		let token: any;
-		this.authService.validateToken().subscribe(
+		this.tokenService.validateToken().subscribe(
 			res => token = res
 		);
 		return token;
 	}
 
 	getCurrentUser(): any {
-		return this.authService.currentUserData;
+		return this.tokenService.currentUserData;
 	}
 }

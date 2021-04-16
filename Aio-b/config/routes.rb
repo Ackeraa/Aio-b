@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :vproblems do
     collection do
+      get 'search', :action => 'search'
     end
   end
 

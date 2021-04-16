@@ -6,22 +6,19 @@
 				<tr class="row">
 					<th class="col">
 						OJ
-						<select class="custom-select" id="oj">
-							<option selected>Codeforces</option>
-							<option value="1">UVA</option>
-							<option value="2">POJ</option>
-							<option value="3">Atcoder</option>
+						<select class="custom-select">
+							<option *ngFor="let source of sources let i = index" (value)="i">
+								{{source}}
+							</option>
 						</select>
 					</th>
 					<th class="col">
 						ID
-						<input type="text" class="form-control" placeholder="Search Problems"
-							aria-label="Search ID" aria-describedby="button-addon2">
+						<input #vid type="text" class="form-control" placeholder="Search Problems">
 					</th>
 					<th class="col">
 						NAME
-						<input type="text" class="form-control" placeholder="Search Problems"
-							aria-label="Search Name" aria-describedby="button-addon2">
+						<input #name type="text" class="form-control" placeholder="Search Problems">
 					</th>
 					<th class="col">
 						UPDATE TIME
@@ -29,24 +26,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row">
-					<td class="col">UVA</td>
+				<tr *ngFor="let problem of problems" class="row">
+					<td class="col">{{problem.source}}</td>
 					<td class="col">
-						1
+						{{problem.vid}}
 					</td>
-					<td class="col">test1</td>
-					<td class="col">2020.12.1</td>
-				</tr>
-				<tr class="row">
-					<td class="col">UVA</td>
-					<td class="col"><a href="#">1</a></td>
-					<td class="col">test1</td>
-					<td class="col">2020.12.1</td>
-				</tr>
-				<tr class="row">
-					<td class="col">UVA</td>
-					<td class="col"><a href="#">1</a></td>
-					<td class="col">test1</td>
+					<td class="col">{{problem.name}}</td>
 					<td class="col">2020.12.1</td>
 				</tr>
 			</tbody>

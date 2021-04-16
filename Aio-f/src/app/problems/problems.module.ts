@@ -11,6 +11,7 @@ import {
 	BetaComponent,
 	UploadComponent,
 	LocalComponent,
+	OnlineComponent
 } from '.';
 
 @NgModule({
@@ -18,7 +19,8 @@ import {
 		CreateComponent,
 		BetaComponent,
 		LocalComponent,
-		UploadComponent
+		UploadComponent,
+		OnlineComponent
 	],
 	imports: [
 		CommonModule,
@@ -33,6 +35,7 @@ import {
 		BetaComponent,
 		UploadComponent,
 		LocalComponent,
+		OnlineComponent
 	],
 })
 export class ProblemsModule { }
