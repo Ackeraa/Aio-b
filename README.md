@@ -798,6 +798,7 @@ end
 |        id         | integer | primary key |
 |       token       | string  |             |
 |      source       | string  |             |
+|        vid        | string  |             |
 |      creater      | string  |             |
 |       name        | string  |             |
 |    description    |  text   |             |

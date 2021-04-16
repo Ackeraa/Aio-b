@@ -8,7 +8,7 @@ class ProblemsController < ApplicationController
   def index
     #@user = current_user
     #UserMailer.with(user: @user).welcome_email.deliver
-    @problems = Problem.all
+    @problems = Problem.first(10)
 
     render json: @problems
   end
@@ -17,6 +17,7 @@ class ProblemsController < ApplicationController
   def show
     render json: @problem
   end
+
 
   def create
     @problem = Problem.find_by(token: params[:token])
