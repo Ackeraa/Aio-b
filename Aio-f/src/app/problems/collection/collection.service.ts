@@ -31,9 +31,9 @@ export class CollectionService {
 			       .pipe(map(res => res.json()));
 	}
 
-	updateProblems(source: string): Observable<any> {
+	reSpideProblems(source: string): Observable<any> {
 		return this.tokenService.get(
-					"vproblems/updates",
+					"vproblems/respides",
 					{ search: { source: source } }
 				).pipe(map(res => res.json()));
 	}

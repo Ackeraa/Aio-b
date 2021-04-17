@@ -1,7 +1,7 @@
 require('spiders/codeforces_spider.rb')
 
 class VproblemsController < ApplicationController
-  before_action :set_problem, only: [:show, :update, :destroy]
+  before_action :set_problem, only: [:show, :update, :destroy, :respide]
 
   def initialize
     @spider = Spider.new
@@ -11,7 +11,7 @@ class VproblemsController < ApplicationController
   def index
     @problems = Problem.where(source: params[:source]).first(10)
     if @problems.nil?
-      problems = spider.spide_problems
+      problems = @spider.spide_problems
       problems.each do |problem|
         Problem.create(problem)
       end
@@ -65,17 +65,30 @@ class VproblemsController < ApplicationController
 
   # PATCH/PUT /vproblems/1
   def update
+    if @problem.update(problem_params)
+      render json: @problem
+    else
+      render json: @problem.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /vproblems/respide/1
+  def respide
+    problem = @spider.spide_problem(@problem.vid)
+    @problem.update(problem)
     render json: @problem
   end
 
-  # GET /vproblems/updates
+  # GET /vproblems/respides
   # Need to be fixed.
-  def updates
+  def respides
     n = Problem.where(source: params[:source]).count
-    problems = spider.spide_problems(n)
+    problems = @spider.spide_problems(n)
     problems.each do |problem| 
       Problem.create(problem)
     end
+    @problems = Problem.where(source: params[:source]).limit(10).order(:id).reverse_order
+    render json: @problems
   end
 
   # DELETE /vproblems/1

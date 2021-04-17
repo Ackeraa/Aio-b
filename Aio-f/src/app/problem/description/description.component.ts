@@ -14,15 +14,14 @@ export class DescriptionComponent implements OnInit {
 	problem: any;
 
 	constructor(private problemService: ProblemService) {
-		this.problemService.getProblem().subscribe(
-			problem => {
-				console.log(problem);
-				this.problem = problem;
-				console.log(problem.samples[0].sample_input[0]);
-			}
-		);
+		this.problemService.getProblem()
+			.subscribe(problem => this.problem = problem);
 	}
 
+	reSpideProblem(): void {
+		this.problemService.reSpideProblem()
+		    .subscribe(problem => this.problem = problem);
+	}
 
 	ngOnInit(): void {
 	}

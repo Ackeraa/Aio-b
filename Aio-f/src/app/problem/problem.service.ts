@@ -24,8 +24,8 @@ export class ProblemService {
 		           .pipe(map(res => res.json()));
 	}
 
-	updateProblem(source: string, id: string): Observable<any> {
-		return this.tokenService.get("vproblems/update/" + id)
+	reSpideProblem(): Observable<any> {
+		return this.tokenService.get("vproblems/respide/" + this.id)
 								.pipe(map(res => res.json()));
 	}
 }

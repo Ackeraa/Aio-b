@@ -493,7 +493,7 @@ class User
   has_many :events
   has_many :comments
   has_many :solutions
-  has_many :submissions 
+  has_many :submission_records, dependent: :destroy
   has_and_belongs_to_many :auth_permissions
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :problems
@@ -540,7 +540,7 @@ end
 ```ruby
 class Contest
   has_many :contest_announcements, dependent: :destroy
-  has_many :submissions, dependent: :destroy
+  has_many :submission_records, dependent: :destroy
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :team_contest_ranks
   has_and_belongs_to_many :acm_contest_ranks
@@ -594,7 +594,7 @@ end
 ```ruby
 class Problem
   has_many :comments, dependent: :destroy
-  has_many :submissions, dependent: :destroy
+  has_many :submission_records, dependent: :destroy
   has_many :solutions, dependent: :destroy
   has_and_bleongs_to_many :users
   has_and_belongs_to_many :problem_sets

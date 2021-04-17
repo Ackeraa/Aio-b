@@ -25,9 +25,9 @@ export class CollectionComponent implements OnInit {
 			.subscribe(problems => this.problems = problems);
 	}
 
-	updateProblems(): void {
+	reSpideProblems(): void {
 		this.query.nativeElement.value = "";
-		this.collectionService.search(this.source.nativeElement.value.toLowerCase, "")
+		this.collectionService.reSpideProblems(this.source.nativeElement.value.toLowerCase)
 			.subscribe(problems => this.problems = problems);
 	}
 

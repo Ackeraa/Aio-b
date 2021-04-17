@@ -9,6 +9,13 @@
 		<h6><var>Memory Limit: {{problem.memory_limit}} MB</var></h6>
 	</div>
 	<br/>
+	<div class="row">
+		<div class="col-2 offset-md-11">
+			<button class="btn btn-primary pull-right" (click)="reSpideProblem()">
+				Update
+			</button>
+		</div>
+	</div>
 
 	<h3>Description</h3>
 	<markdown [data]="problem.description" katex></markdown>

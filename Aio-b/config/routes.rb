@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   resources :vproblems do
     collection do
       get 'search',  :action => 'search'
-      get 'updates', :action => 'updates'
-      get 'update/:id',  :action => 'update'
+      get 'respide/:id',  :action => 'respide'
+      get 'respides', :action => 'respides'
     end
   end
 
