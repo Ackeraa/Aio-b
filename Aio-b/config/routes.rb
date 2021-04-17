@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     collection do
       get 'search',  :action => 'search'
       get 'updates', :action => 'updates'
+      get 'update/:id',  :action => 'update'
     end
   end
 

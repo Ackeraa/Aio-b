@@ -26,17 +26,18 @@ class VproblemsController < ApplicationController
     source = params[:source]
     query = params[:query]
     if query.nil? 
-      @problems = Problem.where(source: source).limit(40)
+      @problems = Problem.where(source: source).limit(10).order(:id).reverse_order
       if @problems.empty?
         problems = @spider.spide_problems
         problems.each do |problem|
           Problem.create(problem)
         end
-        @problems = Problem.where(source: source).limit(10)
+        @problems = Problem.where(source: source).limit(10).order(:id).reverse_order
       end
     else
       @problems = Problem.where('source=? and lower(name) like (?)', 
-                                source.downcase, "%#{query.downcase}%").limit(10)
+                                source.downcase, "%#{query.downcase}%")
+                         .limit(10).order(:id).reverse_order
     end
     render json: @problems
   end
@@ -64,14 +65,11 @@ class VproblemsController < ApplicationController
 
   # PATCH/PUT /vproblems/1
   def update
-    if @problem.update(problem_params)
-      render json: @problem
-    else
-      render json: @problem.errors, status: :unprocessable_entity
-    end
+    render json: @problem
   end
 
   # GET /vproblems/updates
+  # Need to be fixed.
   def updates
     n = Problem.where(source: params[:source]).count
     problems = spider.spide_problems(n)

@@ -115,6 +115,9 @@ rails generate mailer Order received shipped
 # active job
 rails generate job charge_order
 
+# reset id
+ActiveRecord::Base.connection.execute('ALTER TABLE table_name AUTO_INCREMENT = 1')
+
 ```
 
 ```ruby
@@ -490,6 +493,7 @@ class User
   has_many :events
   has_many :comments
   has_many :solutions
+  has_many :submissions 
   has_and_belongs_to_many :auth_permissions
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :problems
@@ -536,6 +540,7 @@ end
 ```ruby
 class Contest
   has_many :contest_announcements, dependent: :destroy
+  has_many :submissions, dependent: :destroy
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :team_contest_ranks
   has_and_belongs_to_many :acm_contest_ranks
@@ -589,6 +594,7 @@ end
 ```ruby
 class Problem
   has_many :comments, dependent: :destroy
+  has_many :submissions, dependent: :destroy
   has_many :solutions, dependent: :destroy
   has_and_bleongs_to_many :users
   has_and_belongs_to_many :problem_sets
@@ -863,7 +869,8 @@ end
 | :-----------: | :-----: | :---------: |
 |      id       | integer | primary key |
 |  problem_id   | integer | foreign key |
-|   user_name   | string  |             |
+|  contest_id   | integer | foreign key |
+|    user_id    | integer | foreign key |
 |    result     | string  |             |
 |     code      |  text   |             |
 | memory_usage  | integer |             |

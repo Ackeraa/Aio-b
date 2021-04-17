@@ -21,7 +21,7 @@ export class CollectionComponent implements OnInit {
 	constructor(private collectionService: CollectionService) {
 		this.loading = false;
 		this.sources = ["Aio", "Codeforces", "UVA", "POJ", "Atcoder"];
-		this.collectionService.search(this.sources[0], "")
+		this.collectionService.search(this.sources[0].toLowerCase(), "")
 			.subscribe(problems => this.problems = problems);
 	}
 

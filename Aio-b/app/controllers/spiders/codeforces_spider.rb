@@ -28,6 +28,7 @@ class Spider
 
   def pre_process(s)
     s.to_s.gsub("$$$", "$")
+          .gsub("$$", "$")
           .gsub(/\$\w\$/) { |c| "${" + c[1] + "}$" }
           .gsub(/\<br\>/) { |c| "<br/>" }
   end
