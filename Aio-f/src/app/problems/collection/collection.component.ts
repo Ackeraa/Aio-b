@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subject, Observable, fromEvent } from 'rxjs';
-import { CollectionService } from './collection.service';
 import { map, filter, debounceTime, tap } from 'rxjs/operators'; 
+import { Router } from '@angular/router';
+import { CollectionService } from './collection.service';
+import { ProblemService } from '../../problem/problem.service';
 
 @Component({
 	selector: 'app-problems-collection',
@@ -18,20 +20,18 @@ export class CollectionComponent implements OnInit {
 	@ViewChild('query', { static: true }) query: ElementRef;
 	@ViewChild('source', { static: true }) source: ElementRef;
 
-	constructor(private collectionService: CollectionService) {
-		this.loading = false;
-		this.sources = ["Aio", "Codeforces", "UVA", "POJ", "Atcoder"];
-		this.collectionService.search(this.sources[0].toLowerCase(), "")
-			.subscribe(problems => this.problems = problems);
-	}
+	constructor(private router: Router,
+				private problemService: ProblemService,
+				private collectionService: CollectionService) {
 
-	reSpideProblems(): void {
-		this.query.nativeElement.value = "";
-		this.collectionService.reSpideProblems(this.source.nativeElement.value.toLowerCase)
-			.subscribe(problems => this.problems = problems);
 	}
 
 	ngOnInit(): void {
+
+		this.loading = false;
+		this.sources = ["Codeforces", "UVA", "POJ", "Atcoder"];
+		this.collectionService.search(this.sources[0].toLowerCase(), "")
+			.subscribe(problems => this.problems = problems);
 
 		//Observer of source change.
 		fromEvent(this.source.nativeElement, 'change')
@@ -77,5 +77,15 @@ export class CollectionComponent implements OnInit {
 			}
 		);
 	}
+	reSpideProblems(): void {
+		this.query.nativeElement.value = "";
+		this.collectionService.reSpideProblems(this.source.nativeElement.value.toLowerCase)
+			.subscribe(problems => this.problems = problems);
+	}
 
+	getProblem(source: string, id: string): void {
+		localStorage.setItem("source", source);
+		localStorage.setItem("id", id);
+		this.router.navigate(["/problem/" + id]);
+	}
 }

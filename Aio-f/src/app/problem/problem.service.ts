@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Angular2TokenService } from 'angular2-token';
-import { Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; 
 
 @Injectable({
@@ -8,24 +8,32 @@ import { map } from 'rxjs/operators';
 })
 export class ProblemService {
 
-	id: string;
-	source: string;
+	problem$: BehaviorSubject<any> = new BehaviorSubject(null);
+
 	constructor(private tokenService: Angular2TokenService) {
+
 	}
 
-	getProblem(): Observable<any> {
+	getProblem(source: string, id: string): void {
 		let url: string;
-		if (this.source === 'aio') {
-			url = 'problems/' + this.id;
+		if (source === 'aio') {
+			url = 'problems/' + id;
 		} else {
-			url = 'vproblems/' + this.id;
+			url = 'vproblems/' + id;
 		}
-		return this.tokenService.get(url)
-		           .pipe(map(res => res.json()));
+		this.tokenService.get(url)
+		    .pipe(map(res => res.json()))
+			.subscribe(problem => {
+				this.problem$.next(problem);
+			});
 	}
 
-	reSpideProblem(): Observable<any> {
-		return this.tokenService.get("vproblems/respide/" + this.id)
+	reSpideProblem(id: string): Observable<any> {
+		return this.tokenService.get("vproblems/respide/" + id)
 								.pipe(map(res => res.json()));
+	}
+
+	submitProblem(): void {
+
 	}
 }

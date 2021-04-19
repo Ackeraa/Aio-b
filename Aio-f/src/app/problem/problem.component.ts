@@ -9,17 +9,13 @@ import { ProblemService } from './problem.service';
 })
 export class ProblemComponent implements OnInit {
 
-	id: number;
-	content: string;
 	constructor(private route: ActivatedRoute,
 			    private problemService: ProblemService) {
-		problemService.id = this.route.snapshot.paramMap.get('id');
-		this.route.queryParams.subscribe(params => {
-			problemService.source = params['source'];
-		});
 	}
 
 	ngOnInit(): void {
+		let source = localStorage.getItem("source");
+		let id = localStorage.getItem("id");
+		this.problemService.getProblem(source, id);
 	}
-
 }

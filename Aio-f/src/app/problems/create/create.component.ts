@@ -44,8 +44,12 @@ export class CreateComponent implements OnInit {
 
 	constructor(private fb: FormBuilder, private renderer: Renderer2,
 				private router: Router, private http: HttpClient) { 
-		this.form = fb.group({
-			name: ['', Validators.required, Validators.maxLength(15)],
+
+	}
+	ngOnInit(): void {
+		this.form = this.fb.group({
+			name: ['', Validators.compose([Validators.required,
+										   Validators.maxLength(15)])],
 			memory_limit: ['', Validators.compose([Validators.required,
 												this.memoryValidator])],
 			time_limit: ['', Validators.compose([Validators.required,
@@ -53,7 +57,7 @@ export class CreateComponent implements OnInit {
 			description:  ['', Validators.required],
 			input:  ['', Validators.required],
 			output:  ['', Validators.required],
-			samples: fb.array([this.createSample()]),
+			samples: this.fb.array([this.createSample()]),
 			hint:  ['', Validators.required],
 		});
 
@@ -77,9 +81,7 @@ export class CreateComponent implements OnInit {
 			(value: any) => {
 			}
 		);
-
 	}
-	
 	// Validators for time_limit.
 	timeValidator(time_limit: FormControl): {[s: string]: boolean} {
 		if (!time_limit.value.match(/^[1-9]\d*$/)){
@@ -168,16 +170,7 @@ export class CreateComponent implements OnInit {
 				});
 		}
 	}
-	ngOnInit(): void {
-		/*
-		this.routeSub = this.router.events.subscribe((event) => {
-			if (event instanceof NavigationStart) {
-				//do something.
-				console.log(event.url);
-			}
-		});
-		*/
-	}
+
 	ngOnDestroy() {
 	}
 

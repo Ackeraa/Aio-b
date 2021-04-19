@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProblemService } from '../problem.service';
 
 @Component({
 	selector: 'app-problem-submit',
@@ -8,12 +9,30 @@ import { Component, OnInit } from '@angular/core';
 export class SubmitComponent implements OnInit {
 
 	code: any;
+	has_code: boolean;
 	options: any;
 	modes: Array<string>;
-	languages: Array<string>;
+	languages: Array<any>;
 	language: string; 
 	themes: Array<string>;
-	constructor() {
+	problem: any;
+
+	constructor(private problemService: ProblemService) {
+	}
+
+	ngOnInit(): void {
+		this.problemService.problem$.subscribe(problem => {
+			if (problem != null && problem.source === "codeforces") {
+				this.languages = [
+					{ id: 43, name: "GNU GCC C11 5.1.0" },
+					{ id: 42, name: "GNU G++11 5.1.0" },
+					{ id: 60, name: "Java 11.0.6" },
+					{ id: 31, name: "Python 3.9.1" }
+				];
+			}
+		});
+
+		this.has_code = true;
 		this.options = {
 			tabSize: 4,
 			smartIndent: true,
@@ -24,10 +43,18 @@ export class SubmitComponent implements OnInit {
 			mode: 'clike'
 		}
 		this.modes = ["clike", "clike", "javascript", "python"];
-		this.languages = ["C", "C++", "Java", "Python"];
 		this.themes = ["Dracula", "Eclipse", "Idea"]; 
 	}
 
+	submit(): void {
+		if (this.code == "") {
+			this.has_code = false;
+		} else {
+			this.has_code = true;
+			this.problemService.submitProblem();
+		}
+
+	}
 	selectLanguage(id: any): void {
 		this.language = this.languages[id];
 		this.options.mode = this.modes[id];
@@ -48,7 +75,4 @@ export class SubmitComponent implements OnInit {
 		};
 		reader.readAsText(file, "UTF-8");
 	}
-	ngOnInit(): void {
-	}
-
 }

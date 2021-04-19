@@ -9,8 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class CollectionService {
 
-	constructor(private tokenService: Angular2TokenService ) {
-
+	constructor(private tokenService: Angular2TokenService) {
 	}
 
 	search(source: string, query: string): Observable<any> {

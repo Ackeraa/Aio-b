@@ -2,10 +2,22 @@
 require('httparty')
 require('open-uri')
 require('nokogiri')
+require('mechanize')
 
 class Spider
 
   def initialize
+    @username = "test_for_aio"
+    @password = "test_for_aio_"
+    @agent = Mechanize.new
+  end
+
+  def login
+    page = @agent.get("http://codeforces.com/enter")
+    form = page.form(:id => 'enterForm')
+    form.handleOrEmail = @username
+    form.password = @password
+    page = @agent.submit(form)
   end
 
   def spide_problems(n = nil)
@@ -38,9 +50,9 @@ class Spider
     split_vid = vid.split(/(\d+)/, 2)
     url = "https://codeforces.com/problemset/problem/%d/%s" %[split_vid[1], split_vid[2]] 
     html = open(url)
-    doc = Nokogiri::HTML(html)
+    page = Nokogiri::HTML(html)
 
-    text = doc.css("div.problem-statement")
+    text = page.css("div.problem-statement")
     problem = {}
 
     name = pre_process(text.css("div.title")[0].text)[3..]
@@ -62,4 +74,50 @@ class Spider
                input: input, output: output, samples: samples, hint: hint }
   end
 
+  def get_status
+    response = HTTParty.get("http://codeforces.com/api/user.status?" +
+                       "handle=%s&from=1&count=1" % @username)
+    result = JSON.parse(response.body, { symbolize_names: true })[:result][0]
+
+    id = result[:id]
+    verdict = result[:verdict]
+    time = result[:timeConsumedMillis]
+    memory = result[:memoryConsumedBytes] / 1000
+    passed_test_count = result[:passedTestCount]
+
+    return id, verdict, time, memory, passed_test_count
+  end
+
+  def submit(problem_id, language, code)
+    @last_id, b, c, d, e = self.get_status 
+    page = @agent.get("http://codeforces.com/problemset/submit")
+    form = page.form(:class => 'submit-form')
+    form.submittedProblemCode = problem_id
+    form.programTypeId = language 
+    form.source = code
+    page = @agent.submit(form)
+    if page.uri.to_s[-5..] != "my=on"
+      return "Failed, you have submitted the same code as before"
+    end
+
+    is_started = false
+    while true
+      id, verdict, time, memory, passed_test_count = self.get_status
+      if id != @last_id and verdict != "TESTING" and verdict != nil
+        if verdict == "OK"
+            return "OK - Passed %d tests" % passed_test_count
+        else
+            return "%s on test %d" % [verdict, passed_test_count]
+        end
+      elsif verdict == "TESTING" and (not is_started)
+        is_started = true
+      end
+      sleep 0.5
+    end
+  end
+end
+
+if __FILE__ == $0
+  spider = Spider.new
+  spider.spide_problem "33B"
 end

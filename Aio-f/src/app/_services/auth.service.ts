@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Angular2TokenService } from 'angular2-token';
 import { Subject, Observable } from 'rxjs';
@@ -6,7 +6,7 @@ import { Response } from '@angular/http';
 import { map } from 'rxjs/operators'; 
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnInit{
 
 	public signedIn$:Subject<string> = new Subject();
 	
@@ -21,7 +21,6 @@ export class AuthService {
 			},
 		)
 	}
-
 	register(data: {name: string, email:string, password:string, passwordConfirmation:string}):
 		Observable<Response>{
 		return this.tokenService.registerAccount(data).pipe(map(
@@ -63,5 +62,8 @@ export class AuthService {
 
 	getCurrentUser(): any {
 		return this.tokenService.currentUserData;
+	}
+
+	ngOnInit(): void {
 	}
 }

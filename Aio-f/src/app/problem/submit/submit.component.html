@@ -4,8 +4,8 @@
 		Language:
 	</label>
 	<select class="custom-select col-2" (change)="selectLanguage($event.target.value)">
-		<option *ngFor="let language of languages let i = index" [value]="i">
-			{{language}}
+		<option *ngFor="let language of languages" [value]="language.id">
+			{{language.name}}
 		</option>
 	</select>
 	&nbsp; 
@@ -31,6 +31,10 @@
 	<div class="col-12">
 		<ngx-codemirror [(ngModel)]="code" [options]="options">
 		</ngx-codemirror>
+	</div>
+
+	<div *ngIf="has_code" class="alert alert-danger" role="alert">
+		Please put your source code.
 	</div>
 </div>
 <br/>
