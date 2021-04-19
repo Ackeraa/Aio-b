@@ -1,20 +1,24 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Angular2TokenService } from 'angular2-token';
-import { Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, AsyncSubject } from 'rxjs';
 import { Response } from '@angular/http';
 import { map } from 'rxjs/operators'; 
 
 @Injectable()
 export class AuthService implements OnInit{
 
-	public signedIn$:Subject<string> = new Subject();
+	public signedIn$: BehaviorSubject<any> = new BehaviorSubject(null);
 	
 	constructor(public tokenService: Angular2TokenService) {
 		this.tokenService.validateToken().subscribe(
 			res => {
 				if (res.status == 200){
-					this.signedIn$.next(res.json().data.name);
+					let user = res.json().data;
+					this.signedIn$.next({
+						user_id: user.id,
+						user_name: user.name
+					});
 				} else {
 					this.signedIn$.next(null);
 				}
@@ -37,7 +41,11 @@ export class AuthService implements OnInit{
 			data
 		).pipe(map(
 			res => {
-				this.signedIn$.next(res.json().data.name);
+				let user = res.json().data;
+				this.signedIn$.next({
+					user_id: user.id,
+					user_name: user.name
+				});
 				return res;
 			}
 		));

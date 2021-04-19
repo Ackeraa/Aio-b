@@ -3,8 +3,7 @@ class SubmissionRecordsController < ApplicationController
 
   # GET /submission_records
   def index
-    @submission_records = SubmissionRecord.all
-
+    @submission_records = SubmissionRecord.where(search_params)
     render json: @submission_records
   end
 
@@ -39,6 +38,11 @@ class SubmissionRecordsController < ApplicationController
   end
 
   private
+
+    def search_params
+      params.permit(:contest_id, :problem_id, :user_name)
+            .delete_if { |key, value| value.blank? }
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_submission_record
       @submission_record = SubmissionRecord.find(params[:id])

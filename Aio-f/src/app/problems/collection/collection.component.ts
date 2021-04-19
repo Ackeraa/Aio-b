@@ -3,7 +3,6 @@ import { Subject, Observable, fromEvent } from 'rxjs';
 import { map, filter, debounceTime, tap } from 'rxjs/operators'; 
 import { Router } from '@angular/router';
 import { CollectionService } from './collection.service';
-import { ProblemService } from '../../problem/problem.service';
 
 @Component({
 	selector: 'app-problems-collection',
@@ -21,9 +20,7 @@ export class CollectionComponent implements OnInit {
 	@ViewChild('source', { static: true }) source: ElementRef;
 
 	constructor(private router: Router,
-				private problemService: ProblemService,
 				private collectionService: CollectionService) {
-
 	}
 
 	ngOnInit(): void {

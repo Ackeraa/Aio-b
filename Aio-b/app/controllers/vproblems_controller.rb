@@ -1,7 +1,8 @@
 require('spiders/codeforces_spider.rb')
 
+
 class VproblemsController < ApplicationController
-  before_action :set_problem, only: [:show, :update, :destroy, :respide]
+  before_action :set_problem, only: [:show, :update, :destroy, :respide, :submit]
 
   def initialize
     @spider = Spider.new
@@ -72,10 +73,21 @@ class VproblemsController < ApplicationController
     end
   end
 
-  # POST /vproblems/1
+  # POST /vproblems/submit/1
   def submit
-
+    source = @problem.source
+    vid = @problem.vid
+    code = params[:code]
+    language = params[:language]
+    contest_id = params[:contest_id]
+    submission_record = SubmissionRecord.create(
+      problem_id: @problem.id,
+      contest_id: contest_id,
+      user_id: 1
+    )
+    render json: submission_record
   end
+  
   # GET /vproblems/respide/1
   def respide
     problem = @spider.spide_problem(@problem.vid)

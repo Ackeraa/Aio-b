@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProblemService } from '../problem.service';
 
 @Component({
 	selector: 'app-problem-submissions',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubmissionsComponent implements OnInit {
 
-	constructor() { }
+	submissions: any;
+
+	constructor(private problemService: ProblemService) { }
 
 	ngOnInit(): void {
+		this.problemService.getSubmissions()
+		    .subscribe(submissions => {
+				this.submissions = submissions;
+			});
 	}
 
 }

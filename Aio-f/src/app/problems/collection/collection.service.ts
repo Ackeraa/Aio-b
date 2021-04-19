@@ -31,6 +31,7 @@ export class CollectionService {
 	}
 
 	reSpideProblems(source: string): Observable<any> {
+		let url = 'vproblems/respides';
 		return this.tokenService.get(
 					"vproblems/respides",
 					{ search: { source: source } }
