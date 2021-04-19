@@ -23,7 +23,7 @@ export class DescriptionComponent implements OnInit {
 	}
 
 	reSpideProblem(): void {
-		this.problemService.reSpideProblem(this.problem.id)
+		this.problemService.reSpideProblem()
 		    .subscribe(problem => this.problem = problem);
 	}
 }

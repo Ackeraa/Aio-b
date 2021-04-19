@@ -84,8 +84,12 @@ export class CollectionComponent implements OnInit {
 	}
 
 	getProblem(source: string, id: string): void {
-		localStorage.setItem("source", source);
-		localStorage.setItem("id", id);
-		this.router.navigate(["/problem/" + id]);
+		let url: string;
+		if (source == "aio") {
+			url = "/problem/l/" + id;
+		} else {
+			url = "/problem/v/" + id;
+		}
+		this.router.navigate([url]);
 	}
 }

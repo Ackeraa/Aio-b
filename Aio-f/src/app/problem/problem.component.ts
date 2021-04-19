@@ -14,8 +14,8 @@ export class ProblemComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		let source = localStorage.getItem("source");
-		let id = localStorage.getItem("id");
+		let source = this.route.snapshot.paramMap.get("source");
+		let id = this.route.snapshot.paramMap.get("id");
 		this.problemService.getProblem(source, id);
 	}
 }

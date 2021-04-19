@@ -28,12 +28,13 @@ export class ProblemService {
 			});
 	}
 
-	reSpideProblem(id: string): Observable<any> {
-		return this.tokenService.get("vproblems/respide/" + id)
-								.pipe(map(res => res.json()));
+	reSpideProblem(): Observable<any> {
+		let url = 'vproblems/respide/' + this.problem$.value.id;
+		return this.tokenService.get(url)
+				   .pipe(map(res => res.json()));
 	}
 
-	submitProblem(): void {
-
+	submitProblem(language: any, code: string): void {
+		let url = 'vproblems/submit/' + this.problem$.value.id;
 	}
 }

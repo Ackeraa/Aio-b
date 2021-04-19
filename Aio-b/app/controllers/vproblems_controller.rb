@@ -72,6 +72,10 @@ class VproblemsController < ApplicationController
     end
   end
 
+  # POST /vproblems/1
+  def submit
+
+  end
   # GET /vproblems/respide/1
   def respide
     problem = @spider.spide_problem(@problem.vid)

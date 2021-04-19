@@ -22,12 +22,12 @@ export class SubmitComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.problemService.problem$.subscribe(problem => {
-			if (problem != null && problem.source === "codeforces") {
+			if (problem != null && problem.source === 'codeforces') {
 				this.languages = [
-					{ id: 43, name: "GNU GCC C11 5.1.0" },
-					{ id: 42, name: "GNU G++11 5.1.0" },
-					{ id: 60, name: "Java 11.0.6" },
-					{ id: 31, name: "Python 3.9.1" }
+					{ id: 43, name: 'GNU GCC C11 5.1.0' },
+					{ id: 42, name: 'GNU G++11 5.1.0' },
+					{ id: 60, name: 'Java 11.0.6' },
+					{ id: 31, name: 'Python 3.9.1' }
 				];
 			}
 		});
@@ -42,18 +42,18 @@ export class SubmitComponent implements OnInit {
 			theme: 'dracula',
 			mode: 'clike'
 		}
-		this.modes = ["clike", "clike", "javascript", "python"];
-		this.themes = ["Dracula", "Eclipse", "Idea"]; 
+		this.modes = ['clike', 'clike', 'javascript', 'python'];
+		this.themes = ['Dracula', 'Eclipse', 'Idea']; 
+		this.code = '';
 	}
 
 	submit(): void {
-		if (this.code == "") {
+		if (this.code == '') {
 			this.has_code = false;
 		} else {
 			this.has_code = true;
-			this.problemService.submitProblem();
+			this.problemService.submitProblem(this.language, this.code);
 		}
-
 	}
 	selectLanguage(id: any): void {
 		this.language = this.languages[id];
@@ -65,7 +65,7 @@ export class SubmitComponent implements OnInit {
 	}
 
 	clearCode(): void {
-		this.code = "";
+		this.code = '';
 	}
 
 	loadCode(file: any): void {
@@ -73,6 +73,6 @@ export class SubmitComponent implements OnInit {
 		reader.onload = (fileLoadedEvent) => {
 			this.code = fileLoadedEvent.target.result;
 		};
-		reader.readAsText(file, "UTF-8");
+		reader.readAsText(file, 'UTF-8');
 	}
 }
