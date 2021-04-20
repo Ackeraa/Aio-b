@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProblemService } from '../problem.service';
+import { ActionCableService, Channel } from 'angular2-actioncable';
 
 @Component({
 	selector: 'app-problem-submissions',
@@ -14,10 +15,8 @@ export class SubmissionsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.problemService.getSubmissions()
-		    .subscribe(res => {
-				res.subscribe(submissions => {
-					this.submissions = submissions;
-				});
+		    .subscribe(submissions => {
+				this.submissions = submissions;
 			});
 	}
 

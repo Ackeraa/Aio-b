@@ -29,8 +29,18 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody *ngIf="submissions != null && submissions.length > 0">
-				<tr *ngFor="let submission of submissions" class="row">
+			<tbody>
+				<tr *ngFor="let pending of pendings" class="row">
+					<td class="col"><a href="#">{{pending.id}}</a></td>
+					<td class="col">{{pending.created_at}}</td>
+					<td class="col">{{pending.user_id}}</td>
+					<td class="col">{{pending.problem_id}}</td>
+					<td class="col">C++</td>
+					<td class="col">Accepted</td>
+					<td class="col">15ms</td>
+					<td class="col"> </td>
+				</tr>
+				<tr *ngFor="let submission of (submissions$ | async)" class="row">
 					<td class="col"><a href="#">{{submission.id}}</a></td>
 					<td class="col">{{submission.created_at}}</td>
 					<td class="col">{{submission.user_id}}</td>
@@ -39,7 +49,6 @@
 					<td class="col">Accepted</td>
 					<td class="col">15ms</td>
 					<td class="col">
-						{{submissions.length}}
 					</td>
 				</tr>
 			</tbody>

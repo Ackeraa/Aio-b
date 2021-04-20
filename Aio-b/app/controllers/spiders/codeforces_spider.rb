@@ -48,7 +48,7 @@ class Spider
 
   def spide_problem(vid)
     split_vid = vid.split(/(\d+)/, 2)
-    url = "https://codeforces.com/problemset/problem/%d/%s" %[split_vid[1], split_vid[2]] 
+    url = "https://codeforces.com/problemset/problem/#{split_vid[1]}/#{split_vid[2]}"  
     html = open(url)
     page = Nokogiri::HTML(html)
 
@@ -76,7 +76,7 @@ class Spider
 
   def get_status
     response = HTTParty.get("http://codeforces.com/api/user.status?" +
-                       "handle=%s&from=1&count=1" % @username)
+                       "handle=#{@username}&from=1&count=1")
     result = JSON.parse(response.body, { symbolize_names: true })[:result][0]
 
     id = result[:id]
@@ -105,9 +105,9 @@ class Spider
       id, verdict, time, memory, passed_test_count = self.get_status
       if id != @last_id and verdict != "TESTING" and verdict != nil
         if verdict == "OK"
-            return "OK - Passed %d tests" % passed_test_count
+            return "OK - Passed #{passed_test_count} tests" 
         else
-            return "%s on test %d" % [verdict, passed_test_count]
+            return "#{verdict} on test #{passed_test_count}" 
         end
       elsif verdict == "TESTING" and (not is_started)
         is_started = true

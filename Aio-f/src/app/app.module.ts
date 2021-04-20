@@ -28,6 +28,7 @@ import { fakeBackendProvider } from './_helpers';
 import { AlertComponent } from './_components';
 import { Angular2TokenService } from 'angular2-token';
 import { AuthService } from "./_services/auth.service";
+import { ActionCableService } from 'angular2-actioncable';
 
 @NgModule({
     imports: [
@@ -66,6 +67,7 @@ import { AuthService } from "./_services/auth.service";
 
 		Angular2TokenService,
 		AuthService,
+		ActionCableService 
         //fakeBackendProvider
     ],
     bootstrap: [AppComponent]

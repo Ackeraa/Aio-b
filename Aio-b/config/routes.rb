@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :contests
 
   mount_devise_token_auth_for 'User', at: 'auth'
+  mount ActionCable.server => '/cable'
 
 end
 

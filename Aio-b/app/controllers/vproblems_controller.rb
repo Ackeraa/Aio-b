@@ -86,8 +86,12 @@ class VproblemsController < ApplicationController
       problem_id: @problem.id,
       contest_id: contest_id,
       user_id: user_id,
-      user_name: user_name
+      user_name: user_name,
+      result: "judging"
     )
+    message = { :action => 'add', :data => submission_record }
+    puts "dsere", get_stream
+    ActionCable.server.broadcast get_stream, message 
     render json: submission_record
   end
   
@@ -119,6 +123,10 @@ class VproblemsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_problem
       @problem = Problem.find(params[:id])
+    end
+
+    def get_stream
+      "submission_#{params[:user_id] || 0}_#{params[:id] || 0}"
     end
 
     # Only allow a trusted parameter "white list" through.

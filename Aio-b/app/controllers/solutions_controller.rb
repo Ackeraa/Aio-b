@@ -4,7 +4,6 @@ class SolutionsController < ApplicationController
   # GET /solutions
   def index
     @solutions = Solution.all
-
     render json: @solutions
   end
 

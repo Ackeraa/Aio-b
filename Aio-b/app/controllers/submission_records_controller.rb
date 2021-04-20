@@ -4,6 +4,8 @@ class SubmissionRecordsController < ApplicationController
   # GET /submission_records
   def index
     @submission_records = SubmissionRecord.where(search_params)
+                                          .where.not(result: 'judging')
+
     render json: @submission_records
   end
 

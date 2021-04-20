@@ -60,6 +60,7 @@ export class AuthService implements OnInit{
 		));
 	}
 
+	/*
 	getValidateToken(): any{
 		let token: any;
 		this.tokenService.validateToken().subscribe(
@@ -67,6 +68,7 @@ export class AuthService implements OnInit{
 		);
 		return token;
 	}
+	*/
 
 	getCurrentUser(): any {
 		return this.tokenService.currentUserData;

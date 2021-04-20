@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
+import { filter, distinct } from 'rxjs/operators'; 
 import { ProblemService } from '../problem.service';
 
 @Component({
@@ -8,16 +10,28 @@ import { ProblemService } from '../problem.service';
 })
 export class MySubmissionsComponent implements OnInit {
 
-	submissions: any;
+	submissions$: Observable<any>;
+	receiver: Subscription;
+	pendings: Array<any>;
 
 	constructor(private problemService: ProblemService) { }
 
 	ngOnInit(): void {
-		this.problemService.getMySubmissions()
-		    .subscribe(res => {
-				res.subscribe(submissions => {
-					this.submissions = submissions;
-				});
-			});
+		this.submissions$ = this.problemService.getMySubmissions();
+		this.pendings = [];
+		//only receive.
+		this.receiver = this.problemService.setMySubmissions()
+			.pipe(filter(x => x != null))
+			.subscribe(message => {
+				if (message.action === 'add') {
+					this.pendings.push(message.data);
+					console.log(this.pendings);
+				} else if (message.action == 'update'){
+			}
+		});
+
+	}
+	ngOnDestroy(): void {
+		this.receiver.unsubscribe();
 	}
 }

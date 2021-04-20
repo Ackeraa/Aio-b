@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.3",
     "@ctrl/ngx-codemirror": "^4.1.0",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
+    "angular2-actioncable": "^6.0.2",
     "angular2-token": "^0.2.0",
     "bootstrap": "^4.6.0",
     "codemirror": "^5.60.0",
