@@ -14,8 +14,10 @@ export class MySubmissionsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.problemService.getMySubmissions()
-		    .subscribe(submissions => {
-				this.submissions = submissions;
+		    .subscribe(res => {
+				res.subscribe(submissions => {
+					this.submissions = submissions;
+				});
 			});
 	}
 }

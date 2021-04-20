@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, AsyncSubject } from 'rxjs';
-import { map, filter } from 'rxjs/operators'; 
+import { map, filter, concatMap, mergeMap } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
 import { AuthService } from '../_services';
 
@@ -51,6 +51,15 @@ export class ProblemService implements OnInit {
 				id = problem.id;
 				source = problem.source;
 			});
+
+		let user_name, user_id;
+		this.authService.signedIn$
+			.pipe(filter(x => x != null))
+			.subscribe(user => {
+				user_id = user.user_id;
+				user_name = user.user_name;
+			});
+
 		let url, body;
 		if (source == 'aio') {
 			url = 'problems/submit/' + id;
@@ -61,13 +70,15 @@ export class ProblemService implements OnInit {
 		body = {
 			language: language,
 			code: code,
-			contest_id: 1
+			contest_id: 1,
+			user_id: user_id,
+			user_name: user_name
 		};
 		this.tokenService.post(url, body)
 		    .pipe(map(res => res.json()));
 	}
 
-	getMySubmissions() :Observable<any> {
+	getMySubmissionss() :Observable<any> {
 		let id;
 		this.problem$
 			.pipe(filter(x => x != null))
@@ -75,8 +86,8 @@ export class ProblemService implements OnInit {
 
 		let user_name;
 		this.authService.signedIn$
+			.pipe(filter(x => x != null))
 			.subscribe(user => user_name = user.user_name);
-
 		let url = 'submission_records';
 		let params = {
 			search: {
@@ -88,8 +99,36 @@ export class ProblemService implements OnInit {
 				   .pipe(map(res => res.json()));	
 	}
 
-	getSubmissions() :Observable<any> {
+	getMySubmissions() :Observable<any> {
+		return this.problem$
+				   .pipe(
+					   filter(x => x != null),
+					   concatMap(() => this.authService.signedIn$
+										   .pipe(filter(x => x != null)),
+								 (x, y) => { return { problem: x, user: y } } ),
+					   map(x => {
+						   let url = 'submission_records';
+						   let params = { search: { user_name: x.user.user_name,
+												    problem_id: x.problem.id } };
+						   return this.tokenService.get(url, params)
+									  .pipe(map(res => res.json()))	
+						})
+					);
+	}
 
+	getSubmissions() :Observable<any> {
+		return this.problem$
+		    .pipe(
+				filter(x => x != null),
+				map(problem => {
+					let url = 'submission_records';
+					let params = { search: { problem_id: problem.id } };
+					return this.tokenService.get(url, params)
+							   .pipe(map(res => res.json()));
+					})
+			);
+	}
+	getSubmissionss() :Observable<any> {
 		let id;
 		this.problem$
 		    .pipe(filter(x => x != null))

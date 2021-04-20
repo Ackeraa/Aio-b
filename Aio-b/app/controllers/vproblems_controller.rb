@@ -80,10 +80,13 @@ class VproblemsController < ApplicationController
     code = params[:code]
     language = params[:language]
     contest_id = params[:contest_id]
+    user_id = params[:user_id]
+    user_name = params[:user_name]
     submission_record = SubmissionRecord.create(
       problem_id: @problem.id,
       contest_id: contest_id,
-      user_id: 1
+      user_id: user_id,
+      user_name: user_name
     )
     render json: submission_record
   end
