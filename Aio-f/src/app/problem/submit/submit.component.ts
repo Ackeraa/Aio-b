@@ -29,6 +29,7 @@ export class SubmitComponent implements OnInit {
 					{ id: 60, name: 'Java 11.0.6' },
 					{ id: 31, name: 'Python 3.9.1' }
 				];
+				this.language = this.languages[0].id;
 			}
 		});
 
@@ -56,7 +57,8 @@ export class SubmitComponent implements OnInit {
 		}
 	}
 	selectLanguage(id: any): void {
-		this.language = this.languages[id];
+		console.log(id);
+		this.language = id;
 		this.options.mode = this.modes[id];
 	}
 

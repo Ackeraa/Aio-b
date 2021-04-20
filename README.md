@@ -116,7 +116,7 @@ rails generate mailer Order received shipped
 rails generate job charge_order
 
 # reset id
-ActiveRecord::Base.connection.execute('ALTER TABLE table_name AUTO_INCREMENT = 1')
+ActiveRecord::Base.connection.reset_pk_sequence!('table_name')
 
 ```
 

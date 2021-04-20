@@ -30,13 +30,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let pending of pendings" class="row">
-					<td class="col"><a href="#">{{pending.id}}</a></td>
-					<td class="col">{{pending.created_at}}</td>
-					<td class="col">{{pending.user_id}}</td>
-					<td class="col">{{pending.problem_id}}</td>
+				<tr *ngFor="let judging of judgings" class="row">
+					<td class="col"><a href="#">{{judging.id}}</a></td>
+					<td class="col">{{judging.created_at}}</td>
+					<td class="col">{{judging.user_id}}</td>
+					<td class="col">{{judging.problem_id}}</td>
 					<td class="col">C++</td>
-					<td class="col">Accepted</td>
+					<td class="col">{{judging.result}}</td>
 					<td class="col">15ms</td>
 					<td class="col"> </td>
 				</tr>
@@ -46,7 +46,7 @@
 					<td class="col">{{submission.user_id}}</td>
 					<td class="col">{{submission.problem_id}}</td>
 					<td class="col">C++</td>
-					<td class="col">Accepted</td>
+					<td class="col">{{submission.result}}</td>
 					<td class="col">15ms</td>
 					<td class="col">
 					</td>

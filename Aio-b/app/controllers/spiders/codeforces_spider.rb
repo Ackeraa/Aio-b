@@ -18,6 +18,7 @@ class Spider
     form.handleOrEmail = @username
     form.password = @password
     page = @agent.submit(form)
+
   end
 
   def spide_problems(n = nil)
@@ -89,12 +90,15 @@ class Spider
   end
 
   def submit(problem_id, language, code)
+    login
     @last_id, b, c, d, e = self.get_status 
     page = @agent.get("http://codeforces.com/problemset/submit")
     form = page.form(:class => 'submit-form')
     form.submittedProblemCode = problem_id
     form.programTypeId = language 
-    form.source = code
+    form.source = code.squish
+    puts "--------------------------------"
+    puts problem_id, language, code
     page = @agent.submit(form)
     if page.uri.to_s[-5..] != "my=on"
       return "Failed, you have submitted the same code as before"
@@ -119,5 +123,5 @@ end
 
 if __FILE__ == $0
   spider = Spider.new
-  spider.spide_problem "33B"
+  spider.login
 end

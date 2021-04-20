@@ -12,22 +12,24 @@ export class MySubmissionsComponent implements OnInit {
 
 	submissions$: Observable<any>;
 	receiver: Subscription;
-	pendings: Array<any>;
+	judgings: Array<any>;
 
 	constructor(private problemService: ProblemService) { }
 
 	ngOnInit(): void {
 		this.submissions$ = this.problemService.getMySubmissions();
-		this.pendings = [];
+		this.judgings = [];
 		//only receive.
 		this.receiver = this.problemService.setMySubmissions()
 			.pipe(filter(x => x != null))
 			.subscribe(message => {
 				if (message.action === 'add') {
-					this.pendings.push(message.data);
-					console.log(this.pendings);
+					this.judgings.push(message.data);
+					console.log(this.judgings);
 				} else if (message.action == 'update'){
-			}
+					console.log("FUCK");
+					console.log(this.judgings.filter(x => x.id === message.data));
+				}
 		});
 
 	}

@@ -77,7 +77,7 @@ class VproblemsController < ApplicationController
   def submit
     source = @problem.source
     vid = @problem.vid
-    code = params[:code]
+    code = params[:code].dump
     language = params[:language]
     contest_id = params[:contest_id]
     user_id = params[:user_id]
@@ -89,10 +89,14 @@ class VproblemsController < ApplicationController
       user_name: user_name,
       result: "judging"
     )
+
     message = { :action => 'add', :data => submission_record }
-    puts "dsere", get_stream
     ActionCable.server.broadcast get_stream, message 
-    render json: submission_record
+
+    result = @spider.submit(vid, language, code)
+    submission_record.update(result: result)
+    message = { :action => 'update', :data => submission_record.id }
+    ActionCable.server.broadcast get_stream, message 
   end
   
   # GET /vproblems/respide/1

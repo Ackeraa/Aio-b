@@ -26,4 +26,7 @@ export class DescriptionComponent implements OnInit {
 		this.problemService.reSpideProblem()
 		    .subscribe(problem => this.problem = problem);
 	}
+
+	ngOnDestroy(): void {
+	}
 }
