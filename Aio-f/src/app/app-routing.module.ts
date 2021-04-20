@@ -27,7 +27,7 @@ const routes: Routes = [
 		loadChildren: () => import('./contests/contests.module').then(m => m.ContestsModule)
 	},
 	{
-		path: 'contest', 
+		path: 'contest/:id', 
 		data: { preload: true },
 		loadChildren: () => import('./contest/contest.module').then(m => m.ContestModule)
 	},

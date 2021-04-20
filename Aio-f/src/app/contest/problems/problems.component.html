@@ -49,30 +49,60 @@
 </div>
 <br/> <br/>
 
-<div class="row">
-	<div class="col-md-3">
-		<span class="form-label"><h5>Source </h5></span>
-		<select class="custom-select">
-			<option selected>C</option>
-			<option value="1">C++</option>
-			<option value="2">Python</option>
-			<option value="3">Java</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<span class="form-label"><h5>Problem Number </h5></span>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="col-md-3">
-		<span class="form-label"><h5>Problem Name </h5></span>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="col-md-2">
-		<span class="form-label"><h5>Display ID </h5></span>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="col-md-2">
-		<span class="form-label"><h5>&nbsp; </h5></span>
-		<button class="btn btn-outline-primary col-md-12">Add</button>
+<div class="card shadow-sm">
+	<div class="card-body">
+			<div class="row">
+				<select #source class="custom-select col-2 offset-md-3">
+					<option *ngFor="let source of sources let i = index" (value)="i">
+						{{source}}
+					</option>
+				</select>
+				&nbsp;
+				<input #query type="text" class="form-control col-4" placeholder="Search Problems">
+				<button type="button" class="btn btn-primary" (click)="reSpideProblems()">
+					Update
+				</button>
+			</div>
+		<br/>
+		<div *ngIf="loading" class="row">
+			Loading...
+		</div>
+		<table *ngIf="!loading" class="table table-hover">
+			<thead>
+				<tr class="row">
+					<th class="col">
+						#
+					</th>
+					<th class="col">
+						NAME
+					</th>
+					<th class="col">
+						PASS RATE
+					</th>
+					<th class="col">
+						DIFFICULTY
+					</th>
+					<th class="col">
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let problem of problems" class="row">
+					<td class="col" (click)="getProblem(problem.source, problem.id)">
+						{{problem.vid}}
+					</td>
+					<td class="col">{{problem.name}}</td>
+					<td class="col">1/100</td>
+					<td class="col">Hard</td>
+					<td class="col">
+						<button type="button" class="btn btn-primary"
+								(click)="addProblem(problem.id)">
+							Add
+						</button>
+					</td>
+				</tr>
+			</tbody>
+
+		</table>
 	</div>
 </div>
