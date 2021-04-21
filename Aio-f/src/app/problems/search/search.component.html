@@ -1,0 +1,12 @@
+<div class="row">
+	<select #source class="custom-select col-2 offset-md-3">
+		<option *ngFor="let source of sources let i = index" (value)="i">
+			{{source}}
+		</option>
+	</select>
+	&nbsp;
+	<input #query type="text" class="form-control col-4" placeholder="Search Problems">
+	<button type="button" class="btn btn-primary" (click)="reSpideProblems()">
+		Update
+	</button>
+</div>

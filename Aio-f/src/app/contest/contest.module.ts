@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
 import { ContestRoutingModule } from './contest-routing.module';
+import { ProblemsModule } from '../problems/problems.module';
 import {
 	MySubmissionsComponent,
 	ProblemsComponent, 
@@ -18,19 +18,15 @@ import {
 		SubmitComponent,
 		MySubmissionsComponent,
 		SubmissionsComponent,
-		RanksComponent,
+		RanksComponent
 	],
 	imports: [
 		CommonModule,
 		RouterModule,
-		ContestRoutingModule
+		ContestRoutingModule,
+		ProblemsModule 
 	],
 	exports: [
-		ProblemsComponent,
-		SubmitComponent,
-		MySubmissionsComponent,
-		SubmissionsComponent,
-		RanksComponent
 	]
 })
 export class ContestModule { }

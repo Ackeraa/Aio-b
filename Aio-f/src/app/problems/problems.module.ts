@@ -10,7 +10,8 @@ import {
 	CreateComponent,
 	BetaComponent,
 	UploadComponent,
-	CollectionComponent
+	SearchComponent,
+	CollectionComponent,
 } from '.';
 
 @NgModule({
@@ -18,7 +19,9 @@ import {
 		CreateComponent,
 		BetaComponent,
 		UploadComponent,
-		CollectionComponent
+		SearchComponent,
+		CollectionComponent,
+		SearchComponent
 	],
 	imports: [
 		CommonModule,
@@ -29,10 +32,7 @@ import {
 		ProblemsRoutingModule
 	],
 	exports: [
-		CreateComponent,
-		BetaComponent,
-		UploadComponent,
-		CollectionComponent
+		SearchComponent
 	],
 })
 export class ProblemsModule { }

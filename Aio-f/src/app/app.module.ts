@@ -45,7 +45,6 @@ import { ActionCableService } from 'angular2-actioncable';
 		NgbModule,
     ],
     declarations: [
-
         AppComponent,
         HomeComponent,
         LoginComponent,
