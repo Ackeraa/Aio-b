@@ -4,7 +4,7 @@
 		Language:
 	</label>
 	<select class="custom-select col-2" (change)="selectLanguage($event.target.value)">
-		<option *ngFor="let language of languages" [value]="language.id">
+		<option *ngFor="let language of languages let i=index" [value]="i">
 			{{language.name}}
 		</option>
 	</select>
@@ -38,7 +38,6 @@
 	</div>
 </div>
 <br/>
-<button type="button" (click)="submit()" routerLink="../my-submissions"
-		class="btn btn-success col-sm-2 offset-sm-5">
+<button type="button" (click)="submit()" class="btn btn-success col-sm-2 offset-sm-5">
 	Submit
 </button>

@@ -1,11 +1,15 @@
 class SubmissionRecordsController < ApplicationController
   before_action :set_submission_record, only: [:show, :update, :destroy]
 
+  def initialize
+    puts "--------------------------------"
+    puts "init"
+  end
   # GET /submission_records
   def index
-    @submission_records = SubmissionRecord.where(search_params)
-                                          .where.not(result: 'judging')
 
+    @submission_records = SubmissionRecord.where(search_params)
+                                          #.where.not(result: 'judging')
     render json: @submission_records
   end
 

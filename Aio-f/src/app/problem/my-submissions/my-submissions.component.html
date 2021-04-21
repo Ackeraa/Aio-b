@@ -30,17 +30,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let judging of judgings" class="row">
-					<td class="col"><a href="#">{{judging.id}}</a></td>
-					<td class="col">{{judging.created_at}}</td>
-					<td class="col">{{judging.user_id}}</td>
-					<td class="col">{{judging.problem_id}}</td>
-					<td class="col">C++</td>
-					<td class="col">{{judging.result}}</td>
-					<td class="col">15ms</td>
-					<td class="col"> </td>
-				</tr>
-				<tr *ngFor="let submission of (submissions$ | async)" class="row">
+				<tr *ngFor="let submission of submissions" class="row">
 					<td class="col"><a href="#">{{submission.id}}</a></td>
 					<td class="col">{{submission.created_at}}</td>
 					<td class="col">{{submission.user_id}}</td>

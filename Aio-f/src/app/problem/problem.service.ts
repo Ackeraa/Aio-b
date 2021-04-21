@@ -45,7 +45,7 @@ export class ProblemService implements OnInit {
 				   .pipe(map(res => res.json()));
 	}
 
-	submitProblem(language: any, code: string): void {
+	submitProblem(language: any, code: string): Observable<any> {
 		let id, source;
 		this.problem$
 		    .subscribe(problem => {
@@ -75,7 +75,7 @@ export class ProblemService implements OnInit {
 			user_id: user_id,
 			user_name: user_name
 		};
-		this.tokenService.post(url, body)
+		return this.tokenService.post(url, body)
 		    .pipe(map(res => res.json()));
 	}
 
@@ -96,7 +96,6 @@ export class ProblemService implements OnInit {
 							   .cable(url)
 							   .channel(channel, params)
 							   .received()
-
 				})
 			);
 	}

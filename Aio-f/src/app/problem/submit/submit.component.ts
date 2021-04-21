@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProblemService } from '../problem.service';
 
 @Component({
@@ -17,7 +18,9 @@ export class SubmitComponent implements OnInit {
 	themes: Array<string>;
 	problem: any;
 
-	constructor(private problemService: ProblemService) {
+	constructor(private router: Router,
+				private route: ActivatedRoute,
+				private problemService: ProblemService) {
 	}
 
 	ngOnInit(): void {
@@ -53,12 +56,14 @@ export class SubmitComponent implements OnInit {
 			this.has_code = false;
 		} else {
 			this.has_code = true;
-			this.problemService.submitProblem(this.language, this.code);
+			this.problemService.submitProblem(this.language, this.code)
+				.subscribe(() => 
+					this.router.navigate(['../my-submissions'], { relativeTo: this.route })
+				);
 		}
 	}
 	selectLanguage(id: any): void {
-		console.log(id);
-		this.language = id;
+		this.language = this.languages[id].id;
 		this.options.mode = this.modes[id];
 	}
 

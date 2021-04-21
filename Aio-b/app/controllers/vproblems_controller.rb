@@ -90,13 +90,18 @@ class VproblemsController < ApplicationController
       result: "judging"
     )
 
-    message = { :action => 'add', :data => submission_record }
-    ActionCable.server.broadcast get_stream, message 
+    ActionCable.server.broadcast user_submission_stream, submission_record
+    ActionCable.server.broadcast problem_submission_stream, submission_record
+    ActionCable.server.broadcast submission_stream, submission_record
 
-    result = @spider.submit(vid, language, code)
-    submission_record.update(result: result)
-    message = { :action => 'update', :data => submission_record.id }
-    ActionCable.server.broadcast get_stream, message 
+    Thread.new do
+      result = @spider.submit(vid, language, code)
+      submission_record.update(result: result)
+      ActionCable.server.broadcast user_submission_stream, submission_record
+      ActionCable.server.broadcast problem_submission_stream, submission_record
+      ActionCable.server.broadcast submission_stream, submission_record
+    end
+    render json: submission_record
   end
   
   # GET /vproblems/respide/1
@@ -131,6 +136,18 @@ class VproblemsController < ApplicationController
 
     def get_stream
       "submission_#{params[:user_id] || 0}_#{params[:id] || 0}"
+    end
+
+    def user_submission_stream
+      "submission_#{params[:user_id]}_#{params[:id]}"
+    end
+
+    def problem_submission_stream
+      "submission_0_#{params[:id]}"
+    end
+
+    def submission_stream
+      "submission_0_0"
     end
 
     # Only allow a trusted parameter "white list" through.

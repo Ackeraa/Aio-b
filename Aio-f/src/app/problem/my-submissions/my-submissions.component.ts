@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { filter, distinct } from 'rxjs/operators'; 
+import { map, filter } from 'rxjs/operators'; 
 import { ProblemService } from '../problem.service';
 
 @Component({
@@ -10,29 +10,32 @@ import { ProblemService } from '../problem.service';
 })
 export class MySubmissionsComponent implements OnInit {
 
-	submissions$: Observable<any>;
 	receiver: Subscription;
-	judgings: Array<any>;
+	submissions: Array<any>;
 
-	constructor(private problemService: ProblemService) { }
+	constructor(private problemService: ProblemService) {
+	}
 
 	ngOnInit(): void {
-		this.submissions$ = this.problemService.getMySubmissions();
-		this.judgings = [];
+		this.problemService.getMySubmissions()
+			.pipe(filter(x => x != null))
+			.subscribe(submissions => {
+				this.submissions = submissions;
+			});
+
 		//only receive.
 		this.receiver = this.problemService.setMySubmissions()
 			.pipe(filter(x => x != null))
-			.subscribe(message => {
-				if (message.action === 'add') {
-					this.judgings.push(message.data);
-					console.log(this.judgings);
-				} else if (message.action == 'update'){
-					console.log("FUCK");
-					console.log(this.judgings.filter(x => x.id === message.data));
+			.subscribe(submission => {
+				let i = this.submissions.findIndex(x => x.id === submission.id);
+				if (i == -1) {
+					this.submissions.push(submission);
+				} else {
+					this.submissions[i] = submission;
 				}
-		});
-
+			});
 	}
+
 	ngOnDestroy(): void {
 		this.receiver.unsubscribe();
 	}
