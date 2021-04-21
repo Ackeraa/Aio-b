@@ -52,7 +52,7 @@
 <div class="card shadow-sm">
 	<div class="card-body">
 		<app-problems-search
-			(problemsEvent)="setProblems($event)" 
+			(problemsEvent)="setAllProblems($event)" 
 			(loadingEvent)="setLoading($event)" >
 		</app-problems-search>
 		<br/>
@@ -79,8 +79,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of problems" class="row">
-					<td class="col" (click)="getProblem(problem.source, problem.id)">
+				<tr *ngFor="let problem of allProblems" class="row">
+					<td class="col" (click)="viewProblem(problem.source, problem.id)">
 						{{problem.vid}}
 					</td>
 					<td class="col">{{problem.name}}</td>

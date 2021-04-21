@@ -28,7 +28,7 @@ export class CollectionComponent implements OnInit {
 		this.loading = loading;
 	}
 
-	getProblem(source: string, id: string): void {
+	viewProblem(source: string, id: string): void {
 		let url: string;
 		if (source == "aio") {
 			url = "/problem/l/" + id;

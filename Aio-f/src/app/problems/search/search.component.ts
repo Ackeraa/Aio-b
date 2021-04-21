@@ -73,6 +73,7 @@ export class SearchComponent implements OnInit {
 			}
 		);
 	}
+
 	reSpideProblems(): void {
 		this.query.nativeElement.value = "";
 		this.searchService.reSpideProblems(this.source.nativeElement.value.toLowerCase)

@@ -46,40 +46,33 @@ export class ProblemService implements OnInit {
 	}
 
 	submitProblem(language: any, code: string): Observable<any> {
-		let id, source;
-		this.problem$
-		    .subscribe(problem => {
-				id = problem.id;
-				source = problem.source;
-			});
-
-		let user_name, user_id;
-		this.authService.signedIn$
-			.pipe(filter(x => x != null))
-			.subscribe(user => {
-				user_id = user.user_id;
-				user_name = user.user_name;
-			});
-
-		let url, body;
-		if (source == 'aio') {
-			url = 'problems/submit/' + id;
-		} else {
-			url = 'vproblems/submit/' + id;
-		} 
-
-		body = {
-			language: language,
-			code: code,
-			contest_id: 1,
-			user_id: user_id,
-			user_name: user_name
-		};
-		return this.tokenService.post(url, body)
-		    .pipe(map(res => res.json()));
+		return this.problem$
+			.pipe(
+				filter(x => x != null),
+				concatMap(() => this.authService.signedIn$
+								    .pipe(filter(x => x != null)),
+						 (x, y) => { return { problem: x, user: y } }),
+			    switchMap(x => {
+					let url, body;
+					if (x.problem.source == 'aio') {
+						url = 'problems/submit/' + x.problem.id;
+					} else {
+						url = 'vproblems/submit/' + x.problem.id;
+					} 
+					body = {
+						language: language,
+						code: code,
+						contest_id: 1,
+						user_id: x.user.user_id,
+						user_name: x.user.user_name
+					};
+					return this.tokenService.post(url, body)
+						.pipe(map(res => res.json()));
+				})
+			);
 	}
 
-	setMySubmissions() :Observable<any> {
+	getMySubmissionsChannel() :Observable<any> {
 		return this.problem$
 			.pipe(
 				filter(x => x != null),
@@ -117,7 +110,7 @@ export class ProblemService implements OnInit {
 					);
 	}
 
-	setSubmissions(): Observable<any> {
+	getSubmissionsChannel(): Observable<any> {
 		return this.problem$
 		    .pipe(
 				filter(x => x != null),

@@ -28,7 +28,7 @@
 			</thead>
 			<tbody>
 				<tr *ngFor="let problem of problems" class="row" 
-					 (click)="getProblem(problem.source, problem.id)">
+					 (click)="viewProblem(problem.source, problem.id)">
 					<td class="col">{{problem.vid}}</td>
 					<td class="col">{{problem.name}}</td>
 					<td class="col">1/100</td>

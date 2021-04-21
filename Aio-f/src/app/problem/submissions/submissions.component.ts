@@ -24,7 +24,7 @@ export class SubmissionsComponent implements OnInit {
 			});
 
 		//only receive.
-		this.receiver = this.problemService.setSubmissions()
+		this.receiver = this.problemService.getSubmissionsChannel()
 			.pipe(filter(x => x != null))
 			.subscribe(submission => {
 				let i = this.submissions.findIndex(x => x.id === submission.id);

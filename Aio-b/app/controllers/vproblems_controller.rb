@@ -29,6 +29,7 @@ class VproblemsController < ApplicationController
     if query.nil? 
       @problems = Problem.where(source: source).limit(10).order(:id).reverse_order
       if @problems.empty?
+        puts "FUCK YOU SPIDE AGAIN, BUG APPEARS"
         problems = @spider.spide_problems
         problems.each do |problem|
           Problem.create(problem)
