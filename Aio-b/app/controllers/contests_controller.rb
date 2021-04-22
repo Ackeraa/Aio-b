@@ -1,5 +1,6 @@
 class ContestsController < ApplicationController
-  before_action :set_contest, only: [:show, :update, :destroy]
+  before_action :set_contest, only: [:show, :update, :destroy,
+                                     :problems, :add_problem, :delete_problem]
 
   # GET /contests
   def index
@@ -36,6 +37,27 @@ class ContestsController < ApplicationController
   # DELETE /contests/1
   def destroy
     @contest.destroy
+  end
+
+  # GET /contests/1/problems
+  def problems
+    render json: @contest.problems
+  end
+
+  # GET /contests/1/add_problem/1
+  def add_problem
+    if not @contest.problems.exists?(params[:problem_id])
+      @contest.problems << Problem.find(params[:problem_id])
+    end
+    render json: @contest.problems
+  end
+
+  # GET /contests/1/delete_problem/1
+  def delete_problem
+    if @contest.problems.exists?(params[:problem_id])
+      @contest.problems.delete(Problem.find(params[:problem_id])) 
+    end
+    render json: @contest.problems
   end
 
   private

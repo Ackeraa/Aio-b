@@ -1,24 +1,32 @@
 Rails.application.routes.draw do
 
+  resources :contests do
+    collection do
+      get ':id/problems',                       :action => 'problems'     
+      get ':id/add_problem/:problem_id',        :action => 'add_problem'     
+      get ':id/delete_problem/:problem_id',     :action => 'delete_problem'     
+    end
+  end
+
   resources :problems do
     collection do
-      get  'search',           :action => 'search'
+      get  'search',          :action => 'search'
       post 'upload_template', :action => 'upload_template'
       post 'delete_template', :action => 'delete_template'
       post 'upload_spj',      :action => 'upload_spj'
       post 'delete_spj',      :action => 'delete_spj'
       post 'upload_data',     :action => 'upload_data'
       post 'delete_data',     :action => 'delete_data'
-      post 'submit/:id',      :action => 'submit'     
+      post ':id/submit',      :action => 'submit'     
     end
   end
 
   resources :vproblems do
     collection do
       get  'search',          :action => 'search'
-      get  'respide/:id',     :action => 'respide'
+      get  ':id/respide',     :action => 'respide'
       get  'respides',        :action => 'respides'
-      post 'submit/:id',      :action => 'submit'     
+      post ':id/submit',      :action => 'submit'     
     end
   end
 

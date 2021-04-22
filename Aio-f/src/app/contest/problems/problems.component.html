@@ -6,7 +6,7 @@
 					<th class="col-1">
 						#
 					</th>
-					<th class="col-8">
+					<th class="col">
 						NAME
 					</th>
 					<th class="col">
@@ -15,32 +15,22 @@
 					<th class="col">
 						PASS RATE
 					</th>
+					<th class="col">
+					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row">
-					<td class="col-1"><a href="#">A</a></td>
-					<td class="col-8">Test1</td>
-					<td class="col">Ac</td>
+				<tr *ngFor="let problem of problems" class="row">
+					<td class="col-1"><a href="#">{{problem.id}}</a></td>
+					<td class="col">{{problem.name}}</td>
+					<td class="col">Accept</td>
 					<td class="col">3/45</td>
-				</tr>
-				<tr class="row">
-					<td class="col-1"><a href="#">A</a></td>
-					<td class="col-8">Test1</td>
-					<td class="col">Ac</td>
-					<td class="col">3/45</td>
-				</tr>
-				<tr class="row">
-					<td class="col-1"><a href="#">A</a></td>
-					<td class="col-8">Test1</td>
-					<td class="col">Ac</td>
-					<td class="col">3/45</td>
-				</tr>
-				<tr class="row">
-					<td class="col-1"><a href="#">A</a></td>
-					<td class="col-8">Test1</td>
-					<td class="col">Ac</td>
-					<td class="col">3/45</td>
+					<td class="col">
+						<button type="button" class="btn btn-primary"
+								(click)="deleteProblem(problem.id)">
+							Delete
+						</button>
+					</td>
 				</tr>
 			</tbody>
 
@@ -88,7 +78,8 @@
 					<td class="col">Hard</td>
 					<td class="col">
 						<button type="button" class="btn btn-primary"
-								(click)="addProblem(problem.id)">
+								(click)="addProblem(problem.id)"
+							    [disabled]="isAdded(problem.id)">
 							Add
 						</button>
 					</td>

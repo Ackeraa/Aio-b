@@ -13,13 +13,15 @@ export class ProblemsComponent implements OnInit {
 
 	loading: boolean;
 	allProblems: any;
-	problems: any;
+	problems: Array<any>;
 
 	constructor(private router: Router,
 			    private contestService: ContestService) {
 	}
 
 	ngOnInit(): void {
+		this.contestService.problems$
+			.subscribe(problems => this.problems = problems);
 	}
 
 	setAllProblems(problems: any): void {
@@ -40,17 +42,16 @@ export class ProblemsComponent implements OnInit {
 		this.router.navigate([url]);
 	}
 
-	getProblems(id: string) {
-
-
+	isAdded(id: string): boolean {
+		return this.problems.filter(x => x.id === id).length > 0;
 	}
 
-	addProblem(id: string) {
-		console.log(id);
+	addProblem(id: string): void {
+		this.contestService.addProblem(id);
 	}
 
-	deleteContestProblem(id: string) {
-		
+	deleteProblem(id: string): void {
+		this.contestService.deleteProblem(id);
 	}
 
 }

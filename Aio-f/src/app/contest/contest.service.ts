@@ -23,7 +23,25 @@ export class ContestService implements OnInit {
 
 	getProblems(id: string): void {
 		this.id = id;
-		let url = '/contests/' + id;
+		let url = 'contests/' + id + '/problems';
+		this.tokenService.get(url)
+		    .pipe(map(res => res.json()))
+			.subscribe(problems => {
+				this.problems$.next(problems);
+			});
+	}
+
+	addProblem(problem_id: string): void {
+		let url = 'contests/' + this.id + '/add_problem/' + problem_id;
+		this.tokenService.get(url)
+		    .pipe(map(res => res.json()))
+			.subscribe(problems => {
+				this.problems$.next(problems);
+			});
+	}
+
+	deleteProblem(problem_id: string): void {
+		let url = 'contests/' + this.id + '/delete_problem/' + problem_id;
 		this.tokenService.get(url)
 		    .pipe(map(res => res.json()))
 			.subscribe(problems => {

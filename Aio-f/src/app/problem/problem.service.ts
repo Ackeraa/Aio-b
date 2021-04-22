@@ -40,7 +40,7 @@ export class ProblemService implements OnInit {
 		    .subscribe( problem => {
 				id = problem.id;
 			});
-		let url = 'vproblems/respide/' + id;
+		let url = 'vproblems/' + id + '/respide';
 		return this.tokenService.get(url)
 				   .pipe(map(res => res.json()));
 	}
@@ -52,9 +52,9 @@ export class ProblemService implements OnInit {
 			    switchMap(([problem, user]) => {
 					let url, body;
 					if (problem.source == 'aio') {
-						url = 'problems/submit/' + problem.id;
+						url = 'problems/' + problem.id + '/submit';
 					} else {
-						url = 'vproblems/submit/' + problem.id;
+						url = 'vproblems/' + problem.id + '/submit';
 					} 
 					body = {
 						language: language,
