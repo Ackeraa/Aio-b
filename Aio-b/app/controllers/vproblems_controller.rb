@@ -80,7 +80,7 @@ class VproblemsController < ApplicationController
     vid = @problem.vid
     code = params[:code].dump
     language = params[:language]
-    contest_id = params[:contest_id]
+    contest_id = params[:contest_id] || 0
     user_id = params[:user_id]
     user_name = params[:user_name]
     submission_record = SubmissionRecord.create(
@@ -91,16 +91,18 @@ class VproblemsController < ApplicationController
       result: "judging"
     )
 
-    ActionCable.server.broadcast user_submission_stream, submission_record
-    ActionCable.server.broadcast problem_submission_stream, submission_record
-    ActionCable.server.broadcast submission_stream, submission_record
+    ActionCable.server.broadcast cpu_submission_stream, submission_record
+    ActionCable.server.broadcast cp_submission_stream, submission_record
+    ActionCable.server.broadcast cu_submission_stream, submission_record
+    ActionCable.server.broadcast c_submission_stream, submission_record
 
     Thread.new do
       result = @spider.submit(vid, language, code)
       submission_record.update(result: result)
-      ActionCable.server.broadcast user_submission_stream, submission_record
-      ActionCable.server.broadcast problem_submission_stream, submission_record
-      ActionCable.server.broadcast submission_stream, submission_record
+      ActionCable.server.broadcast cpu_submission_stream, submission_record
+      ActionCable.server.broadcast cp_submission_stream, submission_record
+      ActionCable.server.broadcast cu_submission_stream, submission_record
+      ActionCable.server.broadcast c_submission_stream, submission_record
     end
     render json: submission_record
   end
@@ -135,20 +137,21 @@ class VproblemsController < ApplicationController
       @problem = Problem.find(params[:id])
     end
 
-    def get_stream
-      "submission_#{params[:user_id] || 0}_#{params[:id] || 0}"
+    # contest_problem_user
+    def cpu_submission_stream
+      "submission_#{params[:contest_id] || 0}_#{params[:id]}_#{params[:user_id]}"
     end
 
-    def user_submission_stream
-      "submission_#{params[:user_id]}_#{params[:id]}"
+    def cp_submission_stream
+      "submission_#{params[:contest_id] || 0}_#{params[:id]}_0}"
     end
 
-    def problem_submission_stream
-      "submission_0_#{params[:id]}"
+    def cu_submission_stream
+      "submission_0_#{params[:contest_id] || 0}_#{params[:user_id]}"
     end
 
-    def submission_stream
-      "submission_0_0"
+    def c_submission_stream
+      "submission_#{params[:contest_id] || 0}_0_0"
     end
 
     # Only allow a trusted parameter "white list" through.

@@ -2,8 +2,6 @@ class SubmissionRecordsController < ApplicationController
   before_action :set_submission_record, only: [:show, :update, :destroy]
 
   def initialize
-    puts "--------------------------------"
-    puts "init"
   end
   # GET /submission_records
   def index

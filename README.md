@@ -868,8 +868,8 @@ end
 |   Attribute   |  Type   | Description |
 | :-----------: | :-----: | :---------: |
 |      id       | integer | primary key |
-|  problem_id   | integer | foreign key |
 |  contest_id   | integer | foreign key |
+|  problem_id   | integer | foreign key |
 |    user_id    | integer | foreign key |
 |    result     | string  |             |
 |     code      |  text   |             |

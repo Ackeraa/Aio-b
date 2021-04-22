@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Subject, BehaviorSubject, Observable, AsyncSubject } from 'rxjs';
-import { map, filter, concatMap, mergeMap, switchMap } from 'rxjs/operators'; 
+import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { map, filter, switchMap } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
 import { AuthService } from '../_services';
@@ -10,7 +10,7 @@ import { AuthService } from '../_services';
 })
 export class ContestService implements OnInit {
 
-	problem$: BehaviorSubject<any> = new BehaviorSubject(null);
+	id: string;
 	problems$: BehaviorSubject<any> = new BehaviorSubject(null);
 
 	constructor(private authService: AuthService,
@@ -22,6 +22,7 @@ export class ContestService implements OnInit {
 	}
 
 	getProblems(id: string): void {
+		this.id = id;
 		let url = '/contests/' + id;
 		this.tokenService.get(url)
 		    .pipe(map(res => res.json()))
@@ -30,26 +31,23 @@ export class ContestService implements OnInit {
 			});
 	}
 
-	submitProblem(id: string, language: any, code: string): Observable<any> {
-		return this.problem$
+	submitProblem(problem: any, language: any, code: string): Observable<any> {
+		return combineLatest(this.problems$, this.authService.signedIn$)
 			.pipe(
-				filter(x => x != null),
-				concatMap(() => this.authService.signedIn$
-								    .pipe(filter(x => x != null)),
-						 (x, y) => { return { problem: x, user: y } }),
-			    switchMap(x => {
+				filter(([x, y]) => x != null && y != null),
+			    switchMap(([x, user]) => {
 					let url, body;
-					if (x.problem.source == 'aio') {
-						url = 'problems/submit/' + x.problem.id;
+					if (problem.source == 'aio') {
+						url = 'problems/submit/' + problem.id;
 					} else {
-						url = 'vproblems/submit/' + x.problem.id;
+						url = 'vproblems/submit/' + problem.id;
 					} 
 					body = {
 						language: language,
 						code: code,
-						contest_id: 1,
-						user_id: x.user.user_id,
-						user_name: x.user.user_name
+						contest_id: this.id,
+						user_id: user.user_id,
+						user_name: user.user_name
 					};
 					return this.tokenService.post(url, body)
 						.pipe(map(res => res.json()));
@@ -58,68 +56,73 @@ export class ContestService implements OnInit {
 	}
 
 	getMySubmissionsChannel() :Observable<any> {
-		return this.problem$
+		return combineLatest(this.problems$, this.authService.signedIn$)
 			.pipe(
-				filter(x => x != null),
-				concatMap(() => this.authService.signedIn$
-								    .pipe(filter(x => x != null)),
-						 (x, y) => { return { problem: x, user: y } }),
-			    switchMap(x => {
+				filter(([x, y]) => x != null && y != null),
+			    switchMap(([x, user]) => {
 					let url = 'ws://127.0.0.1:3000/cable';
 					let channel = 'SubmissionRecordsChannel';
-					let params = { user_id: x.user.user_id,
-								   problem_id: x.problem.id };
-
+					let params = {
+						contest_id: this.id,
+						user_id: user.user_id
+					};
 					return this.cableService
-							   .cable(url)
-							   .channel(channel, params)
-							   .received()
+					   .cable(url)
+					   .channel(channel, params)
+					   .received()
 				})
 			);
 	}
 
 	getMySubmissions() :Observable<any> {
-		return this.problem$
-				   .pipe(
-					   filter(x => x != null),
-					   concatMap(() => this.authService.signedIn$
-										   .pipe(filter(x => x != null)),
-								 (x, y) => { return { problem: x, user: y } } ),
-					   switchMap(x => {
-						   let url = 'submission_records';
-						   let params = { search: { user_name: x.user.user_name,
-												    problem_id: x.problem.id } };
-						   return this.tokenService.get(url, params)
-									  .pipe(map(res => res.json()))	
-						})
-					);
+		return combineLatest(this.problems$, this.authService.signedIn$)
+			.pipe(
+				filter(([x, y]) => x != null && y != null),
+				switchMap(([x, user]) => {
+					let url = 'submission_records';
+					let params = {
+						search: {
+							contest_id: this.id,
+							user_name: user.user_name
+						}
+					};
+					return this.tokenService.get(url, params)
+					   .pipe(map(res => res.json()))	
+					})
+			);
 	}
 
 	getSubmissionsChannel(): Observable<any> {
-		return this.problem$
+		return this.problems$
 		    .pipe(
 				filter(x => x != null),
-				switchMap(problem => {
+				switchMap(() => {
 					let url = 'ws://127.0.0.1:3000/cable';
 					let channel = 'SubmissionRecordsChannel';
-					let params = { problem_id: problem.id };
+					let params = {
+						contest_id: this.id
+					};
 					return this.cableService
-							   .cable(url)
-							   .channel(channel, params)
-							   .received()
+					   .cable(url)
+					   .channel(channel, params)
+					   .received()
 					})
 			);
 	}
 
 	getSubmissions() :Observable<any> {
-		return this.problem$
+		return this.problems$
 		    .pipe(
 				filter(x => x != null),
-				switchMap(problem => {
+				switchMap(() => {
 					let url = 'submission_records';
-					let params = { search: { problem_id: problem.id } };
+					let params = {
+						search: {
+							contest_id: this.id
+						}
+					};
 					return this.tokenService.get(url, params)
-							   .pipe(map(res => res.json()));
+					   .pipe(map(res => res.json()));
 					})
 			);
 	}
