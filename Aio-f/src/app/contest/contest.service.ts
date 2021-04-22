@@ -49,16 +49,16 @@ export class ContestService implements OnInit {
 			});
 	}
 
-	submitProblem(problem: any, language: any, code: string): Observable<any> {
+	submitProblem(index: number, language: any, code: string): Observable<any> {
 		return combineLatest(this.problems$, this.authService.signedIn$)
 			.pipe(
 				filter(([x, y]) => x != null && y != null),
-			    switchMap(([x, user]) => {
+			    switchMap(([problems, user]) => {
 					let url, body;
-					if (problem.source == 'aio') {
-						url = 'problems/submit/' + problem.id;
+					if (problems[index].source == 'aio') {
+						url = 'problems/' + problems[index].id + '/submit';
 					} else {
-						url = 'vproblems/submit/' + problem.id;
+						url = 'vproblems/' + problems[index].id + '/submit';
 					} 
 					body = {
 						language: language,

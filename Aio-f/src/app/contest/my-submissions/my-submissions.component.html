@@ -4,55 +4,42 @@
 			<thead>
 				<tr class="row">
 					<th class="col">
-						RANK
-					</th>
-					<th class="col-3">
-						TEAM
+						ID
 					</th>
 					<th class="col">
-						SCORE
+						WHEN
 					</th>
 					<th class="col">
-						A
+						WHO
 					</th>
 					<th class="col">
-						B
+						PROBLEM
 					</th>
 					<th class="col">
-						C
+						LANG
 					</th>
 					<th class="col">
-						D
+						STATUS
+					</th>
+					<th class="col">
+						TIME
+					</th>
+					<th class="col">
+						MEMORY
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row">
-					<td class="col"><a href="#">1</a></td>
-					<td class="col-3">User1</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-				</tr>
-				<tr class="row">
-					<td class="col"><a href="#">1</a></td>
-					<td class="col-3">User1</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-				</tr>
-				<tr class="row">
-					<td class="col"><a href="#">1</a></td>
-					<td class="col-3">User1</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
+				<tr *ngFor="let submission of submissions" class="row">
+					<td class="col"><a href="#">{{submission.id}}</a></td>
+					<td class="col">{{submission.created_at}}</td>
+					<td class="col">{{submission.user_id}}</td>
+					<td class="col">{{submission.problem_id}}</td>
+					<td class="col">C++</td>
+					<td class="col">{{submission.result}}</td>
+					<td class="col">15ms</td>
+					<td class="col">
+					</td>
 				</tr>
 			</tbody>
 

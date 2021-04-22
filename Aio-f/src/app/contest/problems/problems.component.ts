@@ -20,6 +20,7 @@ export class ProblemsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.problems = [];
 		this.contestService.problems$
 			.subscribe(problems => this.problems = problems);
 	}

@@ -1,28 +1,55 @@
+<br/>
 <div class="row">
-	<label for="problem" class="col-2">Problem: </label>
-	<select class="custom-select col-2" id="problem">
-		<option selected>A</option>
-		<option value="1">B</option>
-		<option value="2">C</option>
-		<option value="3">D</option>
+	<label class="col-1 col-form-label">
+		Problem:
+	</label>
+	<select class="custom-select col-4" (change)="selectProblem($event.target.value)">
+		<option *ngFor="let problem of problems let i=index" [value]="i">
+			{{problem.name}}
+		</option>
 	</select>
 </div>
 <br/>
 <div class="row">
-	<label for="language" class="col-2">Language: </label>
-	<select class="custom-select col-2" id="language">
-		<option selected>C</option>
-		<option value="1">C++</option>
-		<option value="2">Python</option>
-		<option value="3">Java</option>
+	<label class="col-1 col-form-label">
+		Language:
+	</label>
+	<select class="custom-select col-4" (change)="selectLanguage($event.target.value)">
+		<option *ngFor="let language of languages let i=index" [value]="i">
+			{{language.name}}
+		</option>
 	</select>
 </div>
 <br/>
-<form>
-	<div class="row">
-		<label for="code" class="col-2">Submit Solution:</label>
-		<textarea class="form-control col-7" id="code" rows="18"></textarea>
+<div class="container row">
+	<button type="button" class="btn btn-light col-1" (click)="clearCode()">Clear</button>
+	&nbsp; 
+	<input type="file" id="loadcode" (change)="loadCode($event.target.files[0])" style="display: none;"/>
+	<button type="button" class="btn btn-light col-1"
+			onclick="document.getElementById('loadcode').click();">
+		Upload
+	</button>
+	<label class="col-1 offset-md-6 col-form-label">
+		Theme:
+	</label>
+	<select class="custom-select col-2" (change)="selectTheme($event.target.value)">
+		<option *ngFor="let theme of themes let i = index" [value]="i">
+			{{theme}}
+		</option>
+	</select>
+</div>
+<br/>
+<div class="row">
+	<div class="col-12">
+		<ngx-codemirror [(ngModel)]="code" [options]="options">
+		</ngx-codemirror>
 	</div>
-	<br/>
-	<button type="button" class="btn btn-success col-sm-1 offset-sm-5">Submit</button>
-</form>
+
+	<div *ngIf="!has_code" class="alert alert-danger" role="alert">
+		Please put your source code.
+	</div>
+</div>
+<br/>
+<button type="button" (click)="submit()" class="btn btn-success col-sm-2 offset-sm-5">
+	Submit
+</button>

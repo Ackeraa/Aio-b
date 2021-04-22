@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
+import { MarkdownModule } from 'ngx-markdown';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ContestRoutingModule } from './contest-routing.module';
 import { ProblemsModule } from '../problems/problems.module';
 import {
@@ -23,6 +26,8 @@ import {
 	imports: [
 		CommonModule,
 		RouterModule,
+		FormsModule,
+		CodemirrorModule,
 		ContestRoutingModule,
 		ProblemsModule 
 	],

@@ -32,12 +32,6 @@ import {
 		MarkdownModule.forChild(),
 	],
 	exports: [
-		DescriptionComponent,
-		DiscussionComponent,
-		MySubmissionsComponent,
-		SolutionsComponent,
-		SubmissionsComponent,
-		SubmitComponent
 	]
 })
 export class ProblemModule { }
