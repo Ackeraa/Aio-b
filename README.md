@@ -828,6 +828,16 @@ end
 |    created_at     |  date   |             |
 |    updated_at     |  date   |             |
 
+#### languages
+
+|     Attribute     |  Type   | Description |
+| :---------------: | :-----: | :---------: |
+|        id         | integer | primary key |
+|      source       | string  |             |
+| allowed_languages |  jsonb  |             |
+|    created_at     |  date   |             |
+|    updated_at     |  date   |             |
+
 #### comments
 
 |   Attribute    |  Type   | Description |

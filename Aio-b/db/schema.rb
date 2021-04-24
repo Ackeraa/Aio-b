@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_19_131322) do
+ActiveRecord::Schema.define(version: 2021_04_23_082600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,13 @@ ActiveRecord::Schema.define(version: 2021_04_19_131322) do
     t.string "picture"
   end
 
+  create_table "languages", force: :cascade do |t|
+    t.string "source"
+    t.jsonb "allowled_languages"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "oi_contest_ranks", force: :cascade do |t|
     t.integer "submissions"
     t.integer "accepts"
@@ -239,7 +246,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_131322) do
     t.text "code"
     t.integer "memory_usage"
     t.integer "time_usage"
-    t.integer "solution_size"
+    t.integer "code_size"
     t.date "submit_time"
     t.bigint "problem_id", null: false
     t.datetime "created_at", precision: 6, null: false

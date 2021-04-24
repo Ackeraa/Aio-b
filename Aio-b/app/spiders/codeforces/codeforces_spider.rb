@@ -27,8 +27,11 @@ class Spider
     origin_problems.slice!(n..) if not n.nil?
     problems = []
     origin_problems.reverse_each do |problem| 
-      problems << { :vid => problem[:contestId].to_s + problem[:index],
-                    :name => problem[:name], :source => "codeforces" }
+      problems << {
+        :vid => problem[:contestId].to_s + problem[:index],
+        :name => problem[:name],
+        :source => "codeforces"
+      }
     end
     problems
   end
@@ -90,7 +93,7 @@ class Spider
   end
 
   def submit(problem_id, language, code)
-    login
+    self.login
     @last_id, b, c, d, e = self.get_status 
     page = @agent.get("http://codeforces.com/problemset/submit")
     form = page.form(:class => 'submit-form')
