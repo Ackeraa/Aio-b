@@ -67,9 +67,12 @@ class Spider
     i = 4
     samples = []
     begin
-      sample_input = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i}]/section").children[2]
-      sample_output = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i + 1}]/section").children[2]
-      sample_hint = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i + 1}]/section").children[3..]
+      sample_input = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i}]/section")
+        .children[2]
+      sample_output = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i + 1}]/section")
+        .children[2]
+      sample_hint = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i + 1}]/section")
+        .children[3..]
       samples << {
         sample_input: sample_input,
         sample_output: sample_output,
@@ -99,31 +102,22 @@ class Spider
       spider = AtcoderDispatcher.instance.distribute(:user, user)
     end
 
-    print 'distribute spider: ', spider_id
-    puts ''
-
-    page = spider.get("https://atcoder.jp/contests/#{problem_id.split('_').first}/tasks/#{problem_id}")
-    form = page.form(class: 'form-horizontal form-code-submit')
-    # Not login.
-    if form.nil?
-      login(user, spider)
+    tries = 0
+    begin
       page = spider.get("https://atcoder.jp/contests/#{problem_id.split('_').first}/tasks/#{problem_id}")
       form = page.form(class: 'form-horizontal form-code-submit')
-    end
-
-    print "Before submit, now the url is: ", page.uri.to_s, "\n"
-    form.field_with(name: 'data.LanguageId').value = language
-    form.sourceCode = code
-
-    print "Before submit, now the code is: ", form.sourceCode, "\n"
-    begin
+      raise RuntimeError, "Not Login" unless form
+      form.field_with(name: 'data.LanguageId').value = language
+      form.sourceCode = code
       page = spider.submit(form)
-      print "Submited, now the url is: ", page.uri.to_s, "\n"
-      if page.uri.to_s[-2..] != "me"
-        puts "Spider #{spider_id} submit failed"
-        sleep 0.5
-      end
-    end until page.uri.to_s[-2..] == 'me' 
+      raise RuntimeError, "Redirected" if page.uri.to_s[-2..] != "me"
+    rescue RuntimeError => e
+      puts e
+      tries += 1
+      e.to_s == "Not Login"? login(user, spider) : sleep(2)
+      return { result: "Submit Failed" if tries == TRYS }
+      retry
+    end
 
     i = 1
     url = page.uri.to_s
@@ -141,9 +135,7 @@ class Spider
     # Recycle system account after got the submit time.
     if is_system
       AtcoderDispatcher.instance.recycle(:system, spider_id, problem_id)
-      print 'recycled spider: ', spider_id, "\n"
     end
-    puts "Getting Reuslt....."
     get_result(user[:username], problem_id, submit_time)
   end
 
@@ -163,7 +155,9 @@ class Spider
       _, spider = AtcoderDispatcher.instance.distribute(:none)
       url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/submissions?"\
               "f.Status=&f.Task=#{problem_id}&f.User=#{username}"
+      tries = 0
       while true
+        tries += 1 
         i = 1
         page = spider.get(url + "&page=#{i}")
         while true
@@ -175,6 +169,7 @@ class Spider
         end
         break unless status.css('td')[6].text == 'WJ'
         sleep 0.5
+        return { result: "Submit Failed" } if tries == TRYS
       end
 
       status.instance_eval{ |tr| tr.css('td') }
@@ -196,10 +191,10 @@ end
 if __FILE__ == $0
   threads = []
   start = Time.now
-  5.times {
+  5.times { |i|
     threads << Thread.new {
       spider = Spider.new
-      puts spider.submit('agc002_a', 1, '4003')
+      puts spider.submit("agc00#{1}_a", '4003', 1)
     }
   }
   threads.each(&:join)
