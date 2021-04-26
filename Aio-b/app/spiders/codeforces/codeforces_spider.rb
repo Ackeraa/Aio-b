@@ -1,131 +1,168 @@
-require('httparty')
-require('open-uri')
-require('nokogiri')
-require('mechanize')
-
 module Codeforces
   class CodeforcesSpider
 
-    def initialize
-      @username = "test_for_aio"
-      @password = "test_for_aio_"
-      @agent = Mechanize.new
-    end
-
-    def login
-      page = @agent.get("http://codeforces.com/enter")
-      form = page.form(:id => 'enterForm')
-      form.handleOrEmail = @username
-      form.password = @password
-      page = @agent.submit(form)
-
+    def spide_languages
+      spider, account = CodeforcesDispatcher.instance.distribute(:any) 
+      login(spider, account)
+      page = spider.get('https://codeforces.com/problemset/submit')
+      languages = page.css('table.table-form tr')[2].css('td')[1].children.children
+        .reject { |option| option.text.lstrip.empty? }
+        .map do |option|
+          {
+            id: option.attributes['value']&.value || nil,
+            value: option.text
+          }
+        end 
     end
 
     def spide_problems(n = nil)
-      response = HTTParty.get("http://codeforces.com/api/problemset.problems")
-      origin_problems = JSON.parse(response.body, { symbolize_names: true })[:result][:problems]
-      origin_problems.slice!(n..) if not n.nil?
-      problems = []
-      origin_problems.reverse_each do |problem| 
-        problems << {
+      response = HTTParty.get('https://codeforces.com/api/problemset.problems')
+      problems = JSON.parse(response.body, { symbolize_names: true })[:result][:problems]
+      problems.slice!(n..) unless n.nil?
+      problems.map! do |problem| 
+        {
           :vid => problem[:contestId].to_s + problem[:index],
           :name => problem[:name],
-          :source => "codeforces"
+          :source => 'codeforces'
         }
       end
-      problems
     end
 
-    def get_limit(text, s)
-      a = text.css("div.header div." + s).text.strip
-      b = text.css("div.header div." + s + " div.property-title").text.strip
-      a.sub(b, "").to_i
-    end
+    def spide_problem(id)
+      r = -> s do
+        s.to_s
+         .gsub('$$$', '$')
+         .gsub('$$', '$')
+         .gsub('&', '\\')
+         .gsub(/\$\w\$/) { |c| "${#{c[1]}}$" }
+         .gsub(/\<br\>/) { |c| '<br/>' }
+      end
 
-    def pre_process(s)
-      s.to_s.gsub("$$$", "$")
-            .gsub("$$", "$")
-            .gsub("&", "\\")
-            .gsub(/\$\w\$/) { |c| "${" + c[1] + "}$" }
-            .gsub(/\<br\>/) { |c| "<br/>" }
-    end
-
-    def spide_problem(vid)
-      split_vid = vid.split(/(\d+)/, 2)
-      url = "https://codeforces.com/problemset/problem/#{split_vid[1]}/#{split_vid[2]}"  
-      html = open(url)
-      page = Nokogiri::HTML(html)
-
-      text = page.css("div.problem-statement")
+      split_id = id.split(/(\d+)/, 2)
+      url = "https://codeforces.com/problemset/problem/#{split_id[1]}/#{split_id[2]}"
+      page = Nokogiri::HTML(open(url))
+      page = page.css('div.problem-statement')
       problem = {}
 
-      name = pre_process(text.css("div.title")[0].text)[3..]
-      time_limit = get_limit(text, "time-limit")
-      memory_limit = get_limit(text, "memory-limit")
-      description = pre_process(text.children[1].css("p"))
-      input = pre_process(text.css("div.input-specification p")) 
-      output = pre_process(text.css("div.output-specification p"))
-      sample_text = text.css("div.sample-tests div.sample-test pre")
+      name = r.call page.css('div.title')[0].text[3..]
+      time_limit = r.call page.css('div.time-limit').children[1].text.split(' ').first
+      memory_limit = r.call page.css('div.memory-limit').children[1].text.split(' ').first
+      description = r.call page.children[1].css('p')
+      input = r.call page.css('div.input-specification p')
+      output = r.call page.css('div.output-specification p')
       samples = []
-      i = 0
-      begin
-        samples.push({:sample_input => pre_process(sample_text[i]),
-                      :sample_output => pre_process(sample_text[i + 1]) })
-        i += 2
-      end while i < sample_text.size
-      hint = pre_process(text.css("div.note").children[1..])
-      problem = { name: name, time_limit: time_limit, memory_limit: memory_limit, description: description,
-                 input: input, output: output, samples: samples, hint: hint }
+      page.css('div.sample-tests div.sample-test pre').each_slice(2) do |input, output|
+        samples << {
+          :sample_input => r.(input),
+          :sample_output => r.(output)
+        }
+      end
+      hint = replace page.css('div.note').children[1..]
+      problem = {
+        name: name,
+        time_limit: time_limit,
+        memory_limit: memory_limit,
+        description: description,
+        input: input,
+        output: output,
+        samples: samples,
+        hint: hint
+      }
     end
 
-    def get_status
-      response = HTTParty.get("http://codeforces.com/api/user.status?" +
-                         "handle=#{@username}&from=1&count=1")
-      result = JSON.parse(response.body, { symbolize_names: true })[:result][0]
+    def submit(problem_id, language, code, account = nil)
+      spider, account, spider_id = CodeforcesDispatcher.instance.distribute(account)
+      return { result: "Submit Failed" } if spider.nil?
+    
+      # Add random blanks to code for codeforces requirements.
+      emptys = [" ", "\t"] 
+      (1..rand(50)).each { code << emptys.sample }
 
-      id = result[:id]
-      verdict = result[:verdict]
-      time = result[:timeConsumedMillis]
-      memory = result[:memoryConsumedBytes] / 1000
-      passed_test_count = result[:passedTestCount]
-
-      return id, verdict, time, memory, passed_test_count
-    end
-
-    def submit(problem_id, language, code)
-      self.login
-      @last_id, b, c, d, e = self.get_status 
-      page = @agent.get("http://codeforces.com/problemset/submit")
-      form = page.form(:class => 'submit-form')
+      page = spider.get('http://codeforces.com/problemset/submit')
+      form = page.form(class: 'submit-form')
+      if form.nil?
+        login(spider, account)
+        page = spider.get('http://codeforces.com/problemset/submit')
+        form = page.form(class: 'submit-form')
+      end
       form.submittedProblemCode = problem_id
       form.programTypeId = language 
-      form.source = code.squish
-      puts "--------------------------------"
-      puts problem_id, language, code
-      page = @agent.submit(form)
-      if page.uri.to_s[-5..] != "my=on"
-        return "Failed, you have submitted the same code as before"
+      form.source = code
+      page = spider.submit(form)
+
+      url = "http://codeforces.com/api/user.status?handle=#{account[:name]}&from=1&count=1"
+      response = HTTParty.get(url)
+      submission_id = JSON.parse(response.body, { symbolize_names: true })[:result][0][:id]
+
+      CodeforcesDispatcher.instance.recycle(spider_id || account)
+
+      get_submission(problem_id, submission_id)
+    end
+
+    private
+
+      def login(spider, account)
+        puts "Login..."
+        page = spider.get("http://codeforces.com/enter")
+        form = page.form(id: 'enterForm')
+        form.handleOrEmail = account[:name]
+        form.password = account[:password]
+        page = spider.submit(form)
+        puts "Login Successful"
       end
 
-      is_started = false
-      while true
-        id, verdict, time, memory, passed_test_count = self.get_status
-        if id != @last_id and verdict != "TESTING" and verdict != nil
-          if verdict == "OK"
-              return "OK - Passed #{passed_test_count} tests" 
-          else
-              return "#{verdict} on test #{passed_test_count}" 
-          end
-        elsif verdict == "TESTING" and (not is_started)
-          is_started = true
-        end
-        sleep 0.5
+      def get_submission(problem_id, submission_id)
+        contest_id = problem_id.split(/(\d+)/, 2)[1]
+        url = "https://codeforces.com/contest/#{contest_id}/submission/#{submission_id}"
+        while true
+          page = Nokogiri::HTML(open(url))
+          result = page.css('div.datatable table tr')[1].css('td')[4].text.lstrip.rstrip
+          break unless result.include? 'Running' 
+        end 
+        record = page.css('div.datatable table tr')[1].css('td').map{ |td| td.text.lstrip.rstrip }
+        submission = {
+          result: record[4],
+          time_usage: record[5],
+          memory_usage: record[6],
+          submit_time: record[7]
+        }
       end
-    end
   end
 end
 
 if __FILE__ == $0
-  spider = Spider.new
-  spider.login
+  spider = CodeforcesSpider.new
+  spider.spide_languages
+  threads = []
+  code = '#include<bits/stdc++.h>
+ 
+using namespace std;
+ 
+int main(){
+	int t;
+	cin>>t;
+	while(t--){
+		long long n;
+		cin>>n;
+		long long k=n/2050, s=0;
+		while(k){
+			s+=k%10;
+			k/=10;
+		}
+		if(n%2050) cout<<-1;
+		else cout<<s;
+		cout<<endl;
+	}
+}'
+  start = Time.now
+
+  0.times { |i|
+    threads << Thread.new {
+      spider = CodeforcesSpider.new
+      puts spider.submit('1517A', '42', code)
+    }
+  }
+  threads.each(&:join)
+  puts Time.now - start
+
 end

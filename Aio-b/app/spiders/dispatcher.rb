@@ -1,12 +1,10 @@
-require('mechanize')
-
 class Dispatcher
 
   def initialize(gap_time = 0.5, wait_time = 60, data)
     @gap_time = gap_time
     @wait_time = wait_time
-    @system_resources = Array.new(data.length) { |i| [data[i], Mechanize.new, 0] } 
-    @system_queue = (1...data.length).to_a 
+    @system_resources = Array.new(data.length) { |i| [Mechanize.new, data[i]] } 
+    @system_queue = (0...data.length).to_a 
     @system_lock = Mutex.new
     @user_resources = Hash.new
     @user_available = Hash.new
@@ -21,7 +19,7 @@ class Dispatcher
           while true do
             if @user_available[account]
               @user_available[account] = false
-              return @user_resources[account]
+              return @user_resources[account], account, nil
             end
             return false if Time.now - come_time > @wait_time
             sleep @gap_time
@@ -44,7 +42,7 @@ class Dispatcher
         end
       end
     else
-      return @system_resources[0][0], Mechanize.new
+      return Mechanize.new, @system_resources[0][1]
     end
   end
 
