@@ -1,18 +1,19 @@
 require('singleton')
-require('../dispatcher.rb')
 
-class AtcoderDispatcher < Dispatcher
-  include Singleton
+module Atcoder
+  class AtcoderDispatcher < Dispatcher
+    include Singleton
 
-  def initialize
-    data = [
-      { username: 'test_for_aio', password: 'test_for_aio_0' },
-      { username: 'test_for_aio2', password: 'test_for_aio_0' },
-      { username: 'test_for_aio3', password: 'test_for_aio_0' },
-      { username: 'test_for_aio4', password: 'test_for_aio_0' },
-      { username: 'test_for_aio5', password: 'test_for_aio_0' },
-    ]
-    super(0.5, 40, data)    
+    def initialize
+      data = [
+        { username: 'test_for_aio', password: 'test_for_aio_0' },
+        { username: 'test_for_aio2', password: 'test_for_aio_0' },
+        { username: 'test_for_aio3', password: 'test_for_aio_0' },
+        { username: 'test_for_aio4', password: 'test_for_aio_0' },
+        { username: 'test_for_aio5', password: 'test_for_aio_0' },
+      ]
+      super(0.5, 40, data)    
+    end
   end
 end
 

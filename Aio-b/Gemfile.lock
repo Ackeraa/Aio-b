@@ -187,9 +187,9 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    ruby-prof (1.4.3)
     ruby-vips (2.1.0)
       ffi (~> 1.12)
-    spawnling (2.1.6)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -235,7 +235,7 @@ DEPENDENCIES
   puma (~> 4.1)
   rack-cors
   rails (~> 6.0.3, >= 6.0.3.4)
-  spawnling (~> 2.1)
+  ruby-prof
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

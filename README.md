@@ -24,6 +24,10 @@
 
 * [ ] 爬虫功能
 
+* [ ] dateparaser is slow
+
+* [ ] use plain sql
+
   
 
   ## Todo
@@ -31,7 +35,7 @@
   * [ ] wiki
 * [ ] 爬虫动态调度
   * [ ] 爬取结果、提交间隔时间动态刷新
-* [ ] 
+* [ ] cache
   
 
   

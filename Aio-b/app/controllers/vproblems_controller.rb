@@ -1,4 +1,3 @@
-require('spiders/codeforces_spider.rb')
 
 
 class VproblemsController < ApplicationController
