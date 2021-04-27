@@ -27,6 +27,7 @@ module Atcoder
       problems = []
       i = 1
       begin
+        puts "spide problems from atcoder page #{i}"
         url = "https://atcoder.jp/contests/archive?page=#{i}"
         page = Nokogiri::HTML(open(url))
         links = page.css('tbody tr').map { |tr| tr.css('td a')[1]['href'] }

@@ -57,7 +57,7 @@ module Codeforces
           :sample_output => r.(output)
         }
       end
-      hint = replace page.css('div.note').children[1..]
+      hint = r.call page.css('div.note').children[1..]
       problem = {
         name: name,
         time_limit: time_limit,

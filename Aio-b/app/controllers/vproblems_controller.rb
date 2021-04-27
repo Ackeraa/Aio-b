@@ -1,17 +1,13 @@
-
-
 class VproblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy, :respide, :submit]
 
-  def initialize
-    @spider = Spider.new
-  end
   # GET /vproblems
   # Need to be fixed.
   def index
     @problems = Problem.where(source: params[:source]).first(10)
     if @problems.nil?
-      problems = @spider.spide_problems
+      spider = get_spider(params[:source])
+      problems = spider.spide_problems
       problems.each do |problem|
         Problem.create(problem)
       end
@@ -29,7 +25,8 @@ class VproblemsController < ApplicationController
       @problems = Problem.where(source: source).limit(10).order(:id).reverse_order
       if @problems.empty?
         puts "FUCK YOU SPIDE AGAIN, BUG APPEARS"
-        problems = @spider.spide_problems
+        spider = get_spider(source)
+        problems = spider.spide_problems
         problems.each do |problem|
           Problem.create(problem)
         end
@@ -46,7 +43,8 @@ class VproblemsController < ApplicationController
   # GET /vproblems/1
   def show
     if @problem.description.nil?
-      problem = @spider.spide_problem(@problem.vid) 
+      spider = get_spider(@problem.source)
+      problem = spider.spide_problem(@problem.vid) 
       @problem.update(problem)
     end
     render json: @problem
@@ -96,8 +94,9 @@ class VproblemsController < ApplicationController
     ActionCable.server.broadcast c_submission_stream, submission_record
 
     Thread.new do
-      result = @spider.submit(vid, language, code)
-      submission_record.update(result: result)
+      spider = get_spider(source)
+      submission = spider.submit(vid, language, code)
+      submission_record.update(submission)
       ActionCable.server.broadcast cpu_submission_stream, submission_record
       ActionCable.server.broadcast cp_submission_stream, submission_record
       ActionCable.server.broadcast cu_submission_stream, submission_record
@@ -108,7 +107,8 @@ class VproblemsController < ApplicationController
   
   # GET /vproblems/respide/1
   def respide
-    problem = @spider.spide_problem(@problem.vid)
+    spider = get_spider(@problem.source)
+    problem = spider.spide_problem(@problem.vid)
     @problem.update(problem)
     render json: @problem
   end
@@ -117,7 +117,8 @@ class VproblemsController < ApplicationController
   # Need to be fixed.
   def respides
     n = Problem.where(source: params[:source]).count
-    problems = @spider.spide_problems(n)
+    spider = get_spider(params[:source])
+    problems = spider.spide_problems(n)
     problems.each do |problem| 
       Problem.create(problem)
     end
@@ -134,6 +135,11 @@ class VproblemsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_problem
       @problem = Problem.find(params[:id])
+    end
+
+    def get_spider(source)
+      source.capitalize!
+      "#{source}::#{source}Spider".constantize.new
     end
 
     # contest_problem_user
