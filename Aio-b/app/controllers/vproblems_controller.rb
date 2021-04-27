@@ -22,7 +22,7 @@ class VproblemsController < ApplicationController
     source = params[:source]
     query = params[:query]
     if query.nil? 
-      @problems = Problem.where(source: source).limit(10).order(:id).reverse_order
+      @problems = Problem.where(source: source).order(:id).first(10)
       if @problems.empty?
         puts "FUCK YOU SPIDE AGAIN, BUG APPEARS"
         spider = get_spider(source)
@@ -30,12 +30,12 @@ class VproblemsController < ApplicationController
         problems.each do |problem|
           Problem.create(problem)
         end
-        @problems = Problem.where(source: source).limit(10).order(:id).reverse_order
+        @problems = Problem.where(source: source).order(:id).first(10)
       end
     else
-      @problems = Problem.where('source=? and lower(name) like (?)', 
-                                source.downcase, "%#{query.downcase}%")
-                         .limit(10).order(:id).reverse_order
+      @problems = Problem.where('source=? and name ilike (?)', 
+                                source.downcase, "%#{query}%")
+                         .order(:id).first(10)
     end
     render json: @problems
   end
@@ -45,6 +45,8 @@ class VproblemsController < ApplicationController
     if @problem.description.nil?
       spider = get_spider(@problem.source)
       problem = spider.spide_problem(@problem.vid) 
+      allowed_languages = Language.find_by(source: @problem.source).allowed_languages
+      problem[:allowed_languages] = allowed_languages
       @problem.update(problem)
     end
     render json: @problem
@@ -64,11 +66,13 @@ class VproblemsController < ApplicationController
 
   # PATCH/PUT /vproblems/1
   def update
+=begin
     if @problem.update(problem_params)
       render json: @problem
     else
       render json: @problem.errors, status: :unprocessable_entity
     end
+=end
   end
 
   # POST /vproblems/submit/1
@@ -114,7 +118,7 @@ class VproblemsController < ApplicationController
   end
 
   # GET /vproblems/respides
-  # Need to be fixed.
+  # Need to be fixeds
   def respides
     n = Problem.where(source: params[:source]).count
     spider = get_spider(params[:source])
@@ -138,8 +142,8 @@ class VproblemsController < ApplicationController
     end
 
     def get_spider(source)
-      source.capitalize!
-      "#{source}::#{source}Spider".constantize.new
+      which = source.capitalize
+      "#{which}::#{which}Spider".constantize.new
     end
 
     # contest_problem_user

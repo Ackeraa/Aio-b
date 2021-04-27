@@ -13,13 +13,16 @@
 			<thead>
 				<tr class="row">
 					<th class="col">
-						#
+						id
+					</th>
+					<th class="col">
+						vid
 					</th>
 					<th class="col">
 						NAME
 					</th>
 					<th class="col">
-						PASS RATE
+						SOURCE
 					</th>
 					<th class="col">
 						DIFFICULTY
@@ -29,9 +32,10 @@
 			<tbody>
 				<tr *ngFor="let problem of problems" class="row" 
 					 (click)="viewProblem(problem.source, problem.id)">
+					<td class="col">{{problem.id}}</td>
 					<td class="col">{{problem.vid}}</td>
 					<td class="col">{{problem.name}}</td>
-					<td class="col">1/100</td>
+					<td class="col">{{problem.source}}</td>
 					<td class="col">Hard</td>
 				</tr>
 			</tbody>

@@ -18,11 +18,7 @@
 
 * [x] 2020.12.23 前后端分离
 
-* [ ] 后端框架搭建
-
-* [ ] 登录功能
-
-* [ ] 爬虫功能
+* [ ] 路线：简单judger、完善spider、Contest、添加problemSet、完善ui
 
 * [ ] dateparaser is slow
 

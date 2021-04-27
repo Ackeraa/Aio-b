@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 2021_04_23_082600) do
 
   create_table "languages", force: :cascade do |t|
     t.string "source"
-    t.jsonb "allowled_languages"
+    t.jsonb "allowed_languages"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

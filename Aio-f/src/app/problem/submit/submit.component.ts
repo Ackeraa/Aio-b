@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProblemService } from '../problem.service';
+import { filter } from 'rxjs/operators'; 
 
 @Component({
 	selector: 'app-problem-submit',
@@ -14,7 +15,7 @@ export class SubmitComponent implements OnInit {
 	options: any;
 	modes: Array<string>;
 	languages: Array<any>;
-	language: string; 
+	language: any; 
 	themes: Array<string>;
 	problem: any;
 
@@ -24,17 +25,11 @@ export class SubmitComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.problemService.problem$.subscribe(problem => {
-			if (problem != null && problem.source === 'codeforces') {
-				this.languages = [
-					{ id: 43, name: 'GNU GCC C11 5.1.0' },
-					{ id: 42, name: 'GNU G++11 5.1.0' },
-					{ id: 60, name: 'Java 11.0.6' },
-					{ id: 31, name: 'Python 3.9.1' }
-				];
-				this.language = this.languages[0].id;
-			}
-		});
+		this.problemService.problem$.pipe(filter(x => x != null))
+			.subscribe(problem => {
+				this.languages = problem.allowed_languages;
+				this.language =  this.languages[0].id;
+			});
 
 		this.has_code = true;
 		this.options = {

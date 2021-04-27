@@ -16,7 +16,7 @@
 	</label>
 	<select class="custom-select col-4" (change)="selectLanguage($event.target.value)">
 		<option *ngFor="let language of languages let i=index" [value]="i">
-			{{language.name}}
+			{{language.value}}
 		</option>
 	</select>
 </div>

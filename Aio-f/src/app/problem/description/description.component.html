@@ -3,6 +3,9 @@
 		<h2>{{problem.name}}</h2>
 	</div>
 	<div class="d-flex justify-content-center">
+		<h6><var>Source: {{problem.source}}</var></h6>
+	</div>
+	<div class="d-flex justify-content-center">
 		<h6><var>Time Limit: {{problem.time_limit}} MS</var></h6>
 	</div>
 	<div class="d-flex justify-content-center">
@@ -50,6 +53,10 @@
 			<div class="col-1"> </div>
 		</div>
 		<br/>
+		<div *ngIf="sample.sample_hint">
+			<markdown [data]="sample.sample_hint" katex></markdown>
+		</div>
+		<hr/>
 	</div>
 	<div *ngIf="problem.hint">
 		<h3>Hint</h3>

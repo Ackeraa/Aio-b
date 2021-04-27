@@ -25,7 +25,7 @@ export class SearchComponent implements OnInit {
 	ngOnInit(): void {
 
 		this.loadingEvent.emit(false);
-		this.sources = ["Codeforces", "UVA", "POJ", "Atcoder"];
+		this.sources = ["Atcoder", "Codeforces", "UVA", "POJ"];
 		this.searchService.search(this.sources[0].toLowerCase(), "")
 			.subscribe(problems => this.problemsEvent.emit(problems));
 

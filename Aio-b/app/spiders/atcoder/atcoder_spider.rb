@@ -1,10 +1,9 @@
-
 module Atcoder
   class AtcoderSpider
 
     def spide_languages
-      user, spider = AtcoderDispatchher.instance.target_distribute(:none) 
-      login(user, spider)
+      spider, account = AtcoderDispatcher.instance.distribute(:any) 
+      login(spider, account)
       page = spider.get('https://atcoder.jp/contests/agc001/tasks/agc001_a')
       languages = page.xpath('//*[@id="select-lang"]/select').css('option')
         .reject { |option| option.text.nil? || option.text.empty? }
@@ -52,6 +51,8 @@ module Atcoder
         s.to_s
          .gsub("<var>", "$")
          .gsub("</var>", "$")
+         .gsub("≦", " \\le ")
+         .gsub('&', '\\')
          .gsub(/\$\w\$/) { |c| "${" + c[1] + "}$" }
       end
 
@@ -59,28 +60,34 @@ module Atcoder
       page = Nokogiri::HTML(open(url))
       problem = {}
 
-      t_m = page.xpath('//*[@id="main-container"]/div[1]/div[2]/p')
-                .text.strip.gsub(/[^0-9]/, ' ').split
+      t_m = page.xpath('//*[@id="main-container"]/div[1]/div[2]/p').text
+        .strip.gsub(/[^0-9]/, ' ').split
       time_limit = t_m[0].to_i
       memory_limit = t_m[1].to_i
-      description = r.call page.xpath('//*[@id="task-statement"]/span/span[2]/div[1]/section/p')
-      hint = r.call page.xpath('//*[@id="task-statement"]/span/span[2]/div[2]/section/ul')
-      input = r.call page.xpath('//*[@id="task-statement"]/span/span[2]/div[3]/div[1]/section').children[2..]
-      output = r.call page.xpath('//*[@id="task-statement"]/span/span[2]/div[3]/div[2]/section').children[2..]
+      page = page.css('div#task-statement span.lang-en').children
+        .select{ |x| x.name == 'div' or x.name == 'hr' }
+      indices = page.each_with_index.select{ |x, i| x.name == 'hr' }.map{ |x| x[1] }
 
-      i = 4
+      description = page[0].css('p')
+      page[1...indices[0]].each{ |x| description << x }
+      description = r.(description)
+
+      input = r.call page[indices[0] + 1].css('section')[0].children[2..]
+      output = r.call page[indices[0] + 1].css('section')[1].children[2..]
+
       samples = []
+      i = indices[1] + 1
       begin
-        sample_input = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i}]/section").children[2]
-        sample_output = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i + 1}]/section").children[2]
-        sample_hint = page.xpath("//*[@id='task-statement']/span/span[2]/div[#{i + 1}]/section").children[3..]
+        sample_input = r.call page[i].css('pre') 
+        sample_output = r.call page[i + 1].css('pre') 
+        sample_hint = r.call page[i + 1].css('p')
         samples << {
-          sample_input: r.(sample_input),
-          sample_output: r.(sample_output),
-          sample_hint: r.(sample_hint)
+          sample_input: sample_input,
+          sample_output: sample_output,
+          sample_hint: sample_hint
         }
-        i += 2
-      end until sample_input.nil?
+        i += 3
+      end until i >= page.length
 
       problem = {
         time_limit: time_limit,
@@ -89,7 +96,6 @@ module Atcoder
         input: input,
         output: output,
         samples: samples,
-        hint: hint
       }
     end
 
@@ -130,7 +136,7 @@ module Atcoder
       end
 
       def get_submission(problem_id, submission_id)
-        url = "https://atcoder.jp/contests/agc001/submissions/#{submission_id}"
+        url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/submissions/#{submission_id}"
         while true
           page = Nokogiri::HTML(open(url))
           result = page.css('table tr')[6].css('td').last.text
@@ -140,7 +146,7 @@ module Atcoder
         record = page.css('table tr').map{ |x| x.css('td').text }
         submission = {
           submit_time: record[0],
-          score: record[4],
+          #score: record[4],
           code_size: record[5],
           result: record[6],
           time_usage: record[6] == 'CE' ?  nil : record[7],

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ContestService } from '../contest.service';
+import { filter } from 'rxjs/operators'; 
 
 @Component({
 	selector: 'app-contest-submit',
@@ -26,17 +27,13 @@ export class SubmitComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.problems = [];
-		this.contestService.problems$.subscribe(problems => {
-			this.problems = problems;
-		});
+		this.contestService.problems$.pipe(filter(x => x != null))
+			.subscribe(problems => {
+				this.problems = problems;
+				this.languages = problems[0].allowed_languages;
+				this.language = this.languages[0].id;
+			});
 
-		this.languages = [
-			{ id: 43, name: 'GNU GCC C11 5.1.0' },
-			{ id: 42, name: 'GNU G++11 5.1.0' },
-			{ id: 60, name: 'Java 11.0.6' },
-			{ id: 31, name: 'Python 3.9.1' }
-		];
-		this.language = this.languages[0].id;
 		this.problem = 0;
 
 		this.has_code = true;
@@ -67,6 +64,7 @@ export class SubmitComponent implements OnInit {
 	}
 
 	selectProblem(id: number): void {
+		this.languages = this.problems[id].allowed_languages;
 		this.problem = id;
 	}
 
