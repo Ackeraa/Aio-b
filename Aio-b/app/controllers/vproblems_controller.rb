@@ -22,7 +22,7 @@ class VproblemsController < ApplicationController
     source = params[:source]
     query = params[:query]
     if query.nil? 
-      @problems = Problem.where(source: source).order(:id).first(10)
+      @problems = Problem.where(source: source).order(:id).limit(20)
       if @problems.empty?
         puts "FUCK YOU SPIDE AGAIN, BUG APPEARS"
         spider = get_spider(source)
@@ -30,12 +30,12 @@ class VproblemsController < ApplicationController
         problems.each do |problem|
           Problem.create(problem)
         end
-        @problems = Problem.where(source: source).order(:id).first(10)
+        @problems = Problem.where(source: source).order(:id).limit(20)
       end
     else
       @problems = Problem.where('source=? and name ilike (?)', 
                                 source.downcase, "%#{query}%")
-                         .order(:id).first(10)
+                         .order(:id).limit(20)
     end
     render json: @problems
   end

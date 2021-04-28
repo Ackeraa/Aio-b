@@ -10,21 +10,37 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
 			<div class="navbar-nav mr-auto">
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../home">Home</a>
+					routerLink="../home">
+					<i class="fas fa-home"></i> Home
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../contests">Contests</a>
+					routerLink="../contests">
+					<i class="far fa-calendar-alt"></i> Contests
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../problems">Problems</a>
+					routerLink="../problems">
+					<i class="fas fa-book"></i> Problems
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../submissions">Submissions</a>
+					routerLink="../submissions">
+					<i class="fas fa-list-ul"></i> Submissions
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../discussion">Discussion</a>
+					routerLink="../discussion">
+					<i class="fas fa-comments"></i> Discussion
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../groups">Groups</a>
+					routerLink="../groups">
+					<i class="fas fa-users"></i> Groups
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../users">Users</a>
+					routerLink="../users">
+					<i class="fas fa-address-card"></i> Users
+				</a>
 				<a class="nav-item nav-link" routerLinkActive="active"
-					routerLink="../protected">Wiki</a>
+					routerLink="../protected">
+					<i class="fas fa-book-open"></i> Wiki
+				</a>
 			</div>
 
 			<div class="navbar-nav ml-auto">
@@ -32,17 +48,18 @@
 					 routerLinkActive="active" routerLink="/login">Login</a>
 				<a class="nav-item nav-link" *ngIf="!currentUser"
 					 routerLinkActive="active" routerLink="/register">Register</a>
-				<div class="btn-group" ngbDropdown *ngIf="currentUser"
-					 display="dynamic" role="group" aria-label="Button group with nested dropdown">
-					<button class="btn nav-item nav-link" ngbDropdownToggle>
-						{{currentUser}}
-					</button>
-					<div class="dropdown-menu dropdown-menu-righ" ngbDropdownMenu>
-						<button ngbDropdownItem>Profile</button>
-						<button ngbDropdownItem>Profile</button>
-						<div class="dropdown-divider"></div>
-						<button ngbDropdownItem (click)="logOut()">Logout</button>
-					</div>
+
+				<div class="dropdown" *ngIf="currentUser">
+				  <button class="btn nav-link dropdown-toggle" href="#" role="button"
+						 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  {{currentUser}}
+				  </button>
+				  <div class="dropdown-menu dropdown-menu-right">
+					<a class="dropdown-item" href="#">Profile</a>
+					<a class="dropdown-item" href="#">Profile</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" (click)="logOut()">Logout</a>
+				  </div>
 				</div>
 			</div>
 		</div>

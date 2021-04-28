@@ -1,31 +1,47 @@
 <br/>
-<div class="row">
-	<label class="col-1 col-form-label">
-		Language:
-	</label>
-	<select class="custom-select col-2" (change)="selectLanguage($event.target.value)">
-		<option *ngFor="let language of languages let i=index" [value]="i">
-			{{language.value}}
-		</option>
-	</select>
-	&nbsp; 
-	<button type="button" class="btn btn-light col-1" (click)="clearCode()">Clear</button>
-	&nbsp; 
-	<input type="file" id="loadcode" (change)="loadCode($event.target.files[0])" style="display: none;"/>
-	<button type="button" class="btn btn-light col-1"
-			onclick="document.getElementById('loadcode').click();">
-		Upload
-	</button>
-	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<label class="col-1 offset-md-3 col-form-label">
-		Theme:
-	</label>
-	<select class="custom-select col-2" (change)="selectTheme($event.target.value)">
-		<option *ngFor="let theme of themes let i = index" [value]="i">
-			{{theme}}
-		</option>
-	</select>
+<div class="row justify-content-between">
+	<div class="col-md-8 col-12">
+		<div class="row justify-content-begin">
+			<label class="col-form-label col-auto">
+				Language:
+			</label>
+			&nbsp;
+			<select class="custom-select col-4" (change)="selectLanguage($event.target.value)">
+				<option *ngFor="let language of languages let i=index" [value]="i">
+					{{language.value}}
+				</option>
+			</select>
+			&nbsp;
+			<button type="button" class="btn btn-light col-2 col-md-auto"
+					onclick="document.getElementById('loadcode').click();">
+				Upload
+			</button>
+			&nbsp;
+			<button type="button" class="btn btn-light col-2 col-md-auto"
+					(click)="clearCode()">
+				Clear
+			</button>
+			<input type="file" id="loadcode" (change)="loadCode($event.target.files[0])"
+					style="display: none;"/>
+		</div>
+	</div>
+
+	<div class="col-md-4 col-12">
+		<div class="row justify-content-begin">
+			<label class="col-form-label col-auto">
+				Theme:
+			</label>
+			&nbsp;
+			<select class="custom-select col-md-7 col-4" (change)="selectTheme($event.target.value)">
+				<option *ngFor="let theme of themes let i = index" [value]="i">
+					{{theme}}
+				</option>
+			</select>
+		</div>
+	</div>
+
 </div>
+
 <br/>
 <div class="row">
 	<div class="col-12">

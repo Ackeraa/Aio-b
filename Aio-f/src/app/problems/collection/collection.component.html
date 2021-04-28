@@ -1,5 +1,5 @@
-
 <div class="card shadow-sm">
+
 	<div class="card-body">
 		<app-problems-search
 			(problemsEvent)="setProblems($event)" 
@@ -13,19 +13,22 @@
 			<thead>
 				<tr class="row">
 					<th class="col">
-						id
-					</th>
-					<th class="col">
-						vid
-					</th>
-					<th class="col">
-						NAME
+						#
 					</th>
 					<th class="col">
 						SOURCE
 					</th>
 					<th class="col">
-						DIFFICULTY
+						TITLE
+					</th>
+					<th class="col">
+						STATUS
+					</th>
+					<th class="col">
+						<div class="custom-control custom-switch">
+							<input type="checkbox" class="custom-control-input" id="tags">
+							<label class="custom-control-label" for="tags">TAGS</label>
+						</div>
 					</th>
 				</tr>
 			</thead>
@@ -35,11 +38,35 @@
 					<td class="col">{{problem.id}}</td>
 					<td class="col">{{problem.vid}}</td>
 					<td class="col">{{problem.name}}</td>
-					<td class="col">{{problem.source}}</td>
+					<td class="col">22/45</td>
 					<td class="col">Hard</td>
 				</tr>
 			</tbody>
-
 		</table>
 	</div>
 </div>
+
+<br/>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<div class="checkbox">
+<label>
+<span>Text goes here</span>
+	<input type="checkbox" class="checkbox style-2 " checked="checked">
+</label>
+</div>  
