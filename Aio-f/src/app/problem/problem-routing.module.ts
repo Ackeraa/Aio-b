@@ -12,8 +12,7 @@ import {
 
 const routes: Routes = [
 	{
-		path: '',
-		component: ProblemComponent,
+		path: '', component: ProblemComponent,
 		children: [
 			{ path: '', redirectTo: 'description' },
 			{ path: 'description', component: DescriptionComponent },

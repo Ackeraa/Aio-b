@@ -24,18 +24,15 @@
 					</div>
 				</td>
 				<td>
-					<button type="button" class="btn btn-success btn-xs"
+					<button type="button" class="btn btn-outline-success btn-xs"
 							(click)="item.upload();"
 						    [disabled]="item.isReady || item.isUploading || item.isSuccess">
-						Upload
+						<i class="fas fa-cloud-upload-alt"></i>
 					</button>
-					<button type="button" class="btn btn-warning btn-xs"
-							(click)="item.cancel()" [disabled]="!item.isUploading">
-						Cancel
-					</button>
-					<button type="button" class="btn btn-danger btn-xs"
+					&nbsp;
+					<button type="button" class="btn btn-outline-danger btn-xs"
 							(click)="onTemplateRemove()">
-						Remove
+						<i class="far fa-trash-alt"></i>
 					</button>
 				</td>
 			</tr>
@@ -53,18 +50,15 @@
 					</div>
 				</td>
 				<td>
-					<button type="button" class="btn btn-success btn-xs"
+					<button type="button" class="btn btn-outline-success btn-xs"
 							(click)="item.upload();"
 						    [disabled]="item.isReady || item.isUploading || item.isSuccess">
-						Upload
+					<i class="fas fa-cloud-upload-alt"></i>
 					</button>
-					<button type="button" class="btn btn-warning btn-xs"
-							(click)="item.cancel()" [disabled]="!item.isUploading">
-						Cancel
-					</button>
-					<button type="button" class="btn btn-danger btn-xs"
+					&nbsp;
+					<button type="button" class="btn btn-outline-danger btn-xs"
 							(click)="onSpjRemove()">
-						Remove
+						<i class="far fa-trash-alt"></i>
 					</button>
 				</td>
 			</tr>
@@ -82,18 +76,15 @@
 					</div>
 				</td>
 				<td>
-					<button type="button" class="btn btn-success btn-xs"
+					<button type="button" class="btn btn-outline-success btn-xs"
 							(click)="item.upload();"
 						    [disabled]="item.isReady || item.isUploading || item.isSuccess">
-						Upload
+					<i class="fas fa-cloud-upload-alt"></i>
 					</button>
-					<button type="button" class="btn btn-warning btn-xs"
-							(click)="item.cancel()" [disabled]="!item.isUploading">
-						Cancel
-					</button>
-					<button type="button" class="btn btn-danger btn-xs"
+					&nbsp;
+					<button type="button" class="btn btn-outline-danger btn-xs"
 							(click)="onDataRemove()">
-						Remove
+						<i class="far fa-trash-alt"></i>
 					</button>
 				</td>
 			</tr>
@@ -104,7 +95,7 @@
 	<div class="col-md-4">
 		<span class="form-label"><h5>Template </h5></span>
 		<label class="btn btn-outline-primary">
-			Browse
+			<i class="fas fa-folder-open"></i> Browse
 			<input type="file" hidden ng2FileSelect [uploader]="template"
 			(change)="onTemplateChange()" #templateInput/>
 		</label>
@@ -112,7 +103,7 @@
 	<div class="col-md-4">
 		<span class="form-label"><h5>SPJ </h5></span>
 		<label class="btn btn-outline-primary">
-			Browse
+			<i class="fas fa-folder-open"></i> Browse
 			<input type="file" hidden ng2FileSelect [uploader]="spj"
 				   (change)="onSpjChange()" #spjInput/>
 		</label>
@@ -121,7 +112,7 @@
 	<div class="col-md-4">
 		<span class="form-label"><h5>Test Data </h5></span>
 		<label class="btn btn-outline-primary">
-			Browse
+			<i class="fas fa-folder-open"></i> Browse
 			<input type="file" hidden ng2FileSelect [uploader]="data"
 				   (change)="onDataChange()" #dataInput/>
 		</label>
@@ -130,3 +121,9 @@
 <br/>
 {{token}}
 
+<!--
+					<button type="button" class="btn btn-warning btn-xs"
+							(click)="item.cancel()" [disabled]="!item.isUploading">
+						Cancel
+					</button>
+					-->

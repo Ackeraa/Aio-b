@@ -15,5 +15,15 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/v4-shims";
 
-body {
+
+a {
+    cursor: pointer;
+}
+
+tr {
+    cursor: pointer;
+}
+
+.table > tbody > tr > td {
+	vertical-align: middle;
 }

@@ -1,7 +1,11 @@
 <div *ngIf="problem">
 	<div class="d-flex justify-content-center">
 		<h2>{{problem.name}}</h2>
+		<a (click)="reSpideProblem()">
+			<i class="fas fa-spider"></i>
+		</a>
 	</div>
+
 	<div class="d-flex justify-content-center">
 		<h6><var>Source: {{problem.source}}</var></h6>
 	</div>
@@ -11,21 +15,12 @@
 	<div class="d-flex justify-content-center">
 		<h6><var>Memory Limit: {{problem.memory_limit}} MB</var></h6>
 	</div>
-	<br/>
-	<div class="row">
-		<div class="col-2 offset-md-11">
-			<button class="btn btn-primary pull-right" (click)="reSpideProblem()">
-				Update
-			</button>
-		</div>
-	</div>
 
 	<h3>Description</h3>
 	<markdown [data]="problem.description" katex></markdown>
 
 	<h3>Input</h3>
 	<markdown [data]="problem.input" katex></markdown>
-	<br/>
 
 	<h3>Output</h3>
 	<markdown [data]="problem.output" katex></markdown>
@@ -33,8 +28,8 @@
 	<h3>Samples</h3>
 	<div *ngFor="let sample of problem.samples let i=index"> 
 		<div class="card-group">
-			<div class="card shadow-sm">
-				<div class="card-header" style="background-color:#FCFCFC">
+			<div class="card shadow-sm border-secondary">
+				<div class="card-header bg-transparent border-secondary">
 					Input{{i + 1}} 
 				</div>
 				<div class="card-body">
@@ -42,8 +37,8 @@
 				</div>
 			</div>
 			<div class="col-1"> </div>
-			<div class="card shadow-sm">
-				<div class="card-header" style="background-color:#FCFCFC">
+			<div class="card shadow-sm border-secondary">
+				<div class="card-header bg-transparent border-secondary">
 					Output{{i + 1}} 
 				</div>
 				<div class="card-body">

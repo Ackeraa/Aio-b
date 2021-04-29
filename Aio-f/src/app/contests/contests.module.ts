@@ -4,11 +4,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContestsComponent } from './contests.component';
 import { ContestsRoutingModule } from './contests-routing.module';
-import { CreateComponent } from './create/create.component';
+import {
+	CreateComponent,
+	RecentComponent,
+	PastComponent 
+} from '.';
 
 @NgModule({
 	declarations: [
-		CreateComponent
+		CreateComponent,
+		RecentComponent,
+		PastComponent
 	],
 	imports: [
 		CommonModule,
@@ -18,7 +24,6 @@ import { CreateComponent } from './create/create.component';
 		ReactiveFormsModule,
 	],
 	exports: [
-		CreateComponent
 	]
 })
 export class ContestsModule { }

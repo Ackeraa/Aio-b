@@ -1,80 +1,19 @@
-<div class="d-flex justify-content-end">
-	<button class="btn btn-primary" routerLink="/contests/create">
-		Create
-	</button>
-</div>
-<br/>
-<div class="card shadow-sm">
-	<div class="card-header">
-		Recent or Current Contests
+<nav class="navbar navbar-expand-lg navbar-light">
+	<a class="navbar-brand" href="#">
+	</a>
+	<div class="collapse navbar-collapse">
+		<div class="navbar-nav mr-auto">
+			<a class="nav-item nav-link" routerLinkActive="active" routerLink="./recent">
+				<i class="fas fa-file-invoice"></i> Recent
+			</a>
+			<a class="nav-item nav-link" routerLinkActive="active" routerLink="./past">
+				<i class="fas fa-upload"></i> Past
+			</a>
+			<a class="nav-item nav-link" routerLinkActive="active" routerLink="./create">
+				<i class="fas fa-list"></i> Create
+			</a>
+		</div>
 	</div>
-	<div class="card-body">
-		<table class="table table-hover">
-			<thead>
-				<tr class="row">
-					<th class="col-5">
-						Title
-					</th>
-					<th class="col-4">
-						Date
-					</th>
-					<th class="col">
-						Author
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let contest of contests" routerLink="/contest/{{contest.id}}" class="row">
-					<td class="col-5">{{contest.name}}</td>
-					<td class="col-4">{{contest.start_time}}</td>
-					<td class="col">Admin</td>
-				</tr>
-			</tbody>
-
-		</table>
-	</div>
-</div>
-
-<br/> <br/>
-<div class="card shadow-sm">
-	<div class="card-header">
-		Past Contests
-	</div>
-	<div class="card-body">
-		<table class="table table-hover">
-			<thead>
-				<tr class="row">
-					<th class="col-5">
-						Title
-					</th>
-					<th class="col-4">
-						Date
-					</th>
-					<th class="col">
-						Source
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="row">
-					<td class="col-5">Test</td>
-					<td class="col-4">2011/04/25</td>
-					<td class="col">Admin</td>
-				</tr>
-				<tr class="row">
-					<td class="col-5">Test</td>
-					<td class="col-4">2011/04/25</td>
-					<td class="col">Admin</td>
-				</tr>
-				<tr class="row">
-					<td class="col-5">Test</td>
-					<td class="col-4">2011/04/25</td>
-					<td class="col">Admin</td>
-				</tr>
-
-			</tbody>
-
-		</table>
-	</div>
-</div>
+</nav>
+<router-outlet></router-outlet>
 

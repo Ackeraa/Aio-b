@@ -14,12 +14,12 @@
 			&nbsp;
 			<button type="button" class="btn btn-light col-2 col-md-auto"
 					onclick="document.getElementById('loadcode').click();">
-				Upload
+				<i class="fas fa-cloud-upload-alt"></i>
 			</button>
 			&nbsp;
 			<button type="button" class="btn btn-light col-2 col-md-auto"
 					(click)="clearCode()">
-				Clear
+				<i class="fas fa-broom"></i>
 			</button>
 			<input type="file" id="loadcode" (change)="loadCode($event.target.files[0])"
 					style="display: none;"/>
@@ -54,6 +54,9 @@
 	</div>
 </div>
 <br/>
-<button type="button" (click)="submit()" class="btn btn-success col-sm-2 offset-sm-5">
-	Submit
-</button>
+
+<div class="row justify-content-center">
+	<button type="button" (click)="submit()" class="btn btn-info col-sm-2">
+		<i class="fas fa-upload"></i> Submit
+	</button>
+</div>

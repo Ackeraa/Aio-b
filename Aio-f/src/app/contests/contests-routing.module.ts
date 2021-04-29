@@ -2,15 +2,19 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
 	ContestsComponent,
-	CreateComponent
+	CreateComponent,
+	RecentComponent,
+	PastComponent
 } from '.';
 
 const routes: Routes = [
 	{
-		path: '',
+		path: '', component: ContestsComponent,
 		children: [
-			{ path: '', component: ContestsComponent },
+			{ path: '', redirectTo: 'recent' },
 			{ path: 'create', component: CreateComponent },
+			{ path: 'recent', component: RecentComponent },
+			{ path: 'past', component: PastComponent },
 		]
 	},
 ];

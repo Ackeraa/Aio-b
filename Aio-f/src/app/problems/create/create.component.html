@@ -1,6 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
 	<div class="row">
-
 		<div class="col-md-4">
 			<label class="form-label"><h5>Title</h5></label>
 			<div *ngIf="name.hasError('required') && name.touched"
@@ -79,21 +78,15 @@
 		</div>
 	</div>
 	<br/>
-	<div class="row">
-		<div class="col-md-3">
-			<h3>Samples</h3>
-		</div>
-		<div class="col-md-3 offset-md-6">
-			<button type="button" class="btn btn-primary" (click)="addSample()">
-				添加样例
-			</button>
-		</div>
-	</div>
+	<h3>
+		Samples
+		<button type="button" class="btn btn-light" (click)="addSample()">
+			<i class="fas fa-plus"></i>
+		</button>
+	</h3>
+
 	<div  formArrayName="samples" *ngFor="let sample of sampleControls; let i = index;">
 		<div [formGroupName]="i">
-			<button type="button" class="btn btn-danger" (click)="removeSample(i, sample)">
-				删除样例
-			</button>
 			<div class="row">
 				<div class="col-md-12">
 					<div *ngIf="sample.controls['sample_input'].hasError('required') &&
@@ -107,9 +100,17 @@
 						Output sample is required.
 					</div>
 					<div class="card-group">
-						<div class="card shadow-sm">
-							<div class="card-header" style="background-color:#FCFCFC">
-								Input {{i + 1}}
+						<div class="card shadow-sm border-secondary">
+							<div class="card-header bg-transparent border-secondary">
+								<div class="row justify-content-between">
+									<div class="col-11">
+										Input {{i + 1}}
+									</div>
+									<a (click)="removeSample(i, sample)">
+										<i class="fas fa-times"></i>
+									</a>
+									&nbsp;
+								</div>
 							</div>
 							<div class="card-body">
 								<textarea style="overflow-y:auto; height:15vh; border:0"
@@ -118,9 +119,17 @@
 							</div>
 						</div>
 						<div class="col-1"> </div>
-						<div class="card shadow-sm">
-							<div class="card-header" style="background-color:#FCFCFC">
-								Output {{i + 1}}
+						<div class="card shadow-sm border-secondary">
+							<div class="card-header bg-transparent border-secondary">
+								<div class="row justify-content-between">
+									<div class="col-11">
+										Output {{i + 1}}
+									</div>
+									<a (click)="removeSample(i, sample)">
+										<i class="fas fa-times"></i>
+									</a>
+									&nbsp;
+								</div>
 							</div>
 							<div class="card-body">
 								<textarea style="overflow-y:auto; height:15vh; border:0"
@@ -130,6 +139,7 @@
 						</div>
 						<div class="col-1"> </div>
 					</div>
+					<br/>
 				</div>
 			</div>
 		</div>
@@ -199,12 +209,10 @@
 	<app-problems-upload (uploadEvent)="setToken($event)"></app-problems-upload>
 	<br/>
 
-	<div class="row">
-		<div class="col-md-4 offset-md-4">
-			<button type="submit" class="btn btn-primary btn-block">
-				Submit
-			</button>
-		</div>
+	<div class="row justify-content-center">
+		<button type="button" class="btn btn-info col-sm-4">
+			<i class="fas fa-upload"></i> Submit
+		</button>
 	</div>
 	<br/>
 </form>

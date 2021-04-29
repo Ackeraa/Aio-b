@@ -2,33 +2,28 @@
 	<div class="card-body">
 		<table class="table table-hover">
 			<thead>
-				<tr class="row">
-					<th class="col-1">
-						#
-					</th>
-					<th class="col">
-						NAME
-					</th>
-					<th class="col">
-						STATUS
-					</th>
-					<th class="col">
-						PASS RATE
-					</th>
-					<th class="col">
-					</th>
+				<tr>
+					<th> # </th>
+					<th> NAME </th>
+					<th> STATUS </th>
+					<th> PASS RATE </th>
+					<th> </th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of problems" class="row">
-					<td class="col-1"><a href="#">{{problem.id}}</a></td>
-					<td class="col">{{problem.name}}</td>
-					<td class="col">Accept</td>
-					<td class="col">3/45</td>
-					<td class="col">
-						<button type="button" class="btn btn-primary"
+				<tr *ngFor="let problem of problems">
+					<td><a href="#">{{problem.id}}</a></td>
+					<td>
+						<span class="align-text-bottom">
+						{{problem.name}}
+						</span>
+					</td>
+					<td>Accept</td>
+					<td>3/45</td>
+					<td>
+						<button type="button" class="btn btn-outline-danger"
 								(click)="deleteProblem(problem.id)">
-							Delete
+							<i class="far fa-trash-alt"></i>
 						</button>
 					</td>
 				</tr>
@@ -51,36 +46,27 @@
 		</div>
 		<table *ngIf="!loading" class="table table-hover">
 			<thead>
-				<tr class="row">
-					<th class="col">
-						#
-					</th>
-					<th class="col">
-						NAME
-					</th>
-					<th class="col">
-						PASS RATE
-					</th>
-					<th class="col">
-						DIFFICULTY
-					</th>
-					<th class="col">
-					</th>
+				<tr>
+					<th> # </th>
+					<th> NAME </th>
+					<th> PASS RATE </th>
+					<th> DIFFICULTY </th>
+					<th> </th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of allProblems" class="row">
-					<td class="col" (click)="viewProblem(problem.source, problem.id)">
+				<tr *ngFor="let problem of allProblems">
+					<td (click)="viewProblem(problem.source, problem.id)">
 						{{problem.vid}}
 					</td>
-					<td class="col">{{problem.name}}</td>
-					<td class="col">1/100</td>
-					<td class="col">Hard</td>
-					<td class="col">
-						<button type="button" class="btn btn-primary"
+					<td>{{problem.name}}</td>
+					<td>1/100</td>
+					<td>Hard</td>
+					<td>
+						<button type="button" class="btn btn-outline-dark"
 								(click)="addProblem(problem.id)"
 							    [disabled]="isAdded(problem.id)">
-							Add
+								<i class="fas fa-plus"></i>
 						</button>
 					</td>
 				</tr>

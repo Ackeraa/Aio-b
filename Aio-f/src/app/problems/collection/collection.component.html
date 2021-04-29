@@ -11,20 +11,12 @@
 		</div>
 		<table *ngIf="!loading" class="table table-hover">
 			<thead>
-				<tr class="row">
-					<th class="col">
-						#
-					</th>
-					<th class="col">
-						SOURCE
-					</th>
-					<th class="col">
-						TITLE
-					</th>
-					<th class="col">
-						STATUS
-					</th>
-					<th class="col">
+				<tr>
+					<th> # </th>
+					<th> SOURCE </th>
+					<th> TITLE </th>
+					<th> STATUS </th>
+					<th>
 						<div class="custom-control custom-switch">
 							<input type="checkbox" class="custom-control-input" id="tags">
 							<label class="custom-control-label" for="tags">TAGS</label>
@@ -33,13 +25,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of problems" class="row" 
-					 (click)="viewProblem(problem.source, problem.id)">
-					<td class="col">{{problem.id}}</td>
-					<td class="col">{{problem.vid}}</td>
-					<td class="col">{{problem.name}}</td>
-					<td class="col">22/45</td>
-					<td class="col">Hard</td>
+				<tr *ngFor="let problem of problems" (click)="viewProblem(problem.source, problem.id)">
+					<td>{{problem.id}}</td>
+					<td>{{problem.vid}}</td>
+					<td>{{problem.name}}</td>
+					<td>22/45</td>
+					<td>Hard</td>
 				</tr>
 			</tbody>
 		</table>
