@@ -3,6 +3,7 @@ import { Subject, Observable, fromEvent } from 'rxjs';
 import { map, filter, debounceTime, tap } from 'rxjs/operators'; 
 import { Router } from '@angular/router';
 import { ContestService } from '../contest.service';
+import { SearchService } from '../../problems/search/search.service';
 
 @Component({
 	selector: 'app-contest-problems',
@@ -14,24 +15,40 @@ export class ProblemsComponent implements OnInit {
 	loading: boolean;
 	allProblems: any;
 	problems: Array<any>;
+	p: number;
+	total: number;
 
 	constructor(private router: Router,
-			    private contestService: ContestService) {
+			    private contestService: ContestService,
+			    private searchService: SearchService) {
 	}
 
 	ngOnInit(): void {
+		this.p = 1;
 		this.problems = [];
 		this.contestService.problems$
 			.subscribe(problems => this.problems = problems);
 	}
 
-	setAllProblems(problems: any): void {
-		this.allProblems = problems;
+	setAllProblems(data: any): void {
+		this.allProblems = data.problems;
+		this.total = data.total;
+		this.p = 1;
+	}
+
+	getPage(page: number): void {
+		this.searchService.getPage(page)
+			.subscribe(data => {
+				this.allProblems = data.problems;
+				this.total = data.total;
+				this.p = page;
+			});
 	}
 
 	setLoading(loading: boolean): void {
 		this.loading = loading;
 	}
+
 
 	viewProblem(source: string, id: string): void {
 		let url: string;

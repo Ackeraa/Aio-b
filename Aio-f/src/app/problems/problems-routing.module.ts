@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProblemsComponent } from './problems.component';
 import {
-	SetsComponent,
 	BetaComponent,
 	CreateComponent,
 	CollectionComponent
@@ -15,7 +14,6 @@ const routes: Routes = [
 		children: [
 			{ path: '', redirectTo: 'collection' },
 			{ path: 'collection', component: CollectionComponent },
-			{ path: 'sets', component: SetsComponent }, 
 			{ path: 'beta', component: BetaComponent },
 			{ path: 'create', component: CreateComponent },
 		]

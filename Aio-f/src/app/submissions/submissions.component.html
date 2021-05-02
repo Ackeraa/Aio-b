@@ -1,0 +1,33 @@
+<nav aria-label="Page navigation example">
+	<ul class="pagination">
+		<!--0-->
+		<li class="page-item" #pageClass>
+			<a class="page-link" (click)="setPage(0)">1</a>
+		</li>
+		<!--1-->
+		<li class="page-item hide" #pageClass>
+			<a class="page-link" (click)="setPage(1)">&hellip;</a>
+		</li>
+		<!--2-->
+		<li class="page-item" #pageClass>
+			<a class="page-link" (click)="setPage(2)">2</a>
+		</li>
+		<!--3-->
+		<li class="page-item" #pageClass>
+			<a class="page-link" (click)="setPage(3)">3</a>
+		</li>
+		<!--4-->
+		<li class="page-item" #pageClass>
+			<a class="page-link" (click)="setPage(4)">4</a>
+		</li>
+		<!--5-->
+		<li class="page-item" #pageClass>
+			<a class="page-link" (click)="setPage(5)">&hellip;</a>
+		</li>
+		<!--6-->
+		<li class="page-item" #pageClass>
+			<a class="page-link" (click)="setPage(6)">{{pages}}</a>
+		</li>
+
+	</ul>
+</nav>

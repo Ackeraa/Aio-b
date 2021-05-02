@@ -2,28 +2,28 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ContestsRoutingModule } from './contests-routing.module';
+import { ProblemSetsRoutingModule } from './problem-sets-routing.module';
 import {
-	ContestsComponent,
+	ProblemSetsComponent,
 	CreateComponent,
-	RecentComponent,
-	PastComponent 
+	PrivateComponent,
+	PublicComponent
 } from '.';
 
 @NgModule({
 	declarations: [
 		CreateComponent,
-		RecentComponent,
-		PastComponent
+		PrivateComponent,
+		PublicComponent
 	],
 	imports: [
 		CommonModule,
 		NgbModule,
-		ContestsRoutingModule,
+		ProblemSetsRoutingModule,
 		FormsModule,
 		ReactiveFormsModule,
 	],
 	exports: [
 	]
 })
-export class ContestsModule { }
+export class ProblemSetsModule { }

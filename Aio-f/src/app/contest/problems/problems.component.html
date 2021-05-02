@@ -55,7 +55,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of allProblems">
+
+				<tr *ngFor="let problem of allProblems | paginate:
+						{itemsPerPage:20, currentPage:p, totalItems:total}">
 					<td (click)="viewProblem(problem.source, problem.id)">
 						{{problem.vid}}
 					</td>
@@ -74,4 +76,13 @@
 
 		</table>
 	</div>
+</div>
+<br/>
+<div class="row justify-content-center">
+	<pagination-controls class="paginator"
+		(pageChange)="getPage($event)"
+		auotHide="true"
+		previousLabel=""
+		nextLabel="" >
+	</pagination-controls>
 </div>

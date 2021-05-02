@@ -25,7 +25,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let problem of problems" (click)="viewProblem(problem.source, problem.id)">
+				<tr *ngFor="let problem of problems | paginate:
+							{itemsPerPage:20, currentPage:p, totalItems:total}" 
+							(click)="viewProblem(problem.source, problem.id)">
 					<td>{{problem.id}}</td>
 					<td>{{problem.vid}}</td>
 					<td>{{problem.name}}</td>
@@ -36,28 +38,12 @@
 		</table>
 	</div>
 </div>
-
 <br/>
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-<div class="checkbox">
-<label>
-<span>Text goes here</span>
-	<input type="checkbox" class="checkbox style-2 " checked="checked">
-</label>
-</div>  
+<div class="row justify-content-center">
+	<pagination-controls class="paginator"
+		(pageChange)="getPage($event)"
+		auotHide="true"
+		previousLabel=""
+		nextLabel="" >
+	</pagination-controls>
+</div>

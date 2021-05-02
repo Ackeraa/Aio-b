@@ -4,6 +4,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProblemsRoutingModule } from './problems-routing.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ProblemsComponent } from './problems.component';
 
 import {
@@ -29,7 +30,8 @@ import {
 		FileUploadModule,
 		ReactiveFormsModule,
 		MarkdownModule.forChild(),
-		ProblemsRoutingModule
+		ProblemsRoutingModule,
+		NgxPaginationModule
 	],
 	exports: [
 		SearchComponent

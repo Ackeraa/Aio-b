@@ -3,6 +3,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ContestRoutingModule } from './contest-routing.module';
 import { ProblemsModule } from '../problems/problems.module';
@@ -26,6 +27,7 @@ import {
 	imports: [
 		CommonModule,
 		RouterModule,
+		NgxPaginationModule,
 		FormsModule,
 		CodemirrorModule,
 		ContestRoutingModule,
