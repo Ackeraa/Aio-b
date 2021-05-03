@@ -1,6 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subject, Observable, fromEvent } from 'rxjs';
-import { map, filter, switchAll, debounceTime, tap } from 'rxjs/operators'; 
+import { Component, OnInit } from '@angular/core';
 import { ProblemSetsService } from '../problem-sets.service';
 
 @Component({
@@ -10,8 +8,9 @@ import { ProblemSetsService } from '../problem-sets.service';
 })
 export class PublicComponent implements OnInit {
 
-	@ViewChild('query', { static: true }) query: ElementRef;
 
+	which: string = 'problem_sets';
+	others: string = 'public';
 	loading: boolean;
 	problemSets: Array<any>;
 	p: number;
@@ -20,54 +19,23 @@ export class PublicComponent implements OnInit {
 	constructor(private problemSetsService: ProblemSetsService) { }
 
 	ngOnInit(): void {
-		this.problemSetsService.search('public', '')
-		.pipe(tap(() => this.loading = true))
-		.subscribe(
-			(data: any) => {
-				this.loading = false;
-				this.problemSets = data.problem_sets;
-				this.total = data.total;
-			},
-			(err: any) => {
-				this.loading = false;
-				console.log(err);
-			},
-			() => {
-				this.loading = false;
-			}
-		);
-		//Observer of query change.
-		fromEvent(this.query.nativeElement, 'keyup')
-		.pipe(
-			map((e: any) => e.target.value),
-			debounceTime(300),
-			tap(() => this.loading = true),
-			map((query: string) => this.problemSetsService.search('public', query)),
-			switchAll()
-		)
-		.subscribe(
-			(data: any) => {
-				this.loading = false;
-				this.problemSets = data.problem_sets;
-				this.total = data.total;
-			},
-			(err: any) => {
-				this.loading = false;
-				console.log(err);
-			},
-			() => {
-				this.loading = false;
-			}
-		);
+	}
+
+	setProblemSets(data: any): void {
+		this.problemSets = data.problem_sets;
+		this.total = data.total;
+	}
+
+	setLoading(loading: boolean): void {
+		this.loading = loading;
 	}
 
 	getPage(page: number): void {
-		this.problemSetsService.getPage('public', page)
+		this.problemSetsService.getPage(page)
 			.subscribe(data => {
 				this.problemSets = data.problemSets;
 				this.total = data.total;
 				this.p = page;
 			});
 	}
-
 }

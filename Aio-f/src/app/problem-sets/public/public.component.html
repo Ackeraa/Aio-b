@@ -1,8 +1,11 @@
 <div class="card shadow-sm">
 	<div class="card-body">
-		<div class="row justify-content-center">
-			<input #query type="text" class="form-control col-4" placeholder="Search">
-		</div>
+		<app-search
+			[which]="which"
+			[others]="others"
+			(itemsEvent)="setProblemSets($event)" 
+			(loadingEvent)="setLoading($event)" >
+		</app-search>
 		<br/>
 		<table class="table table-hover">
 			<thead>
