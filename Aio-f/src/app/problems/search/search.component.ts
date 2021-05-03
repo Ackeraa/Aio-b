@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Subject, Observable, fromEvent } from 'rxjs';
-import { map, filter, debounceTime, tap } from 'rxjs/operators'; 
+import { map, filter, debounceTime, tap, switchAll } from 'rxjs/operators'; 
 import { Router } from '@angular/router';
 import { SearchService } from './search.service';
 
@@ -53,15 +53,16 @@ export class SearchComponent implements OnInit {
 		fromEvent(this.query.nativeElement, 'keyup')
 		.pipe(
 			map((e: any) => e.target.value),
-			debounceTime(250),
+			debounceTime(300),
 			tap(() => this.loadingEvent.emit(true)),
 			map((query: string) => this.searchService.search(
 						this.source.nativeElement.value.toLowerCase(), query)),
-			)
+			switchAll()
+		)
 		.subscribe(
-			(obs: any) => {
+			(data: any) => {
 				this.loadingEvent.emit(false);
-				obs.subscribe(data => this.problemsEvent.emit(data));
+				this.problemsEvent.emit(data);
 			},
 			(err: any) => {
 				this.loadingEvent.emit(false);

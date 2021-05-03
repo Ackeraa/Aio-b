@@ -1,1 +1,35 @@
-<p>public works!</p>
+<div class="card shadow-sm">
+	<div class="card-body">
+		<div class="row justify-content-center">
+			<input #query type="text" class="form-control col-4" placeholder="Search">
+		</div>
+		<br/>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th> Title </th>
+					<th> Description </th>
+					<th> Author </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let problemSet of problemSets | paginate:
+						{itemsPerPage:20, currentPage:p, totalItems:total}">
+					<td routerLink="/problem-set/{{problemSet.id}}">{{problemSet.title}}</td>
+					<td>{{problemSet.description}}</td>
+					<td>{{problemSet.creater}}</td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+</div>
+<br/>
+<div class="row justify-content-center">
+	<pagination-controls class="paginator"
+		(pageChange)="getPage($event)"
+		auotHide="true"
+		previousLabel=""
+		nextLabel="" >
+	</pagination-controls>
+</div>

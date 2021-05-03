@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-private',
+  selector: 'app-problem-sets-private',
   templateUrl: './private.component.html',
   styleUrls: ['./private.component.scss']
 })

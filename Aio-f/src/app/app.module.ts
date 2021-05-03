@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule} from 'ngx-markdown';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ProblemsModule } from './problems/problems.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -18,6 +19,7 @@ import { ContestComponent } from './contest';
 import { ProblemsComponent } from './problems';
 import { ProblemComponent } from './problem';
 import { ProblemSetsComponent } from './problem-sets';
+import { ProblemSetComponent } from './problem-set';
 import { SubmissionsComponent } from './submissions';
 import { DiscussionComponent } from './discussion';
 import { GroupsComponent } from './groups';
@@ -45,6 +47,7 @@ import {
 		FileUploadModule,
         AppRoutingModule,
 		NgxPaginationModule,
+		ProblemsModule,
 
 		FormsModule,
 		HttpModule,
@@ -68,6 +71,7 @@ import {
 		HeaderComponent,
 		FooterComponent,
 		ProblemSetsComponent,
+		ProblemSetComponent,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -1,5 +1,6 @@
 class VproblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy, :respide, :submit]
+  before_action :set_page, only: [:search]
 
   # GET /vproblems
   # Need to be fixed.
@@ -22,7 +23,8 @@ class VproblemsController < ApplicationController
     source = params[:source]
     query = params[:query]
     if query.nil? 
-      @problems = Problem.where(source: source).order(:id).limit(20)
+      total = Problem.where(source: source).count
+      @problems = Problem.where(source: source).order(:id).limit(20).offset(@page * 20)
       if @problems.empty?
         puts "FUCK YOU SPIDE AGAIN, BUG APPEARS"
         spider = get_spider(source)
@@ -30,14 +32,16 @@ class VproblemsController < ApplicationController
         problems.each do |problem|
           Problem.create(problem)
         end
-        @problems = Problem.where(source: source).order(:id).limit(20)
+        total = Problem.where(source: source).count
+        @problems = Problem.where(source: source).order(:id).limit(20).offset(@page * 20)
       end
     else
+      total = Problem.where('source=? and name ilike (?)', source.downcase, "%#{query}%").count
       @problems = Problem.where('source=? and name ilike (?)', 
                                 source.downcase, "%#{query}%")
-                         .order(:id).limit(20)
+                         .order(:id).limit(20).offset(@page * 20)
     end
-    render json: @problems
+    render json: { total: total, problems: @problems }
   end
 
   # GET /vproblems/1
@@ -136,7 +140,11 @@ class VproblemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    
+    def set_page
+      @page = (params[:page] || 1).to_i - 1
+    end
+
     def set_problem
       @problem = Problem.find(params[:id])
     end

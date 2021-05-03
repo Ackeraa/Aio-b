@@ -12,6 +12,7 @@ import { UsersComponent } from './users';
 import { WikiComponent } from './wiki';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+import { ProblemSetComponent } from './problem-set';
 import { AuthGuard } from './_helpers';
 
 const routes: Routes = [
@@ -47,6 +48,9 @@ const routes: Routes = [
 		path: 'problem-sets',
 		data: { preload: true },
 		loadChildren: () => import('./problem-sets/problem-sets.module').then(m => m.ProblemSetsModule)
+	},
+	{
+		path: 'problem-set/:id', component: ProblemSetComponent
 	},
 	{ path: 'submissions', component: SubmissionsComponent },
 	{ path: 'discussion', component: DiscussionComponent },

@@ -803,7 +803,7 @@ end
 | :---------: | :-----: | :---------: |
 |     id      | integer | primary key |
 |   creater   | string  |             |
-|    name     | string  |             |
+|    title    | string  |             |
 | description |  text   |             |
 | created_at  |  date   |             |
 | updated_at  |  date   |             |

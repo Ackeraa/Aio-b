@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_23_082600) do
+ActiveRecord::Schema.define(version: 2021_05_03_033636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,10 +173,17 @@ ActiveRecord::Schema.define(version: 2021_04_23_082600) do
 
   create_table "problem_sets", force: :cascade do |t|
     t.string "creater"
-    t.string "name"
+    t.string "title"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "problem_sets_problems", force: :cascade do |t|
+    t.bigint "problem_set_id", null: false
+    t.bigint "problem_id", null: false
+    t.index ["problem_id"], name: "index_problem_sets_problems_on_problem_id"
+    t.index ["problem_set_id"], name: "index_problem_sets_problems_on_problem_set_id"
   end
 
   create_table "problems", force: :cascade do |t|
@@ -353,6 +360,8 @@ ActiveRecord::Schema.define(version: 2021_04_23_082600) do
   add_foreign_key "oi_contest_ranks", "users"
   add_foreign_key "oi_contest_ranks_contests", "contests"
   add_foreign_key "oi_contest_ranks_contests", "oi_contest_ranks"
+  add_foreign_key "problem_sets_problems", "problem_sets"
+  add_foreign_key "problem_sets_problems", "problems"
   add_foreign_key "problems_problem_sets", "problem_sets"
   add_foreign_key "problems_problem_sets", "problems"
   add_foreign_key "problems_tags", "problems"

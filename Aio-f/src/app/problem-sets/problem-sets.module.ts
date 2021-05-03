@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProblemSetsRoutingModule } from './problem-sets-routing.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 import {
 	ProblemSetsComponent,
 	CreateComponent,
@@ -18,10 +18,10 @@ import {
 	],
 	imports: [
 		CommonModule,
-		NgbModule,
 		ProblemSetsRoutingModule,
 		FormsModule,
 		ReactiveFormsModule,
+		NgxPaginationModule
 	],
 	exports: [
 	]

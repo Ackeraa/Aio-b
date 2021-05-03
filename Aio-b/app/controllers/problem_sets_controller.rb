@@ -1,11 +1,51 @@
 class ProblemSetsController < ApplicationController
-  before_action :set_problem_set, only: [:show, :update, :destroy]
+  before_action :set_problem_set, only: [:show, :update, :destroy,
+                                     :problems, :add_problem, :delete_problem]
+  before_action :set_page, only: [:search]
 
   # GET /problem_sets
   def index
     @problem_sets = ProblemSet.all
 
     render json: @problem_sets
+  end
+
+  # GET /problem_sets/search
+  def search
+    which = params[:which]
+    query = params[:query]
+    if which == 'public'
+      if query.nil?
+        @problem_sets = ProblemSet.limit(20).offset(@page * 20)
+      else
+        @problem_sets = ProblemSet.where('title ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
+      end
+    else
+      # Need to be fixed.
+      @problem_sets = ProblemSet.limit(20).offset(@page * 20)
+    end
+    render json: @problem_sets
+  end
+
+  # GET /problem_sets/1/problems
+  def problems
+    render json: @problem_set.problems
+  end
+
+  # GET /problem_sets/1/add_problem/1
+  def add_problem
+    if not @problem_set.problems.exists?(params[:problem_id])
+      @problem_set.problems << Problem.find(params[:problem_id])
+    end
+    render json: @problem_set.problems
+  end
+
+  # GET /problem_sets/1/delete_problem/1
+  def delete_problem
+    if @problem_set.problems.exists?(params[:problem_id])
+      @problem_set.problems.delete(Problem.find(params[:problem_id])) 
+    end
+    render json: @problem_set.problems
   end
 
   # GET /problem_sets/1
@@ -39,6 +79,11 @@ class ProblemSetsController < ApplicationController
   end
 
   private
+
+    def set_page
+      @page = (params[:page] || 1).to_i - 1
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_problem_set
       @problem_set = ProblemSet.find(params[:id])
@@ -46,6 +91,6 @@ class ProblemSetsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def problem_set_params
-      params.fetch(:problem_set, {})
+      params.permit(ProblemSet.column_names - ['created_at', 'updated_at'])
     end
 end
