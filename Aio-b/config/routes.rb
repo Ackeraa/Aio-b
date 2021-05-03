@@ -48,13 +48,20 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :groups do
+    collection do
+      get  'search',                      :action => 'search'
+      get ':id/add_group/:group_id',        :action => 'add_group'     
+      get ':id/delete_group/:group_id',     :action => 'delete_group'     
+    end
+  end
+
   resources :items
   resources :solutions
   resources :problems
   resources :vproblems
   resources :submission_records 
   resources :homes
-  resources :groups
   resources :discussions
   resources :comments
   resources :contests

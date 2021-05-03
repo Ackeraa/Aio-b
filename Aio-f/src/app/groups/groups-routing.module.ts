@@ -10,7 +10,7 @@ const routes: Routes = [
 	{
 		path: '', component: GroupsComponent,
 		children: [
-			{ path: '', redirectTo: 'problems', pathMatch: 'full' },
+			{ path: '', redirectTo: 'my-groups', pathMatch: 'full' },
 			{ path: 'my-groups', component: MyGroupsComponent },
 			{ path: 'explore', component: ExploreComponent },
 		]

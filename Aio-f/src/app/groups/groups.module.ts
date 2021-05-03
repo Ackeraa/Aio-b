@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { GroupsRoutingModule } from './groups-routing.module';
 import {
 	ExploreComponent,
@@ -13,7 +14,8 @@ import {
 	],
 	imports: [
 		CommonModule,
-		GroupsRoutingModule
+		GroupsRoutingModule,
+		NgxPaginationModule
 	],
 	exports: [
 		ExploreComponent,
