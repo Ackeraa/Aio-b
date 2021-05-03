@@ -16,15 +16,18 @@ class ProblemSetsController < ApplicationController
     query = params[:query]
     if which == 'public'
       if query.nil?
+        total = ProblemSet.count
         @problem_sets = ProblemSet.limit(20).offset(@page * 20)
       else
+        total = ProblemSet.where('title ilike(?)',  "%#{query}%").count
         @problem_sets = ProblemSet.where('title ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
       end
     else
       # Need to be fixed.
+      total = ProblemSet.count
       @problem_sets = ProblemSet.limit(20).offset(@page * 20)
     end
-    render json: @problem_sets
+    render json: { total: total, problem_sets: @problem_sets }
   end
 
   # GET /problem_sets/1/problems

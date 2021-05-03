@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 import { UsersRoutingModule } from './users-routing.module';
 import {
@@ -14,7 +16,8 @@ import {
 	],
 	imports: [
 		CommonModule,
-		UsersRoutingModule
+		UsersRoutingModule,
+		NgxPaginationModule
 	],
 	exports: [
 		MyInfoComponent,

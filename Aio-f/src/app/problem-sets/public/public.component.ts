@@ -25,7 +25,8 @@ export class PublicComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				this.loading = false;
-				this.problemSets = data;
+				this.problemSets = data.problem_sets;
+				this.total = data.total;
 			},
 			(err: any) => {
 				this.loading = false;
@@ -47,7 +48,8 @@ export class PublicComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				this.loading = false;
-				this.problemSets = data;
+				this.problemSets = data.problem_sets;
+				this.total = data.total;
 			},
 			(err: any) => {
 				this.loading = false;

@@ -30,12 +30,21 @@ Rails.application.routes.draw do
     end
   end
 
+
   resources :problem_sets do
     collection do
       get  'search',                            :action => 'search'
       get ':id/problems',                       :action => 'problems'     
       get ':id/add_problem/:problem_id',        :action => 'add_problem'     
       get ':id/delete_problem/:problem_id',     :action => 'delete_problem'     
+    end
+  end
+
+  resources :users do
+    collection do
+      get  'search',                      :action => 'search'
+      get ':id/add_user/:user_id',        :action => 'add_user'     
+      get ':id/delete_user/:user_id',     :action => 'delete_user'     
     end
   end
 
