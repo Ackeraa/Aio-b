@@ -6,12 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProblemsRoutingModule } from './problems-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ProblemsComponent } from './problems.component';
+import { ProblemSearchModule } from '../_components';
 
 import {
 	CreateComponent,
 	BetaComponent,
 	UploadComponent,
-	SearchComponent,
 	CollectionComponent,
 } from '.';
 
@@ -20,9 +20,7 @@ import {
 		CreateComponent,
 		BetaComponent,
 		UploadComponent,
-		SearchComponent,
 		CollectionComponent,
-		SearchComponent
 	],
 	imports: [
 		CommonModule,
@@ -31,10 +29,10 @@ import {
 		ReactiveFormsModule,
 		MarkdownModule.forChild(),
 		ProblemsRoutingModule,
-		NgxPaginationModule
+		NgxPaginationModule,
+		ProblemSearchModule 
 	],
 	exports: [
-		SearchComponent
 	],
 })
 export class ProblemsModule { }

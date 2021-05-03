@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
 	providedIn: 'root'
 })
-export class SearchService {
+export class ProblemSearchService {
 
 	source: string;
 	query: string;
@@ -34,7 +34,7 @@ export class SearchService {
 			url = 'vproblems/search';
 		}
 		return this.tokenService.get(url, params)
-			       .pipe(map(res => res.json()));
+		.pipe(map(res => res.json()));
 	}
 
 	getPage(page: number): Observable<any> {
@@ -53,15 +53,14 @@ export class SearchService {
 			url = 'vproblems/search';
 		}
 		return this.tokenService.get(url, params)
-			       .pipe(map(res => res.json()));
+		.pipe(map(res => res.json()));
 	}
 
 	reSpideProblems(source: string): Observable<any> {
 		let url = 'vproblems/respides';
 		return this.tokenService.get(
-					"vproblems/respides",
-					{ search: { source: source } }
-				).pipe(map(res => res.json()));
+			"vproblems/respides",
+			{ search: { source: source } }
+		).pipe(map(res => res.json()));
 	}
-
 }

@@ -6,7 +6,8 @@ import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ContestRoutingModule } from './contest-routing.module';
-import { ProblemsModule } from '../problems/problems.module';
+import { ProblemSearchModule } from '../_components';
+
 import {
 	MySubmissionsComponent,
 	ProblemsComponent, 
@@ -31,7 +32,7 @@ import {
 		FormsModule,
 		CodemirrorModule,
 		ContestRoutingModule,
-		ProblemsModule 
+		ProblemSearchModule
 	],
 	exports: [
 	]

@@ -3,6 +3,7 @@ import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
 import { AuthService } from '../_services';
+import { ProblemSearchService } from '../_components';
 
 
 @Injectable({
@@ -12,7 +13,12 @@ export class ProblemSetService {
 
 	id: string;
 
-	constructor(private tokenService: Angular2TokenService) {
+	constructor(private tokenService: Angular2TokenService,
+			    private problemSearchService: ProblemSearchService) {
+	}
+
+	getPage(page: number): Observable<any> {
+		return this.problemSearchService.getPage(page);
 	}
 
 	getProblems(id: string): Observable<any> {

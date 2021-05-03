@@ -3,7 +3,6 @@ import { Subject, Observable, fromEvent } from 'rxjs';
 import { map, filter, debounceTime, tap } from 'rxjs/operators'; 
 import { Router } from '@angular/router';
 import { ContestService } from '../contest.service';
-import { SearchService } from '../../problems/search/search.service';
 
 @Component({
 	selector: 'app-contest-problems',
@@ -19,8 +18,7 @@ export class ProblemsComponent implements OnInit {
 	total: number;
 
 	constructor(private router: Router,
-			    private contestService: ContestService,
-			    private searchService: SearchService) {
+			    private contestService: ContestService){
 	}
 
 	ngOnInit(): void {
@@ -37,7 +35,7 @@ export class ProblemsComponent implements OnInit {
 	}
 
 	getPage(page: number): void {
-		this.searchService.getPage(page)
+		this.contestService.getPage(page)
 			.subscribe(data => {
 				this.allProblems = data.problems;
 				this.total = data.total;

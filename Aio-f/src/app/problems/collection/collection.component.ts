@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subject, Observable, fromEvent } from 'rxjs';
 import { map, filter, debounceTime, tap } from 'rxjs/operators'; 
 import { Router } from '@angular/router';
-import { SearchService } from '../search/search.service';
+import { ProblemsService } from '../problems.service';
 
 @Component({
 	selector: 'app-problems-collection',
@@ -18,7 +18,7 @@ export class CollectionComponent implements OnInit {
 	total: number;
 
 	constructor(private router: Router,
-			    private searchService: SearchService) {
+			    private problemsService: ProblemsService) {
 	}
 
 	ngOnInit(): void {
@@ -31,7 +31,7 @@ export class CollectionComponent implements OnInit {
 	}
 
 	getPage(page: number): void {
-		this.searchService.getPage(page)
+		this.problemsService.getPage(page)
 			.subscribe(data => {
 				this.problems = data.problems;
 				this.total = data.total;

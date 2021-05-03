@@ -1,22 +1,22 @@
 <div class="card shadow-sm">
 
 	<div class="card-body">
-		<app-problems-search
+		<app-problem-search
 			(problemsEvent)="setProblems($event)" 
 			(loadingEvent)="setLoading($event)" >
-		</app-problems-search>
+		</app-problem-search>
 		<br/>
 		<div *ngIf="loading" class="row">
 			Loading...
 		</div>
-		<table *ngIf="!loading" class="table table-hover">
+		<table class="table table-hover">
 			<thead>
-				<tr>
-					<th> # </th>
-					<th> SOURCE </th>
-					<th> TITLE </th>
-					<th> STATUS </th>
-					<th>
+				<tr class="row">
+					<th class="col-1"> # </th>
+					<th class="col"> SOURCE </th>
+					<th class="col"> TITLE </th>
+					<th class="col"> STATUS </th>
+					<th class="col">
 						<div class="custom-control custom-switch">
 							<input type="checkbox" class="custom-control-input" id="tags">
 							<label class="custom-control-label" for="tags">TAGS</label>
@@ -24,15 +24,15 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr *ngFor="let problem of problems | paginate:
-							{itemsPerPage:20, currentPage:p, totalItems:total}" 
-							(click)="viewProblem(problem.source, problem.id)">
-					<td>{{problem.id}}</td>
-					<td>{{problem.vid}}</td>
-					<td>{{problem.name}}</td>
-					<td>22/45</td>
-					<td>Hard</td>
+			<tbody *ngIf="!loading">
+				<tr class="row" *ngFor="let problem of problems | paginate:
+						{itemsPerPage:20, currentPage:p, totalItems:total}" 
+						(click)="viewProblem(problem.source, problem.id)">
+					<td class="col-1">{{problem.id}}</td>
+					<td class="col">{{problem.vid}}</td>
+					<td class="col">{{problem.name}}</td>
+					<td class="col">22/45</td>
+					<td class="col">Hard</td>
 				</tr>
 			</tbody>
 		</table>

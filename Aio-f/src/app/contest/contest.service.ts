@@ -4,6 +4,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
 import { AuthService } from '../_services';
+import { ProblemSearchService } from '../_components';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,7 +16,8 @@ export class ContestService implements OnInit {
 
 	constructor(private authService: AuthService,
 				private cableService: ActionCableService,
-				private tokenService: Angular2TokenService) {
+				private tokenService: Angular2TokenService,
+			    private problemSearchService: ProblemSearchService) {
 	}
 
 	ngOnInit() {
@@ -29,6 +31,10 @@ export class ContestService implements OnInit {
 			.subscribe(problems => {
 				this.problems$.next(problems);
 			});
+	}
+
+	getPage(page: number): Observable<any> {
+		return this.problemSearchService.getPage(page);
 	}
 
 	addProblem(problem_id: string): void {
