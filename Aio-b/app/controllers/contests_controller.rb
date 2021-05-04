@@ -1,12 +1,25 @@
 class ContestsController < ApplicationController
   before_action :set_contest, only: [:show, :update, :destroy,
                                      :problems, :add_problem, :delete_problem]
+  before_action :set_page, only: [:search]
 
   # GET /contests
   def index
     @contests = Contest.all
 
     render json: @contests
+  end
+
+  # GET /contests/search
+  def search
+    query = params[:query]
+    which = params[:which]
+    if which == 'recent'
+      total = Contest.where('name ilike(?)',  "%#{query}%").count
+      @contests = Contest.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
+    else
+    end
+    render json: { total: total, contests: @contests }
   end
 
   # GET /contests/1
@@ -61,6 +74,11 @@ class ContestsController < ApplicationController
   end
 
   private
+
+    def set_page
+      @page = (params[:page] || 1).to_i - 1
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_contest
       @contest = Contest.find(params[:id])

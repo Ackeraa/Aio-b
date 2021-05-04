@@ -18,7 +18,7 @@
 			<tbody>
 				<tr *ngFor="let problemSet of problemSets | paginate:
 						{itemsPerPage:20, currentPage:p, totalItems:total}">
-					<td routerLink="/problem-set/{{problemSet.id}}">{{problemSet.title}}</td>
+					<td routerLink="/problem-set/{{problemSet.id}}">{{problemSet.name}}</td>
 					<td>{{problemSet.description}}</td>
 					<td>{{problemSet.creater}}</td>
 				</tr>

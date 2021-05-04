@@ -1,30 +1,38 @@
 <div class="card shadow-sm">
 	<div class="card-body">
+		<app-search
+			[which]="which"
+			[others]="others"
+			(itemsEvent)="setContests($event)" 
+			(loadingEvent)="setLoading($event)" >
+		</app-search>
+		<br/>
 		<table class="table table-hover">
 			<thead>
-				<tr class="row">
-					<th class="col-5">
-						Title
-					</th>
-					<th class="col-4">
-						Date
-					</th>
-					<th class="col">
-						Author
-					</th>
+				<tr>
+					<th> Title </th>
+					<th> Description </th>
+					<th> Author </th>
 				</tr>
 			</thead>
 			<tbody>
-				<!--
-				<tr *ngFor="let contest of contests" routerLink="/contest/{{contest.id}}" class="row">
-					<td class="col-5">{{contest.name}}</td>
-					<td class="col-4">{{contest.start_time}}</td>
-					<td class="col">Admin</td>
+				<tr *ngFor="let contest of contests | paginate:
+						{itemsPerPage:20, currentPage:p, totalItems:total}">
+					<td routerLink="/contest/{{contest.id}}">{{contest.name}}</td>
+					<td>{{contest.description}}</td>
+					<td>{{contest.creater}}</td>
 				</tr>
-				-->
 			</tbody>
 
 		</table>
 	</div>
 </div>
-
+<br/>
+<div class="row justify-content-center">
+	<pagination-controls class="paginator"
+		(pageChange)="getPage($event)"
+		auotHide="true"
+		previousLabel=""
+		nextLabel="" >
+	</pagination-controls>
+</div>

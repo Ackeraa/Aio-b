@@ -9,8 +9,6 @@ import { SearchService } from '../_components';
 })
 export class ProblemSetsService {
 
-	query: string;
-
 	constructor(private searchService: SearchService,
 				private tokenService: Angular2TokenService) {
 	}

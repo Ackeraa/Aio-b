@@ -3,6 +3,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContestsRoutingModule } from './contests-routing.module';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { SearchModule } from '../_components/search/search.module';
 import {
 	ContestsComponent,
 	CreateComponent,
@@ -21,6 +23,8 @@ import {
 		NgbModule,
 		ContestsRoutingModule,
 		FormsModule,
+		NgxPaginationModule,
+		SearchModule,
 		ReactiveFormsModule,
 	],
 	exports: [

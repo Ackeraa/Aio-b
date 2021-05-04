@@ -19,8 +19,8 @@ class ProblemSetsController < ApplicationController
         total = ProblemSet.count
         @problem_sets = ProblemSet.limit(20).offset(@page * 20)
       else
-        total = ProblemSet.where('title ilike(?)',  "%#{query}%").count
-        @problem_sets = ProblemSet.where('title ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
+        total = ProblemSet.where('name ilike(?)',  "%#{query}%").count
+        @problem_sets = ProblemSet.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
       end
     else
       # Need to be fixed.
