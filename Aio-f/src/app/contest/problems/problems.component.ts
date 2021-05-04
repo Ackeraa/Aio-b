@@ -59,7 +59,9 @@ export class ProblemsComponent implements OnInit {
 	}
 
 	isAdded(id: string): boolean {
-		return this.problems.filter(x => x.id === id).length > 0;
+		if (this.problems){
+			return this.problems.filter(x => x.id === id).length > 0;
+		}
 	}
 
 	addProblem(id: string): void {

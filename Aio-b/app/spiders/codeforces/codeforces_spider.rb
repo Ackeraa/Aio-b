@@ -124,7 +124,7 @@ module Codeforces
           result: record[4],
           time_usage: record[5],
           memory_usage: record[6],
-          submit_time: record[7]
+          #submit_time: record[7]
         }
       end
   end

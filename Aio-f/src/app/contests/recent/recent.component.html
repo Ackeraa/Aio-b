@@ -7,24 +7,38 @@
 			(loadingEvent)="setLoading($event)" >
 		</app-search>
 		<br/>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th> Title </th>
-					<th> Description </th>
-					<th> Author </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let contest of contests | paginate:
-						{itemsPerPage:20, currentPage:p, totalItems:total}">
-					<td routerLink="/contest/{{contest.id}}">{{contest.name}}</td>
-					<td>{{contest.description}}</td>
-					<td>{{contest.creater}}</td>
-				</tr>
-			</tbody>
 
-		</table>
+		<div class="card mb-3" *ngFor="let contest of contests | paginate:
+				{itemsPerPage:20, currentPage:p, totalItems:total}">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-auto logo">
+						<i class="fas fa-trophy fa-2x"></i>
+					</div>
+					<div class="col-11">
+						<div class="row justify-content-between">
+							<div class="col-auto">
+								<h5 class="card-title">
+									<a routerLink="/contest/{{contest.id}}">
+										{{contest.name}}
+									</a>
+								</h5>
+								<p class="card-text">
+									<i class="far fa-calendar-alt"></i>
+									{{contest.start_time | date: 'yyyy-MM-dd HH:mm:ss'}}
+									&nbsp;
+									<i class="far fa-clock"></i>
+									{{contest.hours}} hours
+								</p>
+							</div>
+							<div class="col-auto status">
+								<span class="badge bg-primary">Primary</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <br/>

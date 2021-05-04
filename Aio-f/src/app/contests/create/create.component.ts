@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { ContestsService } from '../contests.service';
 import {
 	NgbDateStruct,
 	NgbCalendar,
@@ -16,7 +16,6 @@ import {
 	FormControl
 } from '@angular/forms';
 
-const BASE_URL = 'http://127.0.0.1:3000';
 
 @Component({
 	selector: 'app-contest-create',
@@ -38,13 +37,17 @@ export class CreateComponent implements OnInit {
 	password: AbstractControl;
 	is_visible: boolean;
 	rule_type: string;
-	constructor(private fb: FormBuilder, private http: HttpClient, router: Router,
-				private calendar: NgbCalendar, private config: NgbTimepickerConfig) {
-
+	constructor(private router: Router,
+				private fb: FormBuilder,
+				private calendar: NgbCalendar,
+				private config: NgbTimepickerConfig,
+			    private contestsService: ContestsService) {
 		this.config.seconds = false;
         this.config.spinners = false;
+	}
 
-		this.form = fb.group({
+	ngOnInit(): void {
+		this.form = this.fb.group({
 			name: ['', Validators.required],
 			description: ['', Validators.required],
 			password: ['', Validators.required],
@@ -60,19 +63,20 @@ export class CreateComponent implements OnInit {
 		let data: any = form
 		data.rule_type = this.rule_type;
 		data.is_visible = this.is_visible;
-		data.start_time = new Date(this.start_d.year, this.start_d.month, this.start_d.day,
+		data.start_time = new Date(this.start_d.year, this.start_d.month - 1, this.start_d.day,
 								   this.start_t.hour, this.start_t.minute);
-		data.end_time = new Date(this.end_d.year, this.end_d.month, this.end_d.day,
+		data.end_time = new Date(this.end_d.year, this.end_d.month - 1, this.end_d.day,
 								   this.end_t.hour, this.end_t.minute);
-		console.log(data);
-		this.http
-		.post(
-			BASE_URL + '/contests',
-			data
-		)
-		.subscribe(data => {
-			console.log(data);
-		});
+		this.contestsService.create(data)
+		.subscribe(
+			res => {
+				console.log("success");
+				this.router.navigate(['/contest/' + res.id]);
+			},
+			err => {
+				console.log(err);
+			}
+		);
 	}
 
 	//rule
@@ -85,6 +89,4 @@ export class CreateComponent implements OnInit {
 		this.is_visible = visible;
 	}
 
-	ngOnInit(): void {
-	}
 }

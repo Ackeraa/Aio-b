@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_014538) do
+ActiveRecord::Schema.define(version: 2021_05_04_111334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_014538) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "user_name"
     t.index ["contest_id"], name: "index_acm_contest_ranks_on_contest_id"
     t.index ["user_id"], name: "index_acm_contest_ranks_on_user_id"
   end
@@ -76,8 +77,8 @@ ActiveRecord::Schema.define(version: 2021_05_04_014538) do
     t.string "creater"
     t.string "name"
     t.text "description"
-    t.date "start_time"
-    t.date "end_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.string "rule_type"
     t.string "password"
     t.boolean "is_visible"

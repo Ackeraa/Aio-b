@@ -1,6 +1,7 @@
 class VproblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy, :respide, :submit]
   before_action :set_page, only: [:search]
+  before_action :authenticate_user!, only: [:submit]
 
   # GET /vproblems
   # Need to be fixed.
@@ -81,6 +82,7 @@ class VproblemsController < ApplicationController
 
   # POST /vproblems/submit/1
   def submit
+    user = current_user
     source = @problem.source
     vid = @problem.vid
     code = params[:code].dump
@@ -91,24 +93,70 @@ class VproblemsController < ApplicationController
     submission_record = SubmissionRecord.create(
       problem_id: @problem.id,
       contest_id: contest_id,
-      user_id: user_id,
-      user_name: user_name,
+      user_id: user.id,
+      user_name: user.name,
+      submit_time: Time.now,
       result: "judging"
     )
+    submission_broadcast submission_record
 
-    ActionCable.server.broadcast cpu_submission_stream, submission_record
-    ActionCable.server.broadcast cp_submission_stream, submission_record
-    ActionCable.server.broadcast cu_submission_stream, submission_record
-    ActionCable.server.broadcast c_submission_stream, submission_record
+    is_contest = contest_id != 0
+    if is_contest
+      contest_problem_id = params[:contest_problem_id]
+      contest = Contest.find(contest_id)
+      start_time = contest.start_time
+      end_time = contest.end_time
+      cost_time = (Time.now - start_time) / 60
+      acm_contest_rank = AcmContestRank.find_by(contest_id: contest_id, user_id: user_id)
+
+      if acm_contest_rank.nil?
+        acm_contest_rank = AcmContestRank.create(
+          contest_id: contest_id,
+          user_id: user.id,
+          user_name: user.name,
+          submissions: 0,
+          accepts: 0,
+          time: 0,
+          submission_info: {}
+        )
+      end
+      # First submit.
+      if acm_contest_rank.submission_info[contest_problem_id].nil?
+        acm_contest_rank.submissions += 1
+        acm_contest_rank.time += cost_time
+        acm_contest_rank.submission_info[contest_problem_id] = {
+          time: cost_time,
+          submissions: 1,
+          result: 'pending'
+        }
+        is_already_ac = false
+      else
+        is_already_ac = acm_contest_rank.submission_info[contest_problem_id][:result] == 'AC'
+        unless is_already_ac
+          acm_contest_rank.submission += 1
+          acm_contest_rank.time += cost_time
+          acm_contest_rank.submission_info[contest_problem_id][:time] += cost_time
+          acm_contest_rank.submission_info[contest_problem_id][:submissions] += 1
+          acm_contest_rank.submission_info[contest_problem_id][:result] = 'pending'
+        end
+      end
+      acm_contest_rank.save
+      ranks_broadcast acm_contest_rank
+    end
 
     Thread.new do
-      spider = get_spider(source)
-      submission = spider.submit(vid, language, code)
+      #spider = get_spider(source)
+      #submission = spider.submit(vid, language, code)
+      submission = submission_record
       submission_record.update(submission)
-      ActionCable.server.broadcast cpu_submission_stream, submission_record
-      ActionCable.server.broadcast cp_submission_stream, submission_record
-      ActionCable.server.broadcast cu_submission_stream, submission_record
-      ActionCable.server.broadcast c_submission_stream, submission_record
+      submission_broadcast submission_record
+
+      if is_contest and not is_already_ac
+        acm_contest_rank.submission_info[contest_problem_id][:result] = submission[:result]
+        acm_contest_rank.accepts += 1 if submission[:result] == 'AC'
+        acm_contest_rank.save
+        ranks_broadcast acm_contest_rank
+      end
     end
     render json: submission_record
   end
@@ -154,6 +202,20 @@ class VproblemsController < ApplicationController
       "#{which}::#{which}Spider".constantize.new
     end
 
+    def submission_broadcast(submission_record)
+      ActionCable.server.broadcast cpu_submission_stream, submission_record
+      ActionCable.server.broadcast cp_submission_stream, submission_record
+      ActionCable.server.broadcast cu_submission_stream, submission_record
+      ActionCable.server.broadcast c_submission_stream, submission_record
+    end
+
+    def ranks_broadcast(acm_contest_rank)
+      ActionCable.server.broadcast ranks_stream, acm_contest_rank
+    end
+
+    def ranks_stream
+      "ranks_#{params[:contest_id]}"
+    end
     # contest_problem_user
     def cpu_submission_stream
       "submission_#{params[:contest_id] || 0}_#{params[:id]}_#{params[:user_id]}"
@@ -164,7 +226,7 @@ class VproblemsController < ApplicationController
     end
 
     def cu_submission_stream
-      "submission_0_#{params[:contest_id] || 0}_#{params[:user_id]}"
+      "submission_#{params[:contest_id] || 0}_0_#{params[:user_id]}"
     end
 
     def c_submission_stream

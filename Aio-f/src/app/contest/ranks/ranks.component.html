@@ -7,52 +7,24 @@
 						RANK
 					</th>
 					<th class="col-3">
-						TEAM
+						USER
 					</th>
 					<th class="col">
 						SCORE
 					</th>
-					<th class="col">
-						A
-					</th>
-					<th class="col">
-						B
-					</th>
-					<th class="col">
-						C
-					</th>
-					<th class="col">
-						D
+					<th *ngFor="let problem of problems" class="col">
+						{{problem}}
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row">
-					<td class="col"><a href="#">1</a></td>
-					<td class="col-3">User1</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-				</tr>
-				<tr class="row">
-					<td class="col"><a href="#">1</a></td>
-					<td class="col-3">User1</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-				</tr>
-				<tr class="row">
-					<td class="col"><a href="#">1</a></td>
-					<td class="col-3">User1</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
-					<td class="col">312</td>
+				<tr *ngFor="let rank of ranks let i = index" class="row">
+					<td class="col">{{i + 1}}</td>
+					<td class="col-3">{{rank.user_id}}</td>
+					<td class="col">{{rank.time}}</td>
+					<td *ngFor="let problem of problems let j = index" class="col">
+						{{rank.submission_info[j]?.result}}
+					</td>
 				</tr>
 			</tbody>
 

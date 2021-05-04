@@ -56,6 +56,11 @@ Rails.application.routes.draw do
       get ':id/delete_group/:group_id',     :action => 'delete_group'     
     end
   end
+  resources :acm_contest_ranks do
+    collection do
+      get 'get_contest_rank', :action => 'get_contest_rank'
+    end
+  end
 
   resources :items
   resources :solutions

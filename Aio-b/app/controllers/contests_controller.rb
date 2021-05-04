@@ -32,7 +32,7 @@ class ContestsController < ApplicationController
     @contest = Contest.new(contest_params)
 
     if @contest.save
-      render json: @contest, status: :created, location: @contest
+      render json: { id: @contest.id }, status: :created, location: @contest
     else
       render json: @contest.errors, status: :unprocessable_entity
     end
@@ -54,7 +54,7 @@ class ContestsController < ApplicationController
 
   # GET /contests/1/problems
   def problems
-    render json: @contest.problems
+    render json: { contest: @contest, problems: @contest.problems }
   end
 
   # GET /contests/1/add_problem/1

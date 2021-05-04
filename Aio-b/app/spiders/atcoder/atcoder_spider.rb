@@ -145,7 +145,7 @@ module Atcoder
         end
         record = page.css('table tr').map{ |x| x.css('td').text }
         submission = {
-          submit_time: record[0],
+          #submit_time: record[0],
           #score: record[4],
           code_size: record[5],
           result: record[6],

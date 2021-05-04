@@ -729,19 +729,19 @@ end
 
 #### contests
 
-|  Attribute  |  Type   | Description |
-| :---------: | :-----: | :---------: |
-|     id      | integer | primary key |
-|   creater   | string  |             |
-|    name     | string  |             |
-| description |  text   |             |
-| start_time  |  date   |             |
-|  end_time   |  date   |             |
-|  rule_type  | string  |             |
-|  password   | string  |             |
-| is_visible  | boolean |             |
-| created_at  |  date   |             |
-| updated_at  |  date   |             |
+|  Attribute  |   Type   | Description |
+| :---------: | :------: | :---------: |
+|     id      | integer  | primary key |
+|   creater   |  string  |             |
+|    name     |  string  |             |
+| description |   text   |             |
+| start_time  | datetime |             |
+|  end_time   | datetime |             |
+|  rule_type  |  string  |             |
+|  password   |  string  |             |
+| is_visible  | boolean  |             |
+| created_at  |   date   |             |
+| updated_at  |   date   |             |
 
 #### team_contest_ranks
 

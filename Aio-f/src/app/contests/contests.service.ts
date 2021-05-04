@@ -16,4 +16,10 @@ export class ContestsService {
 	getPage(page: number): Observable<any> {
 		return this.searchService.getPage('contests', page);
 	}
+
+	create(data: any): Observable<any> {
+		let url = 'contests';
+		return this.tokenService.post(url, data)
+			.pipe(map(res => res.json()));
+	}
 }
