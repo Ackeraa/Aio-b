@@ -24,9 +24,9 @@ export class RecentComponent implements OnInit {
 	setContests(data: any): void {
 		this.contests = data.contests;
 		this.contests.map(contest => {
-			let start_time = new Date(contest.start_time).getTime();
-			let end_time = new Date(contest.end_time).getTime();
-			contest.hours = (end_time - start_time) / 3600000;
+			let start_day = new Date(contest.start_time).getDay();
+			let end_day = new Date(contest.end_time).getDay();
+			contest.days = end_day - start_day;
 			return contest;
 		});
 		this.total = data.total;
