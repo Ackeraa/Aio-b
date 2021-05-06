@@ -1,49 +1,34 @@
 <div class="card shadow-sm">
 	<div class="card-body">
-		<table class="table table-hover">
-			<thead>
-				<tr class="row">
-					<th class="col">
-						ID
-					</th>
-					<th class="col">
-						WHEN
-					</th>
-					<th class="col">
-						WHO
-					</th>
-					<th class="col">
-						PROBLEM
-					</th>
-					<th class="col">
-						LANG
-					</th>
-					<th class="col">
-						STATUS
-					</th>
-					<th class="col">
-						TIME
-					</th>
-					<th class="col">
-						MEMORY
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let submission of submissions" class="row">
-					<td class="col"><a href="#">{{submission.id}}</a></td>
-					<td class="col">{{submission.created_at}}</td>
-					<td class="col">{{submission.user_id}}</td>
-					<td class="col">{{submission.problem_id}}</td>
-					<td class="col">C++</td>
-					<td class="col">{{submission.result}}</td>
-					<td class="col">15ms</td>
-					<td class="col">
-					</td>
-				</tr>
-			</tbody>
-
-		</table>
+		<div *ngIf="loading" class="row">
+			Loading...
+		</div>
+		<div class="row">
+			<th class="col"> ID </th>
+			<th class="col"> WHEN </th>
+			<th class="col"> WHO </th>
+			<th class="col"> PROBLEM </th>
+			<th class="col"> LANG </th>
+			<th class="col"> STATUS </th>
+			<th class="col"> TIME </th>
+			<th class="col"> MEMORY </th>
+		</div>
+		<hr class="title"/>
+		<div *ngIf="!loading">
+			<div class="table-content" *ngFor="let submission of submissions">
+				<div class="row">
+					<div class="col"><a href="#">{{submission.id}}</a></div>
+					<div class="col">{{submission.created_at}}</div>
+					<div class="col">{{submission.user_id}}</div>
+					<div class="col">{{submission.problem_id}}</div>
+					<div class="col">C++</div>
+					<div class="col">{{submission.result}}</div>
+					<div class="col">{{submission.time_usage}}</div>
+					<div class="col">{{submission.memory_usage}} </div>
+				</div>
+				<hr class="content"/>
+			</div>
+		</div>
 	</div>
 </div>
 

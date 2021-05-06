@@ -15,18 +15,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/v4-shims";
 
-
-
-tr {
-    cursor: pointer;
-}
-
-.table > tbody > tr > td {
-	vertical-align: middle;
-}
-
-
 a {
+    cursor: pointer;
     text-decoration: none;
     color: var(--color-link);
     outline: none;
@@ -73,3 +63,52 @@ a:focus-visible {
 .link::before {
     content: '';
 }
+
+.link-content {
+    font-size: 1.15rem;
+    text-transform: lowercase;
+	color: #19345A;
+}
+
+.link-content::before {
+    transform-origin: 100% 50%;
+    transform: scale3d(0, 1, 1);
+    transition: transform 0.3s;
+}
+
+.link-content:hover::before {
+    transform-origin: 0% 50%;
+    transform: scale3d(1, 1, 1);
+}
+
+.link-title {
+    font-family: cursive;
+    font-size: 1.575rem;
+    text-transform: lowercase;
+}
+
+.link-title::before {
+    transform-origin: 100% 50%;
+    transform: scale3d(0, 1, 1);
+    transition: transform 0.3s;
+}
+
+.link-title:hover::before {
+    transform-origin: 0% 50%;
+    transform: scale3d(1, 1, 1);
+}
+
+hr.title {
+	border-top: 3px double #8c8b8b;
+}
+
+hr.content {
+	border-top: 1px solid #8c8b8b;
+	border-bottom: 1px solid #fff;
+}
+
+.table-content {
+    font-family: cursive;
+    font-size: 1.15rem;
+}
+

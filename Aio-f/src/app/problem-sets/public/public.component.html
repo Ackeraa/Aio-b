@@ -7,24 +7,30 @@
 			(loadingEvent)="setLoading($event)" >
 		</app-search>
 		<br/>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th> Title </th>
-					<th> Description </th>
-					<th> Author </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let problemSet of problemSets | paginate:
+		<div *ngIf="loading" class="row">
+			Loading...
+		</div>
+		<div class="row">
+			<th class="col"> TITLE </th>
+			<th class="col"> Description </th>
+			<th class="col"> Author </th>
+		</div>
+		<hr class="title"/>
+		<div *ngIf="!loading">
+			<div class="table-content" *ngFor="let problemSet of problemSets | paginate:
 						{itemsPerPage:20, currentPage:p, totalItems:total}">
-					<td routerLink="/problem-set/{{problemSet.id}}">{{problemSet.name}}</td>
-					<td>{{problemSet.description}}</td>
-					<td>{{problemSet.creater}}</td>
-				</tr>
-			</tbody>
-
-		</table>
+				<div class="row">
+					<div class="col">
+						<a class="link link-content" routerLink="../../problem-set/{{problemSet.id}}">
+							{{problemSet.name}}
+						</a>
+					</div>
+					<div class="col">{{problemSet.description}}</div>
+					<div class="col">{{problemSet.creater}}</div>
+				</div>
+				<hr class="content"/>
+			</div>
+		</div>
 	</div>
 </div>
 <br/>

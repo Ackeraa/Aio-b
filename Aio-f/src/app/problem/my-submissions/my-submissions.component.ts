@@ -10,6 +10,7 @@ import { ProblemService } from '../problem.service';
 })
 export class MySubmissionsComponent implements OnInit {
 
+	loading: boolean = false;
 	receiver: Subscription;
 	submissions: Array<any>;
 

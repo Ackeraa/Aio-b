@@ -1,35 +1,36 @@
 <div class="card shadow-sm">
 	<div class="card-body">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th> # </th>
-					<th> NAME </th>
-					<th> STATUS </th>
-					<th> PASS RATE </th>
-					<th> </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let problem of problems">
-					<td><a href="#">{{problem.id}}</a></td>
-					<td>
-						<span class="align-text-bottom">
-						{{problem.name}}
-						</span>
-					</td>
-					<td>Accept</td>
-					<td>3/45</td>
-					<td>
+
+		<div class="row">
+			<th class="col-1"> # </th>
+			<th class="col"> TITLE </th>
+			<th class="col"> STATUS </th>
+			<th class="col"> Pass Rate </th>
+			<th class="col">  </th>
+		</div>
+		<hr class="title"/>
+		<div *ngIf="!loading">
+			<div class="table-content" *ngFor="let problem of problems | paginate:
+						{itemsPerPage:20, currentPage:p, totalItems:total}">
+				<div class="row">
+					<div class="col-1">{{problem.id}}</div>
+					<div class="col">
+						<a class="link link-content" (click)="viewProblem(problem.source, problem.id)">
+							{{problem.name}}
+						</a>
+					</div>
+					<div class="col">AC</div>
+					<div class="col">22/45</div>
+					<div class="col">
 						<button type="button" class="btn btn-outline-danger"
 								(click)="deleteProblem(problem.id)">
 							<i class="far fa-trash-alt"></i>
 						</button>
-					</td>
-				</tr>
-			</tbody>
-
-		</table>
+					</div>
+				</div>
+				<hr class="content"/>
+			</div>
+		</div>
 	</div>
 </div>
 <br/> <br/>
@@ -44,36 +45,41 @@
 		<div *ngIf="loading" class="row">
 			Loading...
 		</div>
-		<table *ngIf="!loading" class="table table-hover">
-			<thead>
-				<tr>
-					<th> # </th>
-					<th> NAME </th>
-					<th> PASS RATE </th>
-					<th> DIFFICULTY </th>
-					<th> </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let problem of allProblems | paginate:
+		<div class="row">
+			<th class="col-1"> # </th>
+			<th class="col"> TITLE </th>
+			<th class="col"> SOURCE </th>
+			<th class="col"> STATUS </th>
+			<th class="col">  </th>
+		</div>
+		<hr class="title"/>
+		<div *ngIf="!loading">
+			<div class="table-content" *ngFor="let problem of allProblems | paginate:
 						{itemsPerPage:20, currentPage:p, totalItems:total}">
-					<td (click)="viewProblem(problem.source, problem.id)">
-						{{problem.vid}}
-					</td>
-					<td>{{problem.name}}</td>
-					<td>1/100</td>
-					<td>Hard</td>
-					<td>
+				<div class="row">
+					<div class="col-1">{{problem.id}}</div>
+					<div class="col">
+						<a class="link link-content" (click)="viewProblem(problem.source, problem.id)">
+							{{problem.name}}
+						</a>
+					</div>
+					<div class="col">
+						<a class="link link-content" (click)="viewProblem(problem.source, problem.id)">
+							{{problem.vid}}
+						</a>
+					</div>
+					<div class="col">22/45</div>
+					<div class="col">
 						<button type="button" class="btn btn-outline-dark"
 								(click)="addProblem(problem.id)"
 							    [disabled]="isAdded(problem.id)">
 								<i class="fas fa-plus"></i>
 						</button>
-					</td>
-				</tr>
-			</tbody>
-
-		</table>
+					</div>
+				</div>
+				<hr class="content"/>
+			</div>
+		</div>
 	</div>
 </div>
 <br/>
