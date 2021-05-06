@@ -19,7 +19,6 @@ export class SearchService {
 		let url = which + '/search';
 		let params;
 		if (others != '') {
-			console.log(others);
 			params = { search: { query: query, which: others } };
 		} else {
 			params = { search: { query: query } };

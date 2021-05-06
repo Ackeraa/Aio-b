@@ -4,6 +4,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
 import { AuthService } from '../_services';
+import { SearchService } from '../_components';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,7 +15,8 @@ export class ProblemService implements OnInit {
 
 	constructor(private authService: AuthService,
 				private cableService: ActionCableService,
-				private tokenService: Angular2TokenService) {
+				private tokenService: Angular2TokenService,
+				private searchService: SearchService) {
 	}
 
 	ngOnInit() {
@@ -106,6 +108,10 @@ export class ProblemService implements OnInit {
 			);
 	}
 
+	getMySubmissionsPage(page: number) :Observable<any> {
+		return this.searchService.getPage('submission_records', page);
+	}
+
 	getSubmissionsChannel(): Observable<any> {
 		return this.problem$
 		    .pipe(
@@ -133,5 +139,9 @@ export class ProblemService implements OnInit {
 							   .pipe(map(res => res.json()));
 					})
 			);
+	}
+
+	getSubmissionsPage(page: number) :Observable<any> {
+		return this.searchService.getPage('submission_records', page);
 	}
 }

@@ -9,6 +9,7 @@ import { MarkdownModule} from 'ngx-markdown';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ProblemSearchModule } from './_components';
+import { SearchModule } from './_components';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -48,6 +49,7 @@ import {
         AppRoutingModule,
 		NgxPaginationModule,
 		ProblemSearchModule,
+		SearchModule,
 
 		FormsModule,
 		HttpModule,

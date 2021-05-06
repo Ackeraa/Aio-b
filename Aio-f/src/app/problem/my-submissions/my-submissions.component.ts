@@ -10,7 +10,11 @@ import { ProblemService } from '../problem.service';
 })
 export class MySubmissionsComponent implements OnInit {
 
-	loading: boolean = false;
+	which: string = 'submission_records';
+	others: string = 'public';
+	loading: boolean;
+	p: number;
+	total: number;
 	receiver: Subscription;
 	submissions: Array<any>;
 
@@ -34,6 +38,25 @@ export class MySubmissionsComponent implements OnInit {
 				} else {
 					this.submissions[i] = submission;
 				}
+			});
+	}
+
+	setLoading(loading: boolean): void {
+		this.loading = loading;
+	}
+
+	setSubmissions(data: any): void {
+		this.submissions = data.submission_records;
+		this.total = data.total;
+	}
+
+	getPage(page: number): void {
+		this.problemService.getMySubmissionsPage(page)
+			.subscribe(data => {
+				this.submissions = data.submission_records;
+				this.total = data.total;
+				this.p = page;
+				console.log(this.p);
 			});
 	}
 

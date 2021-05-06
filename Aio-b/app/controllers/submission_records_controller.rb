@@ -1,5 +1,6 @@
 class SubmissionRecordsController < ApplicationController
   before_action :set_submission_record, only: [:show, :update, :destroy]
+  before_action :set_page, only: [:search]
 
   def initialize
   end
@@ -8,6 +9,15 @@ class SubmissionRecordsController < ApplicationController
     @submission_records = SubmissionRecord.where(search_params)
                                           #.where.not(result: 'judging')
     render json: @submission_records
+  end
+
+  # GET /submission_records/search
+  def search
+    query = params[:query]
+    total = SubmissionRecord.where('result ilike(?)',  "%#{query}%").count
+    @submission_records = SubmissionRecord.where('result ilike(?)',  "%#{query}%")
+                                          .limit(20).offset(@page * 20)
+    render json: { total: total, submission_records: @submission_records }
   end
 
   # GET /submission_records/1
@@ -41,6 +51,10 @@ class SubmissionRecordsController < ApplicationController
   end
 
   private
+
+    def set_page
+      @page = (params[:page] || 1).to_i - 1
+    end
 
     def search_params
       params.permit(:contest_id, :problem_id, :user_name)

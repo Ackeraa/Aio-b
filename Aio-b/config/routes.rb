@@ -58,7 +58,14 @@ Rails.application.routes.draw do
   end
   resources :acm_contest_ranks do
     collection do
+      get  'search',                      :action => 'search'
       get 'get_contest_rank', :action => 'get_contest_rank'
+    end
+  end
+
+  resources :submission_records do
+    collection do
+      get  'search',                      :action => 'search'
     end
   end
 
@@ -66,7 +73,6 @@ Rails.application.routes.draw do
   resources :solutions
   resources :problems
   resources :vproblems
-  resources :submission_records 
   resources :homes
   resources :discussions
   resources :comments

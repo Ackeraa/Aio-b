@@ -1,5 +1,12 @@
 <div class="card shadow-sm">
 	<div class="card-body">
+		<app-search
+			[which]="which"
+			[others]="others"
+			(itemsEvent)="setSubmissions($event)" 
+			(loadingEvent)="setLoading($event)" >
+		</app-search>
+		<br/>
 		<div *ngIf="loading" class="row">
 			Loading...
 		</div>
@@ -15,7 +22,8 @@
 		</div>
 		<hr class="title"/>
 		<div *ngIf="!loading">
-			<div class="table-content" *ngFor="let submission of submissions">
+			<div class="table-content" *ngFor="let submission of submissions | paginate:
+						{itemsPerPage:20, currentPage:p, totalItems:total}">
 				<div class="row">
 					<div class="col"><a href="#">{{submission.id}}</a></div>
 					<div class="col">{{submission.created_at}}</div>
@@ -30,5 +38,14 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="row justify-content-center">
+	<pagination-controls class="paginator"
+		(pageChange)="getPage($event)"
+		auotHide="true"
+		previousLabel=""
+		nextLabel="" >
+	</pagination-controls>
 </div>
 

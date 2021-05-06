@@ -5,6 +5,9 @@ import { MarkdownModule } from 'ngx-markdown';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { FormsModule } from '@angular/forms';
 import { ProblemRoutingModule } from './problem-routing.module';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { SearchModule } from '../_components/search/search.module';
+
 import {
 	DescriptionComponent,
 	DiscussionComponent,
@@ -29,6 +32,8 @@ import {
 		FormsModule,
 		CodemirrorModule,
 		ProblemRoutingModule,
+		NgxPaginationModule,
+		SearchModule,
 		MarkdownModule.forChild(),
 	],
 	exports: [

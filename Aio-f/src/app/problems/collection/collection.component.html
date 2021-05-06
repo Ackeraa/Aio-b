@@ -55,32 +55,3 @@
 </div>
 
 
-<!--
-		<table class="table table-hover">
-			<thead>
-				<tr class="row">
-					<th class="col-1"> # </th>
-					<th class="col"> SOURCE </th>
-					<th class="col"> TITLE </th>
-					<th class="col"> STATUS </th>
-					<th class="col">
-						<div class="custom-control custom-switch">
-							<input type="checkbox" class="custom-control-input" id="tags">
-							<label class="custom-control-label" for="tags">TAGS</label>
-						</div>
-					</th>
-				</tr>
-			</thead>
-			<tbody *ngIf="!loading">
-				<tr class="row" *ngFor="let problem of problems | paginate:
-						{itemsPerPage:20, currentPage:p, totalItems:total}" 
-						(click)="viewProblem(problem.source, problem.id)">
-					<td class="col-1">{{problem.id}}</td>
-					<td class="col">{{problem.vid}}</td>
-					<td class="col">{{problem.name}}</td>
-					<td class="col">22/45</td>
-					<td class="col">Hard</td>
-				</tr>
-			</tbody>
-		</table>
--->
