@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center row">
+	<div class="d-flex flex-column col-md-8">
+		<div class="row mb-2">
+			<markdown [data]="description" katex></markdown>
+			<textarea style="overflow-y:auto; height: 13vh" class="form-control"
+						[(ngModel)]="description">
+			</textarea>
+			{{ comments| json }}
+		</div>
+		<div class="row justify-content-end mb-2">
+			<button class="btn btn-primary">
+				Comment
+			</button>
+		</div>
+		<div class="commented-section mt-2">
+			<div class="d-flex flex-row align-items-center commented-user">
+				<h5 class="mr-2">Corey oates</h5>
+				<span class="dot mb-1"></span>
+				<span class="mb-1 ml-2">4 hours ago</span>
+			</div>
+			<div class="comment-text-sm">
+				<span>fuck</span>
+			</div>
+			<div class="reply-section">
+				<div class="d-flex flex-row align-items-center voting-icons">
+					<i class="fa fa-sort-up fa-2x mt-3 hit-voting"></i>
+					<i class="fa fa-sort-down fa-2x mb-3 hit-voting"></i>
+					<span class="ml-2">10</span><span class="dot ml-2"></span>
+					<h6 class="ml-2 mt-1">Reply</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Define the recursive template. -->
+<ng-template #nodeTemplateRef let-node="node">
+ 
+	<div class="node" [class.node--selected]="( node === selectedTreeNode )">
+ 
+		<a (click)="selectNode( node )" class="node__label">
+			{{ node.comment.description }}
+		</a>
+ 
+		<div *ngIf="node.children.length" class="node__children">
+ 
+			<ng-template ngFor let-child [ngForOf]="node.children">
+ 
+				<!-- Invoke the recursive template. -->
+				<ng-template
+					[ngTemplateOutlet]="nodeTemplateRef"
+					[ngTemplateOutletContext]="{ node: child }">
+					<!--
+						Because we are using nested ngTemplates (rather than the template
+						input of the ngFor directive), we have more control over how the
+						data is made available to the recursive template. In this case,
+						we're passing "child" through as "node".
+					-->
+				</ng-template>
+ 
+			</ng-template>
+ 
+		</div>
+ 
+	</div>
+ 
+</ng-template>
+ 
+<!-- Initiate the recursive template rendering. -->
+<div *ngIf="comments">
+	<ng-template
+		[ngTemplateOutlet]="nodeTemplateRef"
+		[ngTemplateOutletContext]="{ node: comments }">
+	</ng-template>
+</div>
+ 
+<p class="note">
+	<em>(alternative) Ng-Template Template Rendering</em>
+</p>

@@ -1,0 +1,71 @@
+body {
+    background-color: #eee
+}
+
+.bdge {
+    height: 21px;
+    background-color: orange;
+    color: #fff;
+    font-size: 11px;
+    padding: 8px;
+    border-radius: 4px;
+    line-height: 3px
+}
+
+.comments {
+    text-decoration: underline;
+    text-underline-position: under;
+    cursor: pointer
+}
+
+.dot {
+    height: 7px;
+    width: 7px;
+    margin-top: 3px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block
+}
+
+.hit-voting:hover {
+    color: blue
+}
+
+.hit-voting {
+    cursor: pointer
+}
+
+:host {
+	display: block ;
+	font-size: 18px ;
+}
+
+.node {
+	&__label {
+		color: red ;
+		cursor: pointer ;
+		text-decoration: underline ;
+	}
+
+	&__children {
+		border-left: 3px solid #CCCCCC ;
+		margin: 5px 0px 5px 30px ;
+		padding-left: 10px ;
+	}
+
+	&--selected {
+		> .node {
+			&__label {
+				background-color: red ;
+				color: white ;
+				font-weight: bold ;
+			}
+		}
+	}
+}
+
+.note {
+	color: #999999 ;
+	font-size: 15px ;
+	font-style: italic ;
+}
