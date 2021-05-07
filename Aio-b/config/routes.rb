@@ -69,6 +69,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :contests
+  get 'comments/new/(:parent_id)', to: 'comments#new', as: :new_comment
+
   resources :items
   resources :solutions
   resources :problems
@@ -76,7 +79,6 @@ Rails.application.routes.draw do
   resources :homes
   resources :discussions
   resources :comments
-  resources :contests
 
   mount_devise_token_auth_for 'User', at: 'auth'
   mount ActionCable.server => '/cable'

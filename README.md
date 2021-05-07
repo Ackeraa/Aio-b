@@ -33,7 +33,7 @@
   * [ ] 爬取结果、提交间隔时间动态刷新
 * [ ] cache
   
-
+  
   
   ## Technic
 
@@ -851,16 +851,16 @@ end
 
 #### comments
 
-|   Attribute    |  Type   | Description |
-| :------------: | :-----: | :---------: |
-|       id       | integer | primary key |
-|   problem_id   | integer | foreign key |
-|   creater_id   | integer | foreign key |
-|  description   |  jsonb  |             |
-| subdescription |  jsonb  |             |
-|     likes      | integer |             |
-|   created_at   |  date   |             |
-|   updated_at   |  date   |             |
+|  Attribute  |  Type   | Description |
+| :---------: | :-----: | :---------: |
+|     id      | integer | primary key |
+| problem_id  | integer | foreign key |
+|  parent_id  | integer |             |
+|   creator   | string  |             |
+| description | string  |             |
+|    likes    | integer |             |
+| created_at  |  date   |             |
+| updated_at  |  date   |             |
 
 #### solutions
 
@@ -868,7 +868,7 @@ end
 | :------------: | :-----: | :---------: |
 |       id       | integer | primary key |
 |   problem_id   | integer | foreign key |
-|   creater_id   | integer | foreign key |
+|    user_id     | integer | foreign key |
 |  description   |  jsonb  |             |
 | subdescription |  jsonb  |             |
 |     likes      | integer |             |
@@ -1017,7 +1017,6 @@ end
 ### Problems
 
 ### Contests
-
 
 
 

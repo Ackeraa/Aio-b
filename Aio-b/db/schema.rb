@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_111334) do
+ActiveRecord::Schema.define(version: 2021_05_07_074454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,16 +50,23 @@ ActiveRecord::Schema.define(version: 2021_05_04_111334) do
     t.index ["user_id"], name: "index_auth_permissions_users_on_user_id"
   end
 
+  create_table "comment_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "comment_anc_desc_udx", unique: true
+    t.index ["descendant_id"], name: "comment_desc_idx"
+  end
+
   create_table "comments", force: :cascade do |t|
-    t.jsonb "description"
-    t.jsonb "subdescription"
+    t.integer "parent_id"
+    t.string "creator"
+    t.text "description"
     t.integer "likes"
     t.bigint "problem_id", null: false
-    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["problem_id"], name: "index_comments_on_problem_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "contest_announcements", force: :cascade do |t|
@@ -348,7 +355,6 @@ ActiveRecord::Schema.define(version: 2021_05_04_111334) do
   add_foreign_key "auth_permissions_users", "auth_permissions"
   add_foreign_key "auth_permissions_users", "users"
   add_foreign_key "comments", "problems"
-  add_foreign_key "comments", "users"
   add_foreign_key "contest_announcements", "contests"
   add_foreign_key "contests_groups", "contests"
   add_foreign_key "contests_groups", "groups"

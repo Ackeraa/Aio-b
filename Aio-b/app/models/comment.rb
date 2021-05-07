@@ -1,4 +1,4 @@
 class Comment < ApplicationRecord
-  belongs_to :users
-  belongs_to :problems
+  acts_as_tree order: 'created_at DESC'
+
 end
