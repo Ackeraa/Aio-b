@@ -17,26 +17,27 @@ export class CommentsService {
 			.pipe(map(res => res.json()));
 	}
 
-	voteUp(id: number): void {
+	voteUp(id: number): Observable<any> {
 		let url = 'comments/vote_up';
 		let body = { id: id };
-		this.tokenService.post(url, body);
+		return this.tokenService.post(url, body);
 	}
 
-	voteDown(id: number, user_id: string): void {
+	voteDown(id: number): Observable<any> {
 		let url = 'comments/vote_down';
 		let body = { id: id };
-		this.tokenService.post(url, body);
+		return this.tokenService.post(url, body);
 	}
 
-	create(parent_id: number, description: string): void {
+	create(parent_id: number, which: string, description: string): Observable<any> {
 		let url = 'comments';
 		let body;
 		if (parent_id == 0) {
-			body = { description: description };
+			body = { which: which, description: description };
 		} else {
-			body = { parent_id: parent_id, description: description };
+			body = { parent_id: parent_id, which: which, description: description };
 		}
-		this.tokenService.post(url, body);
+		return this.tokenService.post(url, body)
+			.pipe(map(res => res.json()));
 	}
 }

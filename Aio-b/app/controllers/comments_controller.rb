@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :destroy, :vote_up, :vote_down]
+  before_action :authenticate_user!, only: [:create, :vote_up, :vote_down]
 
   # GET /comments
   def index
@@ -19,12 +20,21 @@ class CommentsController < ApplicationController
 
   # POST /comments
   def create
+    which = params[:which]
+    description = params[:description]
     if params[:parent_id].to_i > 0
-      puts "FFFFFFFFFFF", params[:parent_id]
-      parent = Comment.find_by_id(params.delete(:parent_id))
-      @comment = parent.children.build(comment_params)
+      parent = Comment.find_by_id(params[:parent_id])
+      @comment = parent.children.build(
+        which: which,
+        creator: current_user.name,
+        description: description
+      )
     else
-      @comment = Comment.new(comment_params)
+      @comment = Comment.new(
+        which: which,
+        creator: current_user.name,
+        description: description
+      )
     end
 
     if @comment.save
@@ -32,6 +42,41 @@ class CommentsController < ApplicationController
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST /comments/vote_up
+  def vote_up
+    unless @comment.likes['voters'].include?(current_user.id)
+      @comment.likes['votes'] += 1
+      @comment.likes['voters'] << current_user.id
+      if @comment.dislikes['voters'].include?(current_user.id)
+        @comment.dislikes['votes'] -= 1
+        @comment.dislikes['voters'].delete(current_user.id)
+      end
+    end
+    if @comment.save
+      render json: @comment, status: :created, location: @comment
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /comments/vote_down
+  def vote_down
+    unless @comment.dislikes['voters'].include?(current_user.id)
+      @comment.dislikes['votes'] += 1
+      @comment.dislikes['voters'] << current_user.id
+      if @comment.likes['voters'].include?(current_user.id)
+        @comment.likes['votes'] -= 1
+        @comment.likes['voters'].delete(current_user.id)
+      end
+    end
+    if @comment.save
+      render json: @comment, status: :created, location: @comment
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
+
   end
 
   # PATCH/PUT /comments/1

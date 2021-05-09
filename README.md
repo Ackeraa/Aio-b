@@ -858,7 +858,8 @@ end
 |    which    | string  |             |
 |   creator   | string  |             |
 | description | string  |             |
-|    likes    | integer |             |
+|    likes    |  jsonb  |             |
+|  dislikes   |  jsonb  |             |
 |   visible   | boolean |             |
 | created_at  |  date   |             |
 | updated_at  |  date   |             |

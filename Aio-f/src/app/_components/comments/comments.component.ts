@@ -5,9 +5,9 @@ import { CommentsService } from './comments.service';
 import { AuthService } from '../../_services/auth.service';
 
 @Component({
-  selector: 'app-comments',
-  templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.scss']
+	selector: 'app-comments',
+	templateUrl: './comments.component.html',
+	styleUrls: ['./comments.component.scss']
 })
 export class CommentsComponent implements OnInit {
 
@@ -23,17 +23,17 @@ export class CommentsComponent implements OnInit {
 	ngOnInit(): void {
 		this.descriptions = {};
 		this.authService.signedIn$
-			.pipe(filter(x => x != null))
-		    .subscribe(user => this.user = user);
+		.pipe(filter(x => x != null))
+		.subscribe(user => this.user = user);
 		this.commentsService.getComments()
-			.subscribe(comments => this.comments = comments);
+		.subscribe(comments => this.comments = comments);
 	}
 
 	setVisible(comment: any): void {
 		//set visibility of the children of comment.
 		comment.is_visible = !comment.is_visible;
 	}
-	
+
 	initDescription(id: number): void {
 		this.descriptions[id] = "";	
 	}
@@ -42,35 +42,39 @@ export class CommentsComponent implements OnInit {
 		if (comment.likes.voters.indexOf(this.user.user_id) == -1) {
 			comment.likes.votes++;
 			comment.likes.voters.push(this.user.user_id);
-			let index = comment.dislikes.voters.indexOf(1);
+			let index = comment.dislikes.voters.indexOf(this.user.user_id);
 			if (index != -1) {
 				comment.dislikes.votes--;
 				comment.dislikes.voters.splice(index, 1);
 			}
 		}
+		this.commentsService.voteUp(comment.id);
 	}
 
 	voteDown(comment: any): void {
 		if (comment.dislikes.voters.indexOf(this.user.user_id) == -1) {
 			comment.dislikes.votes++;
-			comment.dislikes.voters.push(1);
+			comment.dislikes.voters.push(this.user.user_id);
 			let index = comment.likes.voters.indexOf(this.user.user_id);
 			if (index != -1) {
 				comment.likes.votes--;
 				comment.likes.voters.splice(index, 1);
 			}
 		}
+		this.commentsService.voteDown(comment.id);
 	}
 
 	addComment(): void {
-		this.comments.push({
+		this.comments.unshift({
 			comment: { 
 				creator: this.user.user_name,
-				description: this.descriptions[0]
+				description: this.descriptions[0],
+				likes: { votes: 0, voters: [] },
+				dislikes: { votes: 0, voters: [] }
 			},
 			children: []
 		});
-		this.commentsService.create(0, this.descriptions[0]);
+		this.commentsService.create(0, this.which, this.descriptions[0]);
 	}
 
 	reply(node: any): void {
@@ -78,11 +82,13 @@ export class CommentsComponent implements OnInit {
 		node.children.push({
 			comment: { 
 				creator: this.user.user_name,
-				description: this.descriptions[node.comment.id]
+				description: this.descriptions[node.comment.id],
+				likes: { votes: 0, voters: [] },
+				dislikes: { votes: 0, voters: [] }
 			},
 			children: []
 		});
-		this.commentsService.create(node.comment.id, this.descriptions[node.comment.id]);
+		//this.commentsService.create(node.comment.id, this.which, this.descriptions[node.comment.id]);
 	}
 
 }
