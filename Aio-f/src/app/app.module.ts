@@ -10,6 +10,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ProblemSearchModule } from './_components';
 import { SearchModule } from './_components';
+import { CommentsModule } from './_components';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -50,6 +51,7 @@ import {
 		NgxPaginationModule,
 		ProblemSearchModule,
 		SearchModule,
+		CommentsModule,
 
 		FormsModule,
 		HttpModule,
@@ -64,7 +66,6 @@ import {
 		SubmissionsComponent,
 		ProblemsComponent,
 		ProblemComponent,
-		DiscussionComponent,
 		GroupsComponent,
 		UsersComponent,
 		WikiComponent,
@@ -74,6 +75,7 @@ import {
 		FooterComponent,
 		ProblemSetsComponent,
 		ProblemSetComponent,
+		DiscussionComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

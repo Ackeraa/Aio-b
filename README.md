@@ -854,11 +854,12 @@ end
 |  Attribute  |  Type   | Description |
 | :---------: | :-----: | :---------: |
 |     id      | integer | primary key |
-| problem_id  | integer | foreign key |
 |  parent_id  | integer |             |
+|    which    | string  |             |
 |   creator   | string  |             |
 | description | string  |             |
 |    likes    | integer |             |
+|   visible   | boolean |             |
 | created_at  |  date   |             |
 | updated_at  |  date   |             |
 

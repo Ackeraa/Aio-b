@@ -6,3 +6,6 @@ export * from './search/search.service';
 export * from './search/search.module';
 export * from './problem-search/problem-search.service';
 export * from './problem-search/problem-search.module';
+export * from './comments/comments.component';
+export * from './comments/comments.service';
+export * from './comments/comments.module';

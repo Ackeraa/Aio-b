@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProblemService } from '../problem.service';
 
 @Component({
 	selector: 'app-problem-discussion',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiscussionComponent implements OnInit {
 
-	constructor() { }
+	which: string;
+
+	constructor(private problemService: ProblemService) { }
 
 	ngOnInit(): void {
+		this.problemService.problem$.subscribe(problem => {
+			this.which = 'problem_' + problem.id;
+		});
 	}
 
 }
