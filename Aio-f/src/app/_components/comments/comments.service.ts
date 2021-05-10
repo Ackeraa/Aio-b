@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
+import { SearchService } from '../search/search.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CommentsService {
 
-	constructor(private tokenService: Angular2TokenService) {
+	constructor(private searchService: SearchService,
+				private tokenService: Angular2TokenService) {
 	}
 
-	getComments(): Observable<any> {
-		let url = 'comments';
-		return this.tokenService.get(url)
-			.pipe(map(res => res.json()));
+	getPage(which: string, page: number): Observable<any> {
+		return this.searchService.getPage(page);
 	}
 
 	voteUp(id: number): Observable<any> {

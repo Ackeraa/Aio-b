@@ -109,7 +109,7 @@ export class ProblemService implements OnInit {
 	}
 
 	getMySubmissionsPage(page: number) :Observable<any> {
-		return this.searchService.getPage('submission_records', page);
+		return this.searchService.getPage(page);
 	}
 
 	getSubmissionsChannel(): Observable<any> {
@@ -142,6 +142,6 @@ export class ProblemService implements OnInit {
 	}
 
 	getSubmissionsPage(page: number) :Observable<any> {
-		return this.searchService.getPage('submission_records', page);
+		return this.searchService.getPage(page);
 	}
 }

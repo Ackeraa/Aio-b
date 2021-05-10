@@ -8,8 +8,8 @@ import { ContestsService } from '../contests.service';
 })
 export class PastComponent implements OnInit {
 
-	which: string = 'contests';
-	others: string = 'recent';
+	uri: string = 'contests';
+	addition: string = 'recent';
 	loading: boolean;
 	contests: Array<any>;
 	p: number;

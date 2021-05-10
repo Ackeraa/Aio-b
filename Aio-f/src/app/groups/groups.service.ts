@@ -16,6 +16,6 @@ export class GroupsService {
 	}
 
 	getPage(page: number): Observable<any> {
-		return this.searchService.getPage('groups', page);
+		return this.searchService.getPage(page);
 	}
 }

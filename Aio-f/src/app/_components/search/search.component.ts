@@ -10,8 +10,8 @@ import { SearchService } from './search.service';
 })
 export class SearchComponent implements OnInit {
 
-	@Input() which: string;
-	@Input() others: string = '';
+	@Input() uri: string;
+	@Input() addition: string = '';
 	@Output() itemsEvent = new EventEmitter<any>();
 	@Output() loadingEvent = new EventEmitter<boolean>();
 	@ViewChild('query', { static: true }) query: ElementRef;
@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.loadingEvent.emit(false);
-		this.searchService.search(this.which, '', this.others)
+		this.searchService.search(this.uri, '', this.addition)
 			.subscribe(data => this.itemsEvent.emit(data));
 
 		//Observer of query change.
@@ -30,7 +30,7 @@ export class SearchComponent implements OnInit {
 			map((e: any) => e.target.value),
 			debounceTime(300),
 			tap(() => this.loadingEvent.emit(true)),
-			map((query: string) => this.searchService.search(this.which, query, this.others)),
+			map((query: string) => this.searchService.search(this.uri, query, this.addition)),
 			switchAll()
 		)
 		.subscribe(

@@ -1,11 +1,21 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy, :vote_up, :vote_down]
   before_action :authenticate_user!, only: [:create, :vote_up, :vote_down]
+  before_action :set_page, only: [:search]
 
   # GET /comments
   def index
     @comments = Comment.hash_tree(limit_depth: 5)
     render json: comments_tree_for(@comments)
+  end
+
+  # GET /comments/search
+  def search
+    query = params[:query]
+    total = Comment.where('creator ilike(?)',  "%#{query}%").count
+    @comments = Comment.where('creator ilike(?)',  "%#{query}%")
+                       .limit(10).offset(@page * 10).hash_tree(limit_depth: 5)
+    render json: { total: total, comments: comments_tree_for(@comments) }
   end
 
   # GET /comments/1
@@ -95,6 +105,10 @@ class CommentsController < ApplicationController
 
   private
 
+    def set_page
+      @page = (params[:page] || 1).to_i - 1
+    end
+
     def comments_tree_for(comments)
       comments.map do |comment, nested_comments|
         {
@@ -103,6 +117,7 @@ class CommentsController < ApplicationController
         }
       end
     end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])

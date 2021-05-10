@@ -9,8 +9,8 @@ import { ProblemSetsService } from '../problem-sets.service';
 export class PublicComponent implements OnInit {
 
 
-	which: string = 'problem_sets';
-	others: string = 'public';
+	uri: string = 'problem_sets';
+	addition: string = 'public';
 	loading: boolean;
 	problemSets: Array<any>;
 	p: number;

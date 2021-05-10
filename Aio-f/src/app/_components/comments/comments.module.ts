@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { MarkdownModule} from 'ngx-markdown';
+import { SearchModule } from '../search/search.module';
 import { CommentsComponent } from './comments.component';
 
 @NgModule({
@@ -11,7 +13,9 @@ import { CommentsComponent } from './comments.component';
 	imports: [
 		CommonModule,
 		MarkdownModule,
-		FormsModule
+		NgxPaginationModule,
+		FormsModule,
+		SearchModule
 	],
 	exports: [
 		CommentsComponent

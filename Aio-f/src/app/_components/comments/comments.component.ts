@@ -11,10 +11,18 @@ import { AuthService } from '../../_services/auth.service';
 })
 export class CommentsComponent implements OnInit {
 
+	// Define the comments location.
 	@Input() which: string;
+
+	// Define the route url.
+	uri: string = 'comments';
+
+	loading: boolean;
 	descriptions: any;
-	comments: any;
+	comments: Array<any>;
 	user: any;
+	p: number;
+	total: number;
 
 	constructor(private authService: AuthService,
 				private commentsService: CommentsService) {
@@ -23,14 +31,30 @@ export class CommentsComponent implements OnInit {
 	ngOnInit(): void {
 		this.descriptions = {};
 		this.authService.signedIn$
-		.pipe(filter(x => x != null))
-		.subscribe(user => this.user = user);
-		this.commentsService.getComments()
-		.subscribe(comments => this.comments = comments);
+			.pipe(filter(x => x != null))
+			.subscribe(user => this.user = user);
+	}
+
+	setComments(data: any): void {
+		this.comments = data.comments;
+		this.total = data.total;
+	}
+
+	setLoading(loading: boolean): void {
+		this.loading = loading;
+	}
+
+	getPage(page: number): void {
+		this.commentsService.getPage(this.which, page)
+			.subscribe(data => {
+				this.comments = data.comments;
+				this.total = data.total;
+				this.p = page;
+			});
 	}
 
 	setVisible(comment: any): void {
-		//set visibility of the children of comment.
+		//Set visibility of the children of comment.
 		comment.is_visible = !comment.is_visible;
 	}
 

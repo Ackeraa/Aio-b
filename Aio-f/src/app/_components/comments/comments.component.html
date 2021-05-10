@@ -1,5 +1,12 @@
 <div class="d-flex justify-content-center row">
 	<div class="d-flex flex-column col-md-12">
+		<br/>
+		<app-search
+			[uri]="uri"
+			[addition]="which"
+			(itemsEvent)="setComments($event)" 
+			(loadingEvent)="setLoading($event)" >
+		</app-search>
 		<div class="mt-2 mb-2 text-right">
 			<button class="btn btn-primary" data-toggle="collapse" data-target="#collapse-0"
 				aria-expanded="true" aria-controls="collapse-0" (click)="initDescription(0)">
@@ -93,13 +100,23 @@
 			</div>
 		</ng-template>
 
-		<div class="mb-2" *ngFor="let comment of comments">
+
+		<div class="mb-2" *ngFor="let comment of comments | paginate:
+				{itemsPerPage:10, currentPage:p, totalItems:total}">
 			<ng-template
 				[ngTemplateOutlet]="nodeTemplateRef"
 				[ngTemplateOutletContext]="{ node: comment }">
 			</ng-template>
 		</div>
-
 	</div>
 </div>
 
+<br/>
+<div class="row justify-content-center">
+	<pagination-controls class="paginator"
+		(pageChange)="getPage($event)"
+		auotHide="true"
+		previousLabel=""
+		nextLabel="" >
+	</pagination-controls>
+</div>

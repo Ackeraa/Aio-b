@@ -11,8 +11,8 @@ import { SubmissionsService } from './submissions.service';
 })
 export class SubmissionsComponent implements OnInit {
 
-	which: string = 'submission_records';
-	others: string = 'public';
+	uri: string = 'submission_records';
+	addition: string = 'public';
 	loading: boolean;
 	p: number;
 	total: number;

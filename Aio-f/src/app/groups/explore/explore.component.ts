@@ -8,7 +8,7 @@ import { GroupsService } from '../groups.service';
 })
 export class ExploreComponent implements OnInit {
 
-	which: string = 'groups';
+	uri: string = 'groups';
 	groups: Array<any>;
 	loading: boolean;
 	p: number;

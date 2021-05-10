@@ -14,6 +14,6 @@ export class UsersService {
 	}
 
 	getPage(page: number): Observable<any> {
-		return this.searchService.getPage('users', page);
+		return this.searchService.getPage(page);
 	}
 }

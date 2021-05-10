@@ -10,16 +10,21 @@ import { map } from 'rxjs/operators';
 export class SearchService {
 
 	query: string;
+	uri: string;
+	addition: string;
 
 	constructor(private tokenService: Angular2TokenService) {
 	}
 
-	search(which: string, query: string, others: string): Observable<any> {
+	search(uri: string, query: string, addition: string): Observable<any> {
+		this.uri = uri;
 		this.query = query;
-		let url = which + '/search';
+		this.addition = addition;
+
+		let url = uri + '/search';
 		let params;
-		if (others != '') {
-			params = { search: { query: query, which: others } };
+		if (addition != '') {
+			params = { search: { query: query, addition: addition } };
 		} else {
 			params = { search: { query: query } };
 		}
@@ -28,9 +33,14 @@ export class SearchService {
 			       .pipe(map(res => res.json()));
 	}
 
-	getPage(which: string, page: number): Observable<any> {
-		let url = which + '/search';
-		let params = { search: { query: this.query, page: page } };
+	getPage(page: number): Observable<any> {
+		let url = this.uri + '/search';
+		let params;
+		if (this.addition != '') {
+			params = { search: { query: this.query, addition: this.addition, page: page } };
+		} else {
+			params = { search: { query: this.query, page: page } };
+		}
 		return this.tokenService.get(url, params)
 			       .pipe(map(res => res.json()));
 	}

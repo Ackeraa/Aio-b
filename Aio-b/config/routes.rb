@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
   resources :comments do
     collection do
+      get  'search',                            :action => 'search'
       post 'vote_up',                           :action => 'vote_up'
       post 'vote_down',                         :action => 'vote_down'
     end
@@ -83,7 +84,6 @@ Rails.application.routes.draw do
   resources :homes
   resources :discussions
   resources :contest
-  resources :comments
 
   mount_devise_token_auth_for 'User', at: 'auth'
   mount ActionCable.server => '/cable'

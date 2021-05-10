@@ -8,7 +8,7 @@ import { UsersService } from '../users.service';
 })
 export class ExploreComponent implements OnInit {
 
-	which: string = 'users';
+	uri: string = 'users';
 	users: Array<any>;
 	loading: boolean;
 	p: number;

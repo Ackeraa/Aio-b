@@ -14,7 +14,7 @@ export class ContestsService {
 	}
 
 	getPage(page: number): Observable<any> {
-		return this.searchService.getPage('contests', page);
+		return this.searchService.getPage(page);
 	}
 
 	create(data: any): Observable<any> {

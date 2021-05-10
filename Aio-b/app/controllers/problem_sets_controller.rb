@@ -12,7 +12,7 @@ class ProblemSetsController < ApplicationController
 
   # GET /problem_sets/search
   def search
-    which = params[:which]
+    which = params[:addition]
     query = params[:query]
     if which == 'public'
       if query.nil?

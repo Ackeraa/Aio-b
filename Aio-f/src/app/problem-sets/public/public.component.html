@@ -1,8 +1,8 @@
 <div class="card shadow-sm">
 	<div class="card-body">
 		<app-search
-			[which]="which"
-			[others]="others"
+			[uri]="uri"
+			[addition]="addition"
 			(itemsEvent)="setProblemSets($event)" 
 			(loadingEvent)="setLoading($event)" >
 		</app-search>

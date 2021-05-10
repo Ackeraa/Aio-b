@@ -14,7 +14,7 @@ export class ProblemSetsService {
 	}
 
 	getPage(page: number): Observable<any> {
-		return this.searchService.getPage('problem_sets', page);
+		return this.searchService.getPage(page);
 	}
 
 	create(data: any): Observable<any> {

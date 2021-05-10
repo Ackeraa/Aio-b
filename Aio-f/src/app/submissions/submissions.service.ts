@@ -31,6 +31,6 @@ export class SubmissionsService {
 	}
 
 	getSubmissionsPage(page: number) :Observable<any> {
-		return this.searchService.getPage('submission_records', page);
+		return this.searchService.getPage(page);
 	}
 }
