@@ -61,8 +61,7 @@ export class ProblemService implements OnInit {
 					body = {
 						language: language,
 						code: code,
-						user_id: user.user_id,
-						user_name: user.user_name
+						user_id: user.user_id
 					};
 					return this.tokenService.post(url, body)
 						.pipe(map(res => res.json()));
@@ -70,78 +69,4 @@ export class ProblemService implements OnInit {
 			);
 	}
 
-	getMySubmissionsChannel() :Observable<any> {
-
-		return combineLatest(this.problem$, this.authService.signedIn$)
-			.pipe(
-				filter(([x, y]) => x != null && y != null),
-			    switchMap(([problem, user]) => {
-					let url = 'ws://127.0.0.1:3000/cable';
-					let channel = 'SubmissionRecordsChannel';
-					let params = {
-						problem_id: problem.id,
-						user_id: user.user_id
-					};
-					return this.cableService
-							   .cable(url)
-							   .channel(channel, params)
-							   .received()
-				})
-			);
-	}
-
-	getMySubmissions() :Observable<any> {
-		return combineLatest(this.problem$, this.authService.signedIn$)
-			.pipe(
-			   filter(([x, y]) => x != null && y != null),
-			   switchMap(([problem, user]) => {
-				   let url = 'submission_records';
-				   let params = {
-					   search: {
-						   user_name: user.user_name,
-						   problem_id: problem.id
-					   }
-				   };
-				   return this.tokenService.get(url, params)
-							  .pipe(map(res => res.json()))	
-				})
-			);
-	}
-
-	getMySubmissionsPage(page: number) :Observable<any> {
-		return this.searchService.getPage(page);
-	}
-
-	getSubmissionsChannel(): Observable<any> {
-		return this.problem$
-		    .pipe(
-				filter(x => x != null),
-				switchMap(problem => {
-					let url = 'ws://127.0.0.1:3000/cable';
-					let channel = 'SubmissionRecordsChannel';
-					let params = { problem_id: problem.id };
-					return this.cableService
-							   .cable(url)
-							   .channel(channel, params)
-							   .received()
-					})
-			);
-	}
-
-	getSubmissions() :Observable<any> {
-		return this.problem$
-		    .pipe(
-				filter(x => x != null),
-				switchMap(problem => {
-					let url = 'submission_records';
-					let params = { search: { problem_id: problem.id } };
-					return this.tokenService.get(url, params)
-							   .pipe(map(res => res.json()));
-					})
-			);
-	}
-
-	getSubmissionsPage(page: number) :Observable<any> {
-		return this.searchService.getPage(page);
-	}
 }

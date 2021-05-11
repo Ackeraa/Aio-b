@@ -13,7 +13,7 @@ class ContestsController < ApplicationController
   # GET /contests/search
   def search
     query = params[:query]
-    which = params[:which]
+    which = params[:addition]
     if which == 'recent'
       total = Contest.where('name ilike(?)',  "%#{query}%").count
       @contests = Contest.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)

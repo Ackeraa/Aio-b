@@ -9,3 +9,4 @@ export * from './problem-search/problem-search.module';
 export * from './comments/comments.component';
 export * from './comments/comments.service';
 export * from './comments/comments.module';
+export * from './submissions/submissions.module';

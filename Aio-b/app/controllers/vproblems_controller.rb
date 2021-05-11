@@ -89,16 +89,13 @@ class VproblemsController < ApplicationController
     language = params[:language]
     contest_id = params[:contest_id] || 0
     user_id = params[:user_id]
-    user_name = params[:user_name]
-    submission_record = SubmissionRecord.create(
+    submission = Submission.create(
       problem_id: @problem.id,
       contest_id: contest_id,
       user_id: user.id,
-      user_name: user.name,
-      submit_time: Time.now,
       result: "judging"
     )
-    submission_broadcast submission_record
+    submission_broadcast submission
 
     is_contest = contest_id != 0
     if is_contest
@@ -147,9 +144,9 @@ class VproblemsController < ApplicationController
     Thread.new do
       #spider = get_spider(source)
       #submission = spider.submit(vid, language, code)
-      submission = submission_record
-      submission_record.update(submission)
-      submission_broadcast submission_record
+      new_submission = submission
+      submission.update(new_submission)
+      submission_broadcast submission
 
       if is_contest and not is_already_ac
         acm_contest_rank.submission_info[contest_problem_id][:result] = submission[:result]
@@ -158,7 +155,7 @@ class VproblemsController < ApplicationController
         ranks_broadcast acm_contest_rank
       end
     end
-    render json: submission_record
+    render json: submission
   end
   
   # GET /vproblems/respide/1
@@ -202,11 +199,11 @@ class VproblemsController < ApplicationController
       "#{which}::#{which}Spider".constantize.new
     end
 
-    def submission_broadcast(submission_record)
-      ActionCable.server.broadcast cpu_submission_stream, submission_record
-      ActionCable.server.broadcast cp_submission_stream, submission_record
-      ActionCable.server.broadcast cu_submission_stream, submission_record
-      ActionCable.server.broadcast c_submission_stream, submission_record
+    def submission_broadcast(submission)
+      ActionCable.server.broadcast cpu_submission_stream, submission
+      ActionCable.server.broadcast cp_submission_stream, submission
+      ActionCable.server.broadcast cu_submission_stream, submission
+      ActionCable.server.broadcast c_submission_stream, submission
     end
 
     def ranks_broadcast(acm_contest_rank)

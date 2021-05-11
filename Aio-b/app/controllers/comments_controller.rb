@@ -12,19 +12,15 @@ class CommentsController < ApplicationController
   # GET /comments/search
   def search
     query = params[:query]
-    total = Comment.where('creator ilike(?)',  "%#{query}%").count
-    @comments = Comment.where('creator ilike(?)',  "%#{query}%")
+    which = params[:addition]
+    total = Comment.where('which=? and creator ilike(?)', which, "%#{query}%").count
+    @comments = Comment.where('which=? and creator ilike(?)',  which, "%#{query}%")
                        .limit(10).offset(@page * 10).hash_tree(limit_depth: 5)
     render json: { total: total, comments: comments_tree_for(@comments) }
   end
 
   # GET /comments/1
   def show
-    render json: @comment
-  end
-
-  def new
-    @comment = Comment.new(parent_id: params[:parent_id])
     render json: @comment
   end
 

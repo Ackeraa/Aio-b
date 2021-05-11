@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ContestRoutingModule } from './contest-routing.module';
 import { ProblemSearchModule } from '../_components';
+import { SubmissionsModule } from '../_components';
 
 import {
 	MySubmissionsComponent,
@@ -32,7 +33,8 @@ import {
 		FormsModule,
 		CodemirrorModule,
 		ContestRoutingModule,
-		ProblemSearchModule
+		ProblemSearchModule,
+		SubmissionsModule
 	],
 	exports: [
 	]

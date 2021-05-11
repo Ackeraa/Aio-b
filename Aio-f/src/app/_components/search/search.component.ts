@@ -11,7 +11,7 @@ import { SearchService } from './search.service';
 export class SearchComponent implements OnInit {
 
 	@Input() uri: string;
-	@Input() addition: string = '';
+	@Input() addition: any = {};
 	@Output() itemsEvent = new EventEmitter<any>();
 	@Output() loadingEvent = new EventEmitter<boolean>();
 	@ViewChild('query', { static: true }) query: ElementRef;

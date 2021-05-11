@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators'; 
+import { filter } from 'rxjs/operators'; 
 import { ContestService } from '../contest.service';
-import { ActionCableService, Channel } from 'angular2-actioncable';
 
 @Component({
 	selector: 'app-problem-submissions',
@@ -11,33 +9,14 @@ import { ActionCableService, Channel } from 'angular2-actioncable';
 })
 export class SubmissionsComponent implements OnInit {
 
-	receiver: Subscription;
-	submissions: any;
+	addition: any;
 
 	constructor(private contestService: ContestService) {
 	}
 
 	ngOnInit(): void {
-		this.contestService.getSubmissions()
-			.subscribe(submissions => {
-				this.submissions = submissions;
-			});
-
-		//only receive.
-		this.receiver = this.contestService.getSubmissionsChannel()
+		this.contestService.contest$
 			.pipe(filter(x => x != null))
-			.subscribe(submission => {
-				let i = this.submissions.findIndex(x => x.id === submission.id);
-				if (i == -1) {
-					this.submissions.push(submission);
-				} else {
-					this.submissions[i] = submission;
-				}
-			});
+		 	.subscribe(contest => this.addition = { contest_id: contest.id });
 	}
-
-	ngOnDestroy(): void {
-		this.receiver.unsubscribe();
-	}
-
 }

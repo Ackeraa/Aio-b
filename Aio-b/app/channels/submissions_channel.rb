@@ -1,4 +1,4 @@
-class SubmissionRecordsChannel < ApplicationCable::Channel
+class SubmissionsChannel < ApplicationCable::Channel
   def subscribed
     stream = "submission_#{params[:contest_id] || 0}_#{params[:problem_id] || 0}_#{params[:user_id] || 0}" 
     puts "STREAM FROM", stream
@@ -8,5 +8,4 @@ class SubmissionRecordsChannel < ApplicationCable::Channel
   def unsubscribed
 
   end
-
 end

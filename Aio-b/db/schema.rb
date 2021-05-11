@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_150003) do
+ActiveRecord::Schema.define(version: 2021_05_11_060450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -275,6 +275,22 @@ ActiveRecord::Schema.define(version: 2021_05_09_150003) do
     t.index ["user_id"], name: "index_submission_records_on_user_id"
   end
 
+  create_table "submissions", force: :cascade do |t|
+    t.string "result"
+    t.text "code"
+    t.integer "memory_usage"
+    t.integer "time_usage"
+    t.integer "solution_size"
+    t.bigint "problem_id", null: false
+    t.bigint "contest_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contest_id"], name: "index_submissions_on_contest_id"
+    t.index ["problem_id"], name: "index_submissions_on_problem_id"
+    t.index ["user_id"], name: "index_submissions_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -380,6 +396,9 @@ ActiveRecord::Schema.define(version: 2021_05_09_150003) do
   add_foreign_key "submission_records", "contests"
   add_foreign_key "submission_records", "problems"
   add_foreign_key "submission_records", "users"
+  add_foreign_key "submissions", "contests"
+  add_foreign_key "submissions", "problems"
+  add_foreign_key "submissions", "users"
   add_foreign_key "team_contest_ranks", "contests"
   add_foreign_key "team_contest_ranks", "teams"
   add_foreign_key "team_contest_ranks_contests", "contests"

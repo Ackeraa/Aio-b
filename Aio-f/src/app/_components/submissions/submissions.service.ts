@@ -3,7 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
-import { SearchService } from '../_components';
+import { SearchService } from '../search/search.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,19 +15,13 @@ export class SubmissionsService {
 				private tokenService: Angular2TokenService){
 	}
 
-	getSubmissionsChannel(): Observable<any> {
+	getSubmissionsChannel(params: any): Observable<any> {
 		let url = 'ws://127.0.0.1:3000/cable';
-		let channel = 'SubmissionRecordsChannel';
+		let channel = 'SubmissionsChannel';
 		return this.cableService
-		   .cable(url)
+		   .cable(url, params)
 		   .channel(channel)
 		   .received();
-	}
-
-	getSubmissions() :Observable<any> {
-		let url = 'submission_records';
-		return this.tokenService.get(url)
-		   .pipe(map(res => res.json()));
 	}
 
 	getSubmissionsPage(page: number) :Observable<any> {

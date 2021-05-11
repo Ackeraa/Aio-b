@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators'; 
+import { combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators'; 
 import { ProblemService } from '../problem.service';
+import { AuthService } from '../../_services';
 
 @Component({
 	selector: 'app-problem-my-submissions',
@@ -10,57 +11,17 @@ import { ProblemService } from '../problem.service';
 })
 export class MySubmissionsComponent implements OnInit {
 
-	uri: string = 'submission_records';
-	addition: string = 'public';
-	loading: boolean;
-	p: number;
-	total: number;
-	receiver: Subscription;
-	submissions: Array<any>;
+	addition: any;
 
-	constructor(private problemService: ProblemService) {
+	constructor(private authService: AuthService,
+				private problemService: ProblemService) {
 	}
 
 	ngOnInit(): void {
-		this.problemService.getMySubmissions()
-			.pipe(filter(x => x != null))
-			.subscribe(submissions => {
-				this.submissions = submissions;
-			});
-
-		//only receive.
-		this.receiver = this.problemService.getMySubmissionsChannel()
-			.pipe(filter(x => x != null))
-			.subscribe(submission => {
-				let i = this.submissions.findIndex(x => x.id === submission.id);
-				if (i == -1) {
-					this.submissions.push(submission);
-				} else {
-					this.submissions[i] = submission;
-				}
-			});
-	}
-
-	setLoading(loading: boolean): void {
-		this.loading = loading;
-	}
-
-	setSubmissions(data: any): void {
-		this.submissions = data.submission_records;
-		this.total = data.total;
-	}
-
-	getPage(page: number): void {
-		this.problemService.getMySubmissionsPage(page)
-			.subscribe(data => {
-				this.submissions = data.submission_records;
-				this.total = data.total;
-				this.p = page;
-				console.log(this.p);
-			});
-	}
-
-	ngOnDestroy(): void {
-		this.receiver.unsubscribe();
+		combineLatest(this.problemService.problem$, this.authService.signedIn$)
+		.pipe(filter(([x, y]) => x != null && y != null))
+		.subscribe(z => {
+			this.addition = { problem_id: z[0].id, user_id: z[1].user_id };
+		});
 	}
 }

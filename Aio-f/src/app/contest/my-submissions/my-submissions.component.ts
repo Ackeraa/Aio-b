@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators'; 
+import { combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators'; 
 import { ContestService } from '../contest.service';
+import { AuthService } from '../../_services';
 
 @Component({
 	selector: 'app-contest-my-submissions',
@@ -10,33 +11,18 @@ import { ContestService } from '../contest.service';
 })
 export class MySubmissionsComponent implements OnInit {
 
-	receiver: Subscription;
-	submissions: Array<any>;
+	addition: any; 
 
-	constructor(private contestService: ContestService) {
+	constructor(private authService: AuthService,
+				private contestService: ContestService) {
 	}
 
 	ngOnInit(): void {
-		this.contestService.getMySubmissions()
-			.pipe(filter(x => x != null))
-			.subscribe(submissions => {
-				this.submissions = submissions;
-			});
-
-		//only receive.
-		this.receiver = this.contestService.getMySubmissionsChannel()
-			.pipe(filter(x => x != null))
-			.subscribe(submission => {
-				let i = this.submissions.findIndex(x => x.id === submission.id);
-				if (i == -1) {
-					this.submissions.push(submission);
-				} else {
-					this.submissions[i] = submission;
-				}
-			});
-	}
-
-	ngOnDestroy(): void {
-		this.receiver.unsubscribe();
+		combineLatest(this.contestService.contest$, this.authService.signedIn$)
+		.pipe(filter(([x, y]) => x != null && y != null))
+		.subscribe(z => {
+			this.addition = { contest_id: z[0].id, user_id: z[1].user_id };
+			console.log(this.addition);
+		});
 	}
 }

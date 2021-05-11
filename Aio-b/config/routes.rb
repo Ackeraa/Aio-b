@@ -63,7 +63,15 @@ Rails.application.routes.draw do
     end
   end
 
+=begin
   resources :submission_records do
+    collection do
+      get  'search',                            :action => 'search'
+    end
+  end
+=end
+
+  resources :submissions do
     collection do
       get  'search',                            :action => 'search'
     end

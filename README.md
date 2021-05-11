@@ -888,20 +888,19 @@ end
 
 #### submission_records
 
-|   Attribute   |  Type   | Description |
-| :-----------: | :-----: | :---------: |
-|      id       | integer | primary key |
-|  contest_id   | integer | foreign key |
-|  problem_id   | integer | foreign key |
-|    user_id    | integer | foreign key |
-|    result     | string  |             |
-|     code      |  text   |             |
-| memory_usage  | integer |             |
-|  time_usage   | integer |             |
-| solution_size | integer |             |
-|  submit_time  |  date   |             |
-|  created_at   |  date   |             |
-|  updated_at   |  date   |             |
+|   Attribute   |   Type   | Description |
+| :-----------: | :------: | :---------: |
+|      id       | integer  | primary key |
+|  contest_id   | integer  | foreign key |
+|  problem_id   | integer  | foreign key |
+|    user_id    | integer  | foreign key |
+|    result     |  string  |             |
+|     code      |   text   |             |
+| memory_usage  | integer  |             |
+|  time_usage   | integer  |             |
+| solution_size | integer  |             |
+|  created_at   | datetime |             |
+|  updated_at   | datetime |             |
 
 #### contribute_scores
 

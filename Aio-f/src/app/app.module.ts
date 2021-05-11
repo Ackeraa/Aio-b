@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ProblemSearchModule } from './_components';
 import { SearchModule } from './_components';
 import { CommentsModule } from './_components';
+import { SubmissionsModule } from './_components';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -52,6 +53,7 @@ import {
 		ProblemSearchModule,
 		SearchModule,
 		CommentsModule,
+		SubmissionsModule,
 
 		FormsModule,
 		HttpModule,

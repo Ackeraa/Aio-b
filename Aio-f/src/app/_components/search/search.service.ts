@@ -11,23 +11,18 @@ export class SearchService {
 
 	query: string;
 	uri: string;
-	addition: string;
+	addition: any;
 
 	constructor(private tokenService: Angular2TokenService) {
 	}
 
-	search(uri: string, query: string, addition: string): Observable<any> {
+	search(uri: string, query: string, addition: any): Observable<any> {
 		this.uri = uri;
 		this.query = query;
 		this.addition = addition;
 
 		let url = uri + '/search';
-		let params;
-		if (addition != '') {
-			params = { search: { query: query, addition: addition } };
-		} else {
-			params = { search: { query: query } };
-		}
+		let params = { search: { query: query, addition: addition } };
 
 		return this.tokenService.get(url, params)
 			       .pipe(map(res => res.json()));
@@ -35,12 +30,7 @@ export class SearchService {
 
 	getPage(page: number): Observable<any> {
 		let url = this.uri + '/search';
-		let params;
-		if (this.addition != '') {
-			params = { search: { query: this.query, addition: this.addition, page: page } };
-		} else {
-			params = { search: { query: this.query, page: page } };
-		}
+		let params = { search: { query: this.query, addition: this.addition, page: page } };
 		return this.tokenService.get(url, params)
 			       .pipe(map(res => res.json()));
 	}

@@ -103,7 +103,7 @@ export class CommentsComponent implements OnInit {
 
 	reply(node: any): void {
 		node.comment.is_visible = true;
-		node.children.push({
+		node.children.unshift({
 			comment: { 
 				creator: this.user.user_name,
 				description: this.descriptions[node.comment.id],
@@ -112,7 +112,7 @@ export class CommentsComponent implements OnInit {
 			},
 			children: []
 		});
-		//this.commentsService.create(node.comment.id, this.which, this.descriptions[node.comment.id]);
+		this.commentsService.create(node.comment.id, this.which, this.descriptions[node.comment.id]);
 	}
 
 }

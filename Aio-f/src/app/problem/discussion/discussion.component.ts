@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators'; 
 import { ProblemService } from '../problem.service';
 
 @Component({
@@ -13,8 +14,11 @@ export class DiscussionComponent implements OnInit {
 	constructor(private problemService: ProblemService) { }
 
 	ngOnInit(): void {
-		this.problemService.problem$.subscribe(problem => {
-			this.which = 'problem_' + problem.id;
+		this.problemService.problem$
+			.pipe(filter(x => x != null))
+			.subscribe(problem => {
+				this.which = 'problem_' + problem.id;
+				console.log(this.which);
 		});
 	}
 

@@ -8,6 +8,7 @@ import { ProblemRoutingModule } from './problem-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchModule } from '../_components';
 import { CommentsModule } from '../_components';
+import { SubmissionsModule } from '../_components';
 
 import {
 	DescriptionComponent,
@@ -36,6 +37,7 @@ import {
 		NgxPaginationModule,
 		SearchModule,
 		CommentsModule,
+		SubmissionsModule,
 		MarkdownModule.forChild(),
 	],
 	exports: [
