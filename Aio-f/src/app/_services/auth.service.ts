@@ -24,39 +24,31 @@ export class AuthService implements OnInit{
 			},
 		)
 	}
+
 	register(data: {name: string, email:string, password:string, passwordConfirmation:string}):
 		Observable<Response>{
-		return this.tokenService.registerAccount(data).pipe(map(
-			res => {
-				return res
-			}
-		));
+		return this.tokenService.registerAccount(data)
+			.pipe(map(res => res.json()));
 	}
 
 	logIn(data):Observable<Response>{
-
-		return this.tokenService.post(
-			'auth/sign_in',
-			data
-		).pipe(map(
-			res => {
+		return this.tokenService.post('auth/sign_in', data)
+			.pipe(map(res => {
 				let user = res.json().data;
 				this.signedIn$.next({
 					user_id: user.id,
 					user_name: user.name
 				});
-				return res;
-			}
-		));
+				return res.json();
+			}));
 	}
 
 	logOut():Observable<Response>{
-		return this.tokenService.signOut().pipe(map(
-			res => {
+		return this.tokenService.signOut()
+		   .pipe(map(res => {
 				this.signedIn$.next(null);
 				return res;
-			}
-		));
+			}));
 	}
 
 	get(url: string, params: any = null): Observable<any> {

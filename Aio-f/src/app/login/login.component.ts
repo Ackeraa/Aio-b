@@ -75,23 +75,23 @@ export class LoginComponent implements OnInit {
 		}
 
 		this.authService.logIn(data)
-		.subscribe(
-			data => {
-				if(data.status == 200){
-					this.router.navigate([this.returnUrl]);
+			.subscribe(
+				data => {
+					if(data.status == 200){
+						this.router.navigate([this.returnUrl]);
+					}
+				},
+				error => {
+					console.log('err:', error);
+					let errors = JSON.parse(error["_body"]).errors.join('');
+					if (errors.indexOf("Invalid") != -1) {
+						this.errors = "Invalid user name or password.";
+					} else {
+						this.errors = "Please confirm your email before login.";
+					}
+					this.loading = false;
 				}
-			},
-			error => {
-				console.log('err:', error);
-				let errors = JSON.parse(error["_body"]).errors.join('');
-				if (errors.indexOf("Invalid") != -1) {
-					this.errors = "Invalid user name or password.";
-				} else {
-					this.errors = "Please confirm your email before login.";
-				}
-				this.loading = false;
-			}
-		);
+			);
 	}
 
 	ngOnInit() {
