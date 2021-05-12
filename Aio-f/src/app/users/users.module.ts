@@ -5,13 +5,25 @@ import { UsersRoutingModule } from './users-routing.module';
 import { SearchModule } from '../_components/search/search.module';
 import {
 	MyInfoComponent,
-	ExploreComponent 
+	ExploreComponent,
+	HomeComponent,
+	ContestsComponent,
+	ProblemsComponent, 
+	GroupsComponent, 
+	FriendsComponent, 
+	SettingsComponent 
 } from '.';
 
 @NgModule({
 	declarations: [
 		MyInfoComponent,
-		ExploreComponent
+		ExploreComponent,
+		HomeComponent,
+		ContestsComponent,
+		ProblemsComponent,
+		GroupsComponent,
+		FriendsComponent,
+		SettingsComponent
 	],
 	imports: [
 		CommonModule,

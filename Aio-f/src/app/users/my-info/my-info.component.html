@@ -1,143 +1,95 @@
-<div class="card">
-	<div class="card-body">
-		<div class="row">
-			<div class="col-1">
-				picture
-			</div>
-			<div class="col">
-				<div class="row">
-					<div class="col">
-						name: root
-					</div>
-					<div class="col">
-						gender: male
-					</div>
-					<div class="col">
-						email: root@root.com
-					</div>
-				</div>
-				<br/>
-
-				<div class="row">
-					<div class="col-4">
-						<div class="card border-dark mb-3">
-							<div class="card-body">
-								<div class="row justify-content-between">
-									<div class="col-auto">
-										<h5 class="card-title">Solved Problems</h5>
-									</div>
-									<div class="col-auto">
-										<i class="fas fa-award fa-2x"></i>
-									</div>
-								</div>
-								<p class="card-text">
-									123
-								</p>
-							</div>
+<div class="row">
+	<div class="col-md-12">
+		<div id="content" class="content content-full-width">
+			<div class="profile">
+				<div class="profile-header">
+					<div class="profile-header-cover"></div>
+					<div class="profile-header-content">
+						<div class="profile-header-img">
+							<img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
 						</div>
-					</div>
-					<div class="col-4">
-						<div class="card border-dark mb-3">
-							<div class="card-body">
-								<div class="row justify-content-between">
-									<div class="col-auto">
-										<h5 class="card-title">Participated Contests</h5>
-									</div>
-									<div class="col-auto">
-										<i class="fas fa-award fa-2x"></i>
-									</div>
-								</div>
-								<p class="card-text">
-									123
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
-						<div class="card border-dark mb-3">
-							<div class="card-body">
-								<div class="row justify-content-between">
-									<div class="col-auto">
-										<h5 class="card-title">Joined Groups</h5>
-									</div>
-									<div class="col-auto">
-										<i class="fas fa-award fa-2x"></i>
-									</div>
-								</div>
-								<p class="card-text">
-									123
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="card border-dark mb-3">
-							<div class="card-body">
-								<div class="row justify-content-between">
-									<div class="col-auto">
-										<h5 class="card-title">Contributed Solutions </h5>
-									</div>
-									<div class="col-auto">
-										<i class="fas fa-award fa-2x"></i>
-									</div>
-								</div>
-								<p class="card-text">
-									123
-								</p>
-							</div>
+						<div class="profile-header-info">
+							<h4 class="m-t-10 m-b-5">Sean Ngu</h4>
+							<p class="m-b-10">UXUI + Frontend Developer</p>
+							<button class="btn btn-primary">Follow</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<nav>
-			<div class="nav nav-tabs" id="nav-tab" role="tablist">
-				<button class="nav-link active" id="nav-overview-tab" data-toggle="tab"
-					  data-target="#nav-overview" type="button" role="tab"
-					  aria-controls="nav-overview" aria-selected="true">
-					Overview
-				</button>
-				<button class="nav-link" id="nav-setting-tab" data-toggle="tab"
-					  data-target="#nav-setting" type="button" role="tab"
-					  aria-controls="nav-setting" aria-selected="false">
-					Settings
-				</button> 
-			</div>
-		</nav>
+	</div>
+</div>
 
-		<div class="tab-content" id="nav-tabContent">
-			<div class="tab-pane fade show active" id="nav-overview" role="tabpanel"
-				aria-labelledby="nav-overview-tab">
-				<br/>
-				<div class="accordion md-accordion accordion-blocks" id="accordionEx78"
-					role="tablist" aria-multiselectable="true">
-					<div class="card">
-						<div class="card-header" role="tab" id="headingProblems">
-							<a data-toggle="collapse" data-parent="#accordionEx78" href="#problems"
-								   aria-expanded="true" aria-controls="problems">
-								<h5 class="mt-1 mb-0">
-									Solved Problems
-									<i class="fas fa-angle-down rotate-icon"></i>
-								</h5>
-							</a>
-						</div>
-
-						<div id="problems" class="collapse" role="tabpanel" aria-labelledby="headingProblems"
-											data-parent="#accordionEx78">
-							<div class="card-body">
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="nav-setting" role="tabpanel"
-				aria-labelledby="nav-setting-tab">
-				.
-			</div>
+<div class="p-5 bg-white rounded shadow">
+	<ul id="myTab2" role="tablist" class="nav nav-tabs nav-pills with-arrow lined
+		flex-column flex-sm-row text-center">
+		<li class="nav-item flex-sm-fill">
+			<a id="home-tab" data-toggle="tab" href="#home" role="tab"
+				aria-controls="home" aria-selected="true" class="nav-link
+				font-weight-bold mr-sm-3 rounded-0 active">
+				Home
+			</a>
+		</li>
+		<li class="nav-item flex-sm-fill">
+			<a id="contests-tab" data-toggle="tab" href="#contests" role="tab"
+				aria-controls="contests" aria-selected="false" class="nav-link
+				font-weight-bold mr-sm-3 rounded-0">
+				Contests
+			</a>
+		</li>
+		<li class="nav-item flex-sm-fill">
+			<a id="problems-tab" data-toggle="tab" href="#problems" role="tab"
+				aria-controls="problems" aria-selected="false" class="nav-link
+				font-weight-bold mr-sm-3 rounded-0">
+				Problems
+			</a>
+		</li>
+		<li class="nav-item flex-sm-fill">
+			<a id="groups-tab" data-toggle="tab" href="#groups" role="tab"
+				aria-controls="groups" aria-selected="false" class="nav-link
+				font-weight-bold mr-sm-3 rounded-0">
+				Groups
+			</a>
+		</li>
+		<li class="nav-item flex-sm-fill">
+			<a id="friends-tab" data-toggle="tab" href="#friends" role="tab"
+				aria-controls="friends" aria-selected="false" class="nav-link
+				font-weight-bold rounded-0">
+				Friends
+			</a>
+		</li>
+		<li class="nav-item flex-sm-fill">
+			<a id="settings-tab" data-toggle="tab" href="#settings" role="tab"
+				aria-controls="settings" aria-selected="false" class="nav-link
+				font-weight-bold rounded-0">
+				Settings
+			</a>
+		</li>
+	</ul>
+	<div id="myTab2Content" class="tab-content">
+		<div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane
+			 fade px-4 py-5 show active">
+			<app-users-home></app-users-home>
 		</div>
-
+		<div id="contests" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane
+			fade px-4 py-5">
+			<app-users-contests></app-users-contests>
+		</div>
+		<div id="problems" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane
+			fade px-4 py-5">
+			<app-users-problems></app-users-problems>
+		</div>
+		<div id="groups" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane
+			fade px-4 py-5">
+			<app-users-groups></app-users-groups>
+		</div>
+		<div id="friends" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane
+			fade px-4 py-5">
+			<app-users-friends></app-users-friends>
+		</div>
+		<div id="settings" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane
+			fade px-4 py-5">
+			<app-users-settings></app-users-settings>
+		</div>
 	</div>
 </div>
