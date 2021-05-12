@@ -3,7 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
-import { SearchService } from '../search/search.service';
+import { SearchService } from './search.service';
 
 @Injectable({
 	providedIn: 'root'

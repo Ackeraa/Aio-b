@@ -4,7 +4,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
 import { AuthService } from '../_services';
-import { ProblemSearchService } from '../_components';
+import { ProblemSearchService } from '../_services';
 
 @Injectable({
 	providedIn: 'root'

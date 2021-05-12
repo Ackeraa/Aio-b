@@ -14,7 +14,7 @@ import { CommentsModule } from './_components';
 import { SubmissionsModule } from './_components';
 
 import { AppRoutingModule } from './app-routing.module';
-import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+import { ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { ContestsComponent } from './contests';
@@ -30,7 +30,6 @@ import { UsersComponent } from './users';
 import { WikiComponent } from './wiki';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
-import { fakeBackendProvider } from './_helpers';
 import { Angular2TokenService } from 'angular2-token';
 import { AuthService } from "./_services/auth.service";
 import { ActionCableService } from 'angular2-actioncable';
@@ -80,13 +79,11 @@ import {
 		DiscussionComponent
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
 		Angular2TokenService,
 		AuthService,
 		ActionCableService 
-        //fakeBackendProvider
     ],
     bootstrap: [AppComponent]
 })

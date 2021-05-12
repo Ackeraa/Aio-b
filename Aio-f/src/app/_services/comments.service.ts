@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators'; 
 import { Angular2TokenService } from 'angular2-token';
-import { SearchService } from '../search/search.service';
+import { SearchService } from './search.service';
 
 @Injectable({
 	providedIn: 'root'

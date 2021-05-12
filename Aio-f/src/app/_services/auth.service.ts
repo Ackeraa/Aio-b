@@ -1,5 +1,4 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Angular2TokenService } from 'angular2-token';
 import { BehaviorSubject, Observable, AsyncSubject } from 'rxjs';
 import { Response } from '@angular/http';
@@ -58,20 +57,6 @@ export class AuthService implements OnInit{
 				return res;
 			}
 		));
-	}
-
-	/*
-	getValidateToken(): any{
-		let token: any;
-		this.tokenService.validateToken().subscribe(
-			res => token = res
-		);
-		return token;
-	}
-	*/
-
-	getCurrentUser(): any {
-		return this.tokenService.currentUserData;
 	}
 
 	ngOnInit(): void {

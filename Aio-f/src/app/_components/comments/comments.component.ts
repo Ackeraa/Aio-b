@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MarkdownModule, MarkedOptions, MarkedRenderer } from 'ngx-markdown';
 import { map, filter } from 'rxjs/operators'; 
-import { CommentsService } from './comments.service';
 import { AuthService } from '../../_services/auth.service';
+import { CommentsService } from '../../_services';
 
 @Component({
 	selector: 'app-comments',

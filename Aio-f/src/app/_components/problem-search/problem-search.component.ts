@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Subject, Observable, fromEvent } from 'rxjs';
 import { map, filter, debounceTime, tap, switchAll } from 'rxjs/operators'; 
-import { ProblemSearchService } from './problem-search.service';
+import { ProblemSearchService } from '../../_services';
 
 @Component({
 	selector: 'app-problem-search',
