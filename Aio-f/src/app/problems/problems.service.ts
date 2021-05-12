@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators'; 
-import { Angular2TokenService } from 'angular2-token';
+import { AuthService } from '../_services';
 import { ProblemSearchService } from '../_services';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { ProblemSearchService } from '../_services';
 })
 export class ProblemsService {
 
-	constructor(private tokenService: Angular2TokenService,
+	constructor(private authService: AuthService,
 				private ProblemSearchService: ProblemSearchService) {
 			}
 	

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter } from 'rxjs/operators'; 
-import { Angular2TokenService } from 'angular2-token';
+import { AuthService } from '../_services';
 import { SearchService } from '../_services';
 
 @Injectable({
@@ -9,8 +9,8 @@ import { SearchService } from '../_services';
 })
 export class ProblemSetsService {
 
-	constructor(private searchService: SearchService,
-				private tokenService: Angular2TokenService) {
+	constructor(private authService: AuthService,
+				private searchService: SearchService) {
 	}
 
 	getPage(page: number): Observable<any> {
@@ -19,6 +19,6 @@ export class ProblemSetsService {
 
 	create(data: any): Observable<any> {
 		let url = 'problem_sets';
-		return this.tokenService.post(url, data);
+		return this.authService.post(url, data);
 	}
 }

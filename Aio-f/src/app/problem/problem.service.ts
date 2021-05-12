@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators'; 
-import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
 import { AuthService } from '../_services';
 import { SearchService } from '../_services';
@@ -14,9 +13,8 @@ export class ProblemService implements OnInit {
 	problem$: BehaviorSubject<any> = new BehaviorSubject(null);
 
 	constructor(private authService: AuthService,
-				private cableService: ActionCableService,
-				private tokenService: Angular2TokenService,
-				private searchService: SearchService) {
+				private searchService: SearchService,
+				private cableService: ActionCableService) {
 	}
 
 	ngOnInit() {
@@ -29,8 +27,7 @@ export class ProblemService implements OnInit {
 		} else {
 			url = 'vproblems/' + id;
 		}
-		this.tokenService.get(url)
-		    .pipe(map(res => res.json()))
+		this.authService.get(url)
 			.subscribe(problem => {
 				this.problem$.next(problem);
 			});
@@ -43,8 +40,7 @@ export class ProblemService implements OnInit {
 				id = problem.id;
 			});
 		let url = 'vproblems/' + id + '/respide';
-		return this.tokenService.get(url)
-				   .pipe(map(res => res.json()));
+		return this.authService.get(url);
 	}
 
 	submitProblem(language: any, code: string): Observable<any> {
@@ -63,8 +59,7 @@ export class ProblemService implements OnInit {
 						code: code,
 						user_id: user.user_id
 					};
-					return this.tokenService.post(url, body)
-						.pipe(map(res => res.json()));
+					return this.authService.post(url, body)
 				})
 			);
 	}

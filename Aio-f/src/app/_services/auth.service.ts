@@ -59,6 +59,22 @@ export class AuthService implements OnInit{
 		));
 	}
 
+	get(url: string, params: any = null): Observable<any> {
+		if (params == null) {
+			return this.tokenService.get(url)
+				.pipe(map(res => res.json()));
+		} else {
+			let new_params = { search: params };
+			return this.tokenService.get(url, new_params)
+				.pipe(map(res => res.json()));
+		}
+	}
+
+	post(url: string, body: any): Observable<any> {
+		return this.tokenService.post(url, body)
+				.pipe(map(res => res.json()));
+	}
+
 	ngOnInit(): void {
 	}
 }

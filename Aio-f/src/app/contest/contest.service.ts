@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators'; 
-import { Angular2TokenService } from 'angular2-token';
 import { ActionCableService, Channel } from 'angular2-actioncable';
 import { AuthService } from '../_services';
 import { ProblemSearchService } from '../_services';
@@ -17,7 +16,6 @@ export class ContestService implements OnInit {
 
 	constructor(private authService: AuthService,
 				private cableService: ActionCableService,
-				private tokenService: Angular2TokenService,
 			    private problemSearchService: ProblemSearchService) {
 	}
 
@@ -27,8 +25,7 @@ export class ContestService implements OnInit {
 	getData(id: string): void {
 		this.id = id;
 		let url = 'contests/' + id + '/problems';
-		this.tokenService.get(url)
-		    .pipe(map(res => res.json()))
+		this.authService.get(url)
 			.subscribe(data => {
 				this.contest$.next(data.contest);
 				this.problems$.next(data.problems);
@@ -41,8 +38,7 @@ export class ContestService implements OnInit {
 
 	addProblem(problem_id: string): void {
 		let url = 'contests/' + this.id + '/add_problem/' + problem_id;
-		this.tokenService.get(url)
-		    .pipe(map(res => res.json()))
+		this.authService.get(url)
 			.subscribe(problems => {
 				this.problems$.next(problems);
 			});
@@ -50,8 +46,7 @@ export class ContestService implements OnInit {
 
 	deleteProblem(problem_id: string): void {
 		let url = 'contests/' + this.id + '/delete_problem/' + problem_id;
-		this.tokenService.get(url)
-		    .pipe(map(res => res.json()))
+		this.authService.get(url)
 			.subscribe(problems => {
 				this.problems$.next(problems);
 			});
@@ -76,8 +71,7 @@ export class ContestService implements OnInit {
 						user_name: user.user_name,
 						contest_problem_id: index
 					};
-					return this.tokenService.post(url, body)
-						.pipe(map(res => res.json()));
+					return this.authService.post(url, body)
 				})
 			);
 	}
@@ -88,14 +82,9 @@ export class ContestService implements OnInit {
 				filter(x => x != null),
 				switchMap(() => {
 					let url = 'acm_contest_ranks/get_contest_rank';
-					let params = {
-						search: {
-							contest_id: this.id
-						}
-					};
-					return this.tokenService.get(url, params)
-					   .pipe(map(res => res.json()));
-					})
+					let params = { contest_id: this.id };
+					return this.authService.get(url, params)
+				})
 			);
 	}
 
