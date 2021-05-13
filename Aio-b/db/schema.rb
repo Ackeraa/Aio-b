@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_11_092408) do
+ActiveRecord::Schema.define(version: 2021_05_13_132750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,13 +27,6 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
     t.string "user_name"
     t.index ["contest_id"], name: "index_acm_contest_ranks_on_contest_id"
     t.index ["user_id"], name: "index_acm_contest_ranks_on_user_id"
-  end
-
-  create_table "acm_contest_ranks_contests", force: :cascade do |t|
-    t.bigint "contest_id", null: false
-    t.bigint "acm_contest_rank_id", null: false
-    t.index ["acm_contest_rank_id"], name: "index_acm_contest_ranks_contests_on_acm_contest_rank_id"
-    t.index ["contest_id"], name: "index_acm_contest_ranks_contests_on_contest_id"
   end
 
   create_table "auth_permissions", force: :cascade do |t|
@@ -92,13 +85,8 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
     t.boolean "is_visible"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "contests_groups", force: :cascade do |t|
-    t.bigint "contest_id", null: false
-    t.bigint "group_id", null: false
-    t.index ["contest_id"], name: "index_contests_groups_on_contest_id"
-    t.index ["group_id"], name: "index_contests_groups_on_group_id"
+    t.bigint "group_id", default: 0, null: false
+    t.index ["group_id"], name: "index_contests_on_group_id"
   end
 
   create_table "contests_problems", force: :cascade do |t|
@@ -138,13 +126,6 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "groups_users", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "group_id", null: false
-    t.index ["group_id"], name: "index_groups_users_on_group_id"
-    t.index ["user_id"], name: "index_groups_users_on_user_id"
-  end
-
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -171,13 +152,6 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["contest_id"], name: "index_oi_contest_ranks_on_contest_id"
     t.index ["user_id"], name: "index_oi_contest_ranks_on_user_id"
-  end
-
-  create_table "oi_contest_ranks_contests", force: :cascade do |t|
-    t.bigint "contest_id", null: false
-    t.bigint "oi_contest_rank_id", null: false
-    t.index ["contest_id"], name: "index_oi_contest_ranks_contests_on_contest_id"
-    t.index ["oi_contest_rank_id"], name: "index_oi_contest_ranks_contests_on_oi_contest_rank_id"
   end
 
   create_table "problem_sets", force: :cascade do |t|
@@ -237,14 +211,6 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
     t.index ["tag_id"], name: "index_problems_tags_on_tag_id"
   end
 
-  create_table "problems_users", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "problem_id", null: false
-    t.string "result"
-    t.index ["problem_id"], name: "index_problems_users_on_problem_id"
-    t.index ["user_id"], name: "index_problems_users_on_user_id"
-  end
-
   create_table "solutions", force: :cascade do |t|
     t.jsonb "description"
     t.jsonb "subdescription"
@@ -290,13 +256,6 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["contest_id"], name: "index_team_contest_ranks_on_contest_id"
     t.index ["team_id"], name: "index_team_contest_ranks_on_team_id"
-  end
-
-  create_table "team_contest_ranks_contests", force: :cascade do |t|
-    t.bigint "contest_id", null: false
-    t.bigint "team_contest_rank_id", null: false
-    t.index ["contest_id"], name: "index_team_contest_ranks_contests_on_contest_id"
-    t.index ["team_contest_rank_id"], name: "index_team_contest_ranks_contests_on_team_contest_rank_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -349,30 +308,21 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
 
   add_foreign_key "acm_contest_ranks", "contests"
   add_foreign_key "acm_contest_ranks", "users"
-  add_foreign_key "acm_contest_ranks_contests", "acm_contest_ranks"
-  add_foreign_key "acm_contest_ranks_contests", "contests"
   add_foreign_key "auth_permissions_users", "auth_permissions"
   add_foreign_key "auth_permissions_users", "users"
   add_foreign_key "contest_announcements", "contests"
-  add_foreign_key "contests_groups", "contests"
-  add_foreign_key "contests_groups", "groups"
+  add_foreign_key "contests", "groups"
   add_foreign_key "contests_problems", "contests"
   add_foreign_key "contests_problems", "problems"
   add_foreign_key "events", "users"
-  add_foreign_key "groups_users", "groups"
-  add_foreign_key "groups_users", "users"
   add_foreign_key "oi_contest_ranks", "contests"
   add_foreign_key "oi_contest_ranks", "users"
-  add_foreign_key "oi_contest_ranks_contests", "contests"
-  add_foreign_key "oi_contest_ranks_contests", "oi_contest_ranks"
   add_foreign_key "problem_sets_problems", "problem_sets"
   add_foreign_key "problem_sets_problems", "problems"
   add_foreign_key "problems_problem_sets", "problem_sets"
   add_foreign_key "problems_problem_sets", "problems"
   add_foreign_key "problems_tags", "problems"
   add_foreign_key "problems_tags", "tags"
-  add_foreign_key "problems_users", "problems"
-  add_foreign_key "problems_users", "users"
   add_foreign_key "solutions", "problems"
   add_foreign_key "solutions", "users"
   add_foreign_key "submissions", "contests"
@@ -380,7 +330,5 @@ ActiveRecord::Schema.define(version: 2021_05_11_092408) do
   add_foreign_key "submissions", "users"
   add_foreign_key "team_contest_ranks", "contests"
   add_foreign_key "team_contest_ranks", "teams"
-  add_foreign_key "team_contest_ranks_contests", "contests"
-  add_foreign_key "team_contest_ranks_contests", "team_contest_ranks"
   add_foreign_key "teams", "groups"
 end

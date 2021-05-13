@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       get  'search',                            :action => 'search'
       get ':id/add_user/:user_id',              :action => 'add_user'     
       get ':id/delete_user/:user_id',           :action => 'delete_user'     
+      get ':id/info',                           :action => 'info'
     end
   end
 

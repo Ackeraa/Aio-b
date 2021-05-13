@@ -80,7 +80,7 @@ class VproblemsController < ApplicationController
 =end
   end
 
-  # POST /vproblems/submit/1
+  # POST /vproblems/1/submit
   def submit
     user = current_user
     source = @problem.source

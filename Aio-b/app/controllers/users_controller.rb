@@ -9,6 +9,11 @@ class UsersController < ApplicationController
     render json: @users
   end
 
+  # GET /users/1
+  def show
+    render json: @user
+  end
+
   # GET /users/search
   def search
     query = params[:query]
@@ -16,8 +21,12 @@ class UsersController < ApplicationController
     @users = User.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
     render json: { total: total, users: @users }
   end
-  # GET /users/1
-  def show
+
+  #GET /users/info/1
+  def info
+    @user = User.select(:id, :name, :real_name, :motto, :major).find(params[:id])
+    total_contests = AcmContestRank.where(user_id: @user.id).count
+    total_problems 
     render json: @user
   end
 
