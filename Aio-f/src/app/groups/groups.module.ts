@@ -5,13 +5,15 @@ import { GroupsRoutingModule } from './groups-routing.module';
 import { SearchModule } from '../_components/search/search.module';
 import {
 	ExploreComponent,
-	MyGroupsComponent 
+	MyGroupsComponent,
+	GroupComponent 
 } from '.';
 
 @NgModule({
 	declarations: [
 		ExploreComponent,
-		MyGroupsComponent
+		MyGroupsComponent,
+		GroupComponent
 	],
 	imports: [
 		CommonModule,
