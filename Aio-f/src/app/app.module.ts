@@ -12,6 +12,7 @@ import { ProblemSearchModule } from './_components';
 import { SearchModule } from './_components';
 import { CommentsModule } from './_components';
 import { SubmissionsModule } from './_components';
+import { HomeModule } from './home';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './_helpers';
@@ -53,10 +54,10 @@ import {
 		SearchModule,
 		CommentsModule,
 		SubmissionsModule,
+		HomeModule,
 
 		FormsModule,
 		HttpModule,
-		NgbModule,
     ],
     declarations: [
         AppComponent,
@@ -76,7 +77,7 @@ import {
 		FooterComponent,
 		ProblemSetsComponent,
 		ProblemSetComponent,
-		DiscussionComponent
+		DiscussionComponent,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

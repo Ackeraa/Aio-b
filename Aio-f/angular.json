@@ -28,16 +28,17 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss",
-			  "node_modules/katex/dist/katex.min.css"
+              "node_modules/katex/dist/katex.min.css"
             ],
             "scripts": [
-			  "node_modules/jquery/dist/jquery.min.js",
-			  "node_modules/popper.js/dist/umd/popper.min.js",
-			  "node_modules/bootstrap/dist/js/bootstrap.min.js",
-			  "node_modules/marked/lib/marked.js",
-			  "node_modules/katex/dist/katex.min.js"
-			]
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/marked/lib/marked.js",
+              "node_modules/katex/dist/katex.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -98,6 +99,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss"
             ],
             "scripts": []

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { UsersRoutingModule } from './users-routing.module';
@@ -11,7 +12,7 @@ import {
 	ProblemsComponent, 
 	GroupsComponent, 
 	FriendsComponent, 
-	SettingsComponent 
+	SettingsComponent,
 } from '.';
 
 @NgModule({
@@ -23,17 +24,18 @@ import {
 		ProblemsComponent,
 		GroupsComponent,
 		FriendsComponent,
-		SettingsComponent
+		SettingsComponent,
 	],
 	imports: [
 		CommonModule,
+		FormsModule,
 		UsersRoutingModule,
 		SearchModule,
-		NgxPaginationModule
+		NgxPaginationModule,
 	],
 	exports: [
 		MyInfoComponent,
-		ExploreComponent
+		ExploreComponent,
 	],
 })
 export class UsersModule { }
