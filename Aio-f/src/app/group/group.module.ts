@@ -20,6 +20,9 @@ import {
 	],
 	imports: [
 		CommonModule
+	],
+	exports: [
+		GroupComponent
 	]
 })
 export class GroupModule { }
