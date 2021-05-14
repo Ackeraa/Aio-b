@@ -335,8 +335,8 @@ ActiveRecord::Schema.define(version: 2021_05_14_112150) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "school"
-    t.jsonb "followers", default: {"total"=>0, "followers"=>[]}
-    t.jsonb "following", default: {"total"=>0, "following"=>[]}
+    t.jsonb "followers", default: []
+    t.jsonb "following", default: []
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

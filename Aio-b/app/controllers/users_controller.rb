@@ -28,8 +28,8 @@ class UsersController < ApplicationController
     total_contests = @user.contests.count
     total_problems = @user.problems.count
     total_groups = @user.groups.count
-    total_followers = @user.followers['total']
-    total_following = @user.following['total']
+    total_followers = @user.followers.size
+    total_following = @user.following.size
     
     render json: {
       user: @user,
