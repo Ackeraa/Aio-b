@@ -44,7 +44,7 @@ export class ProblemService implements OnInit {
 	}
 
 	submitProblem(language: any, code: string): Observable<any> {
-		return combineLatest(this.problem$, this.authService.signedIn$)
+		return combineLatest(this.problem$, this.authService.user$)
 			.pipe(
 				filter(([x, y]) => x != null && y != null),
 			    switchMap(([problem, user]) => {

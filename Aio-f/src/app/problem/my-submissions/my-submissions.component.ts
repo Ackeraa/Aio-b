@@ -18,7 +18,7 @@ export class MySubmissionsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		combineLatest(this.problemService.problem$, this.authService.signedIn$)
+		combineLatest(this.problemService.problem$, this.authService.user$)
 		.pipe(filter(([x, y]) => x != null && y != null))
 		.subscribe(z => {
 			this.addition = { problem_id: z[0].id, user_id: z[1].user_id };

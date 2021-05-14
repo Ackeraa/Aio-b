@@ -53,7 +53,7 @@ export class ContestService implements OnInit {
 	}
 
 	submitProblem(index: number, language: any, code: string): Observable<any> {
-		return combineLatest(this.problems$, this.authService.signedIn$)
+		return combineLatest(this.problems$, this.authService.user$)
 			.pipe(
 				filter(([x, y]) => x != null && y != null),
 			    switchMap(([problems, user]) => {

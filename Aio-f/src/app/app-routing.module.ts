@@ -13,6 +13,8 @@ import { WikiComponent } from './wiki';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { ProblemSetComponent } from './problem-set';
+import { GroupComponent } from './group';
+import { UserComponent } from './user';
 import { AuthGuard } from './_helpers';
 
 const routes: Routes = [
@@ -45,6 +47,9 @@ const routes: Routes = [
 		loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 	},
 	{
+		path: 'group', component: GroupComponent
+	},
+	{
 		path: 'problem-sets',
 		data: { preload: true },
 		loadChildren: () => import('./problem-sets/problem-sets.module').then(m => m.ProblemSetsModule)
@@ -58,6 +63,9 @@ const routes: Routes = [
 		path: 'users',
 		data: { preload: true },
 		loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
+	},
+	{
+		path: 'user/:id', component: UserComponent
 	},
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },

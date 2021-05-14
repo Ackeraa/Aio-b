@@ -30,7 +30,7 @@ export class CommentsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.descriptions = {};
-		this.authService.signedIn$
+		this.authService.user$
 			.pipe(filter(x => x != null))
 			.subscribe(user => this.user = user);
 	}

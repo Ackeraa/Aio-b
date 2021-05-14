@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ProblemService } from './problem.service'; 
 
 @Component({
@@ -14,8 +14,8 @@ export class ProblemComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		let source = this.route.snapshot.paramMap.get("source");
-		let id = this.route.snapshot.paramMap.get("id");
+		let source = this.route.snapshot.paramMap.get('source');
+		let id = this.route.snapshot.paramMap.get('id');
 		this.problemService.getProblem(source, id);
 	}
 }

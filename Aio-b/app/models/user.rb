@@ -2,6 +2,19 @@
 
 class User < ActiveRecord::Base
   extend Devise::Models
+
+  has_many :user_problems
+  has_many :problems, through: :user_problems
+
+  has_many :group_users
+  has_many :groups, through: :group_users
+
+  has_many :acm_contest_ranks
+  has_many :contests, through: :acm_contest_ranks
+
+  has_many :oi_contest_ranks
+  has_many :contests, through: :oi_contest_ranks
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   validates :name, presence: true, uniqueness: { case_sensitive: false }, 

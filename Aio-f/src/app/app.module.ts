@@ -13,6 +13,8 @@ import { SearchModule } from './_components';
 import { CommentsModule } from './_components';
 import { SubmissionsModule } from './_components';
 import { HomeModule } from './home';
+import { GroupModule } from './group/group.module';
+import { UserModule } from './user/user.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './_helpers';
@@ -55,7 +57,8 @@ import {
 		CommentsModule,
 		SubmissionsModule,
 		HomeModule,
-
+		GroupModule,
+		UserModule,
 		FormsModule,
 		HttpModule,
     ],

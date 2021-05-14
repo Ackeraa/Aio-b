@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :get_info, :get_contests,
+                                  :get_problems, :get_groups, :get_friends]
   before_action :set_page, only: [:search]
 
   # GET /users
@@ -22,12 +23,42 @@ class UsersController < ApplicationController
     render json: { total: total, users: @users }
   end
 
-  #GET /users/info/1
-  def info
-    @user = User.select(:id, :name, :real_name, :motto, :major).find(params[:id])
-    total_contests = AcmContestRank.where(user_id: @user.id).count
-    total_problems 
-    render json: @user
+  #GET /users/1/get_info
+  def get_info
+    total_contests = @user.contests.count
+    total_problems = @user.problems.count
+    total_groups = @user.groups.count
+    total_followers = @user.followers['total']
+    total_following = @user.following['total']
+    
+    render json: {
+      user: @user,
+      total_contests: total_contests,
+      total_problems: total_problems,
+      total_groups: total_groups,
+      total_followers: total_followers,
+      total_following: total_following
+    }
+  end
+
+  # GET /users/1/get_contests
+  def get_contests
+    render json: @user.contests
+  end
+
+  # GET /users/1/get_problems
+  def get_problems
+    render json: @user.problems
+  end
+
+  # GET /users/1/get_groups
+  def get_groups
+    render json: @user.groups
+  end
+
+  # GET /users/1/get_friends
+  def get_friends
+    render json: { followers: @user.followers, following: @user.following }
   end
 
   # POST /users

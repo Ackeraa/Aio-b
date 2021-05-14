@@ -504,10 +504,10 @@ class User
   has_many :events
   has_many :comments
   has_many :solutions
-  has_many :submission_records, dependent: :destroy
+  has_many :submissions, dependent: :destroy
   has_and_belongs_to_many :auth_permissions
-  has_and_belongs_to_many :groups
-  has_and_belongs_to_many :problems
+  has_many :groups, through :group_members
+  has_many :problems, through :user_problems
 end
   
 ```
@@ -525,8 +525,8 @@ end
 ```ruby
 class Group
   has_many :teams, dependent: :destroy
-  has_and_belongs_to_many :contests
-  has_and_belongs_to_many :users
+  has_many :contests
+  has_many :users, through :group_users
 end
 ```
 
@@ -551,11 +551,11 @@ end
 ```ruby
 class Contest
   has_many :contest_announcements, dependent: :destroy
-  has_many :submission_records, dependent: :destroy
-  has_and_belongs_to_many :groups
-  has_and_belongs_to_many :team_contest_ranks
-  has_and_belongs_to_many :acm_contest_ranks
-  has_and_belongs_to_many :oi_contest_ranks
+  has_many :submissions, dependent: :destroy
+  belongs_to :groups
+  has_many :team_contest_ranks
+  has_many :acm_contest_ranks
+  has_many :oi_contest_ranks
   has_and_belongs_to_many :problems
 end
 ```
@@ -564,7 +564,7 @@ end
 
 ```ruby
 class TeamContestRank
-  has_and_belongs_to_many :contests
+  has_many :contests
 end
 ```
 
@@ -572,7 +572,7 @@ end
 
 ```ruby
 class AcmContestRank
-  has_and_belongs_to_many :contests
+  has_many :contests
 end
 ```
 
@@ -580,7 +580,7 @@ end
 
 ```ruby
 class OiContestRank
-  has_and_belongs_to_many :contests
+  has_many :contests
 end
 ```
 
@@ -605,9 +605,9 @@ end
 ```ruby
 class Problem
   has_many :comments, dependent: :destroy
-  has_many :submission_records, dependent: :destroy
+  has_many :submissions, dependent: :destroy
   has_many :solutions, dependent: :destroy
-  has_and_bleongs_to_many :users
+  has__many :users, through :user_problems
   has_and_belongs_to_many :problem_sets
   has_and_belongs_to_many :contests
 end
@@ -732,6 +732,7 @@ end
 |  Attribute  |   Type   | Description |
 | :---------: | :------: | :---------: |
 |     id      | integer  | primary key |
+|  group_id   | integer  | foreign key |
 |   creater   |  string  |             |
 |    name     |  string  |             |
 | description |   text   |             |
@@ -743,7 +744,7 @@ end
 | created_at  |   date   |             |
 | updated_at  |   date   |             |
 
-#### team_contest_ranks
+#### team_contest_ranks(joined)
 
 |    Attribute    |  Type   | Description |
 | :-------------: | :-----: | :---------: |
@@ -757,7 +758,7 @@ end
 |   created_at    |  date   |             |
 |   updated_at    |  date   |             |
 
-#### acm_contest_ranks
+#### acm_contest_ranks(joined)
 
 |    Attribute    |  Type   | Description |
 | :-------------: | :-----: | :---------: |
@@ -771,7 +772,7 @@ end
 |   created_at    |  date   |             |
 |   updated_at    |  date   |             |
 
-#### oi_contest_ranks
+#### oi_contest_ranks(joined)
 
 |    Attribute    |  Type   | Description |
 | :-------------: | :-----: | :---------: |
@@ -886,7 +887,7 @@ end
 | created_at |  date   |             |
 | updated_at |  date   |             |
 
-#### submission_records
+#### submission
 
 |   Attribute   |   Type   | Description |
 | :-----------: | :------: | :---------: |
@@ -931,78 +932,50 @@ end
 |     created_at     |  date   |             |
 |     updated_at     |  date   |             |
 
-#### groups_users(joined)
+#### group_users(joined)
 
 | Attribute  |  Type   | Description |
 | :--------: | :-----: | :---------: |
-|  user_id   | integer |             |
-|  group_id  | integer |             |
+|     id     | integer | primary key |
+|  user_id   | integer | foreign key |
+|  group_id  | integer | foreign key |
+|    role    | string  |             |
 | created_at |  date   |             |
 | updated_at |  date   |             |
 
-#### problems_users(joined)
+#### user_problems(joined)
 
 | Attribute  |  Type   | Description |
 | :--------: | :-----: | :---------: |
-|  user_id   | integer |             |
-| problem_id | integer |             |
+|     id     | integer | primary key |
+|  user_id   | integer | foreign key |
+| problem_id | integer | foreign key |
 |   result   | string  |             |
 | created_at |  date   |             |
 | updated_at |  date   |             |
 
-#### contests_groups(joined)
+#### contest_problems(joined)
 
-| Attribute  |  Type   | Description |
-| :--------: | :-----: | :---------: |
-|  group_id  | integer |             |
-| contest_id | integer |             |
-| created_at |  date   |             |
-| updated_at |  date   |             |
-
-#### team_contest_ranks_contests(joined)
-
-|      Attribute       |  Type   | Description |
-| :------------------: | :-----: | :---------: |
-|      contest_id      | integer |             |
-| team_contest_rank_id | integer |             |
-|      created_at      |  date   |             |
-|      updated_at      |  date   |             |
-
-#### acm_contest_ranks_contests(joined)
-
-|      Attribute      |  Type   | Description |
-| :-----------------: | :-----: | :---------: |
-|     contest_id      | integer |             |
-| acm_contest_rank_id | integer |             |
-|     created_at      |  date   |             |
-|     updated_at      |  date   |             |
-
-#### oi_contest_ranks_contests(joined)
-
-|     Attribute      |  Type   | Description |
-| :----------------: | :-----: | :---------: |
-|     contest_id     | integer |             |
-| oi_contest_rank_id | integer |             |
-|     created_at     |  date   |             |
-|     updated_at     |  date   |             |
-
-#### contests_problems(joined)
-
-| Attribute  |  Type   | Description |
-| :--------: | :-----: | :---------: |
-| contest_id | integer |             |
-| problem_id | integer |             |
-| created_at |  date   |             |
-| updated_at |  date   |             |
+|  Attribute  |  Type   | Description |
+| :---------: | :-----: | :---------: |
+| contest_id  | integer |             |
+| problem_id  | integer |             |
+| description |  text   |             |
+|    input    |  text   |             |
+|   output    |  text   |             |
+|    hint     |  text   |             |
+|   samples   |  jsonb  |             |
+| created_at  |  date   |             |
+| updated_at  |  date   |             |
 
 #### problems_problem_sets(joined) (name not checked)
 
-|   Attribute    |  Type   | Description |
-| :------------: | :-----: | :---------: |
-| problem_set_id | integer |             |
-|   problem_id   | integer |             |
-|   created_at   |  date   |             |
-|   updated_at   |  date   |             |
+|  Type   |   Attribute    | Description |
+| :-----: | :------------: | :---------: |
+| integer | problem_set_id |             |
+| integer |   problem_id   |             |
+|  date   |   created_at   |             |
+|  date   |   updated_at   |             |
 
 #### problems_tags(joined)
 

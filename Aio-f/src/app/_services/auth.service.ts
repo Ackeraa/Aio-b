@@ -7,19 +7,19 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthService implements OnInit{
 
-	public signedIn$: BehaviorSubject<any> = new BehaviorSubject(null);
+	public user$: BehaviorSubject<any> = new BehaviorSubject(null);
 	
 	constructor(public tokenService: Angular2TokenService) {
 		this.tokenService.validateToken().subscribe(
 			res => {
 				if (res.status == 200){
 					let user = res.json().data;
-					this.signedIn$.next({
+					this.user$.next({
 						user_id: user.id,
 						user_name: user.name
 					});
 				} else {
-					this.signedIn$.next(null);
+					this.user$.next(null);
 				}
 			},
 		)
@@ -35,7 +35,7 @@ export class AuthService implements OnInit{
 		return this.tokenService.post('auth/sign_in', data)
 			.pipe(map(res => {
 				let user = res.json().data;
-				this.signedIn$.next({
+				this.user$.next({
 					user_id: user.id,
 					user_name: user.name
 				});
@@ -46,7 +46,7 @@ export class AuthService implements OnInit{
 	logOut():Observable<Response>{
 		return this.tokenService.signOut()
 		   .pipe(map(res => {
-				this.signedIn$.next(null);
+				this.user$.next(null);
 				return res;
 			}));
 	}

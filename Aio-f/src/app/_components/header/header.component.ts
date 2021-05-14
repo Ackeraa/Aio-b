@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
     }
 
 	ngOnInit(): void {
-		this.authService.signedIn$.subscribe(data => {
+		this.authService.user$.subscribe(data => {
 			if (data) this.currentUser = data.user_name;
 			else this.currentUser = null;
 		});

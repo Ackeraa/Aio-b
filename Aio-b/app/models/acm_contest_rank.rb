@@ -1,3 +1,4 @@
 class AcmContestRank < ApplicationRecord
-  has_many :contests
+  belongs_to :contest
+  belongs_to :user
 end

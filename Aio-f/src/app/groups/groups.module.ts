@@ -6,14 +6,12 @@ import { SearchModule } from '../_components/search/search.module';
 import {
 	ExploreComponent,
 	MyGroupsComponent,
-	GroupComponent 
 } from '.';
 
 @NgModule({
 	declarations: [
 		ExploreComponent,
 		MyGroupsComponent,
-		GroupComponent
 	],
 	imports: [
 		CommonModule,

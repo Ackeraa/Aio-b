@@ -46,7 +46,11 @@ Rails.application.routes.draw do
       get  'search',                            :action => 'search'
       get ':id/add_user/:user_id',              :action => 'add_user'     
       get ':id/delete_user/:user_id',           :action => 'delete_user'     
-      get ':id/info',                           :action => 'info'
+      get ':id/get_info',                       :action => 'get_info'
+      get ':id/get_contests',                   :action => 'get_contests'
+      get ':id/get_problems',                   :action => 'get_problems'
+      get ':id/get_groups',                     :action => 'get_groups'
+      get ':id/get_friends',                    :action => 'get_friends'
     end
   end
 

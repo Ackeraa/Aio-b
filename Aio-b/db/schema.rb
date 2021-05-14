@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_132750) do
+ActiveRecord::Schema.define(version: 2021_05_14_112150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,20 @@ ActiveRecord::Schema.define(version: 2021_05_13_132750) do
     t.index ["contest_id"], name: "index_contest_announcements_on_contest_id"
   end
 
+  create_table "contest_problems", force: :cascade do |t|
+    t.bigint "contest_id"
+    t.bigint "problem_id"
+    t.text "description"
+    t.text "input"
+    t.text "output"
+    t.text "hint"
+    t.jsonb "samples"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contest_id"], name: "index_contest_problems_on_contest_id"
+    t.index ["problem_id"], name: "index_contest_problems_on_problem_id"
+  end
+
   create_table "contests", force: :cascade do |t|
     t.string "creater"
     t.string "name"
@@ -117,6 +131,16 @@ ActiveRecord::Schema.define(version: 2021_05_13_132750) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "group_users", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "user_id"
+    t.string "role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id"], name: "index_group_users_on_user_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -271,6 +295,16 @@ ActiveRecord::Schema.define(version: 2021_05_13_132750) do
     t.index ["group_id"], name: "index_teams_on_group_id"
   end
 
+  create_table "user_problems", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "problem_id"
+    t.string "result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["problem_id"], name: "index_user_problems_on_problem_id"
+    t.index ["user_id"], name: "index_user_problems_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -300,6 +334,9 @@ ActiveRecord::Schema.define(version: 2021_05_13_132750) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "school"
+    t.jsonb "followers", default: {"total"=>0, "followers"=>[]}
+    t.jsonb "following", default: {"total"=>0, "following"=>[]}
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
