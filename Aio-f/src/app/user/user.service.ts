@@ -66,7 +66,7 @@ export class UserService {
 	getGroups(): void {
 		this.groups$.subscribe(groups => {
 			if (groups === null) {
-				let url = `users/${this.id}/get_problems`;
+				let url = `users/${this.id}/get_groups`;
 				this.authService.get(url)
 					.subscribe(groups => this.groups$.next(groups));
 			}

@@ -9,9 +9,14 @@ import { UserService } from '../user.service';
 })
 export class GroupsComponent implements OnInit {
 
+	groups: any;
+
 	constructor(private userService: UserService) { }
 
 	ngOnInit(): void {
+		this.userService.groups$
+			.pipe(filter(x => x != null))
+			.subscribe(groups => this.groups = groups);
 	}
 
 }
