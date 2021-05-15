@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_14_112150) do
+ActiveRecord::Schema.define(version: 2021_05_15_021129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,6 +184,8 @@ ActiveRecord::Schema.define(version: 2021_05_14_112150) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "group_id", default: 0, null: false
+    t.index ["group_id"], name: "index_problem_sets_on_group_id"
   end
 
   create_table "problem_sets_problems", force: :cascade do |t|
@@ -354,6 +356,7 @@ ActiveRecord::Schema.define(version: 2021_05_14_112150) do
   add_foreign_key "events", "users"
   add_foreign_key "oi_contest_ranks", "contests"
   add_foreign_key "oi_contest_ranks", "users"
+  add_foreign_key "problem_sets", "groups"
   add_foreign_key "problem_sets_problems", "problem_sets"
   add_foreign_key "problem_sets_problems", "problems"
   add_foreign_key "problems_problem_sets", "problem_sets"

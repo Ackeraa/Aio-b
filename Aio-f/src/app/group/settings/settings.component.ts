@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators'; 
+import { GroupService } from '../group.service';
 
 @Component({
 	selector: 'app-group-settings',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-	constructor() { }
+	constructor(private groupService: GroupService) { }
 
 	ngOnInit(): void {
 	}

@@ -803,6 +803,7 @@ end
 |  Attribute  |  Type   | Description |
 | :---------: | :-----: | :---------: |
 |     id      | integer | primary key |
+|  group_id   | integer | foreign key |
 |   creater   | string  |             |
 |    name     | string  |             |
 | description |  text   |             |

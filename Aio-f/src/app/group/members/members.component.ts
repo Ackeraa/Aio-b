@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators'; 
+import { GroupService } from '../group.service';
 
 @Component({
 	selector: 'app-group-members',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MembersComponent implements OnInit {
 
-	constructor() { }
+	members: any;
+
+	constructor(private groupService: GroupService) { }
 
 	ngOnInit(): void {
+		this.groupService.members$
+			.pipe(filter(x => x != null))
+			.subscribe(members => this.members = members);
 	}
 
 }

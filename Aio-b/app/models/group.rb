@@ -5,5 +5,7 @@ class Group < ApplicationRecord
   has_many :teams, dependent: :destroy
   has_many :contests
 
+  has_many :problem_sets
+
   has_rich_text :response
 end

@@ -47,7 +47,7 @@ const routes: Routes = [
 		loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 	},
 	{
-		path: 'group', component: GroupComponent
+		path: 'group/:id', component: GroupComponent
 	},
 	{
 		path: 'problem-sets',

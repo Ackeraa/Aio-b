@@ -59,8 +59,13 @@ Rails.application.routes.draw do
       get  'search',                            :action => 'search'
       get ':id/add_group/:group_id',            :action => 'add_group'     
       get ':id/delete_group/:group_id',         :action => 'delete_group'     
+      get ':id/get_info',                       :action => 'get_info'
+      get ':id/get_members',                    :action => 'get_members'
+      get ':id/get_contests',                   :action => 'get_contests'
+      get ':id/get_problem_sets',               :action => 'get_problem_sets'
     end
   end
+
   resources :acm_contest_ranks do
     collection do
       get  'search',                            :action => 'search'

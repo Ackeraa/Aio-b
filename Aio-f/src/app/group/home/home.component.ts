@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators'; 
+import { GroupService } from '../group.service';
 
 @Component({
 	selector: 'app-group-home',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-	constructor() { }
+	data: any;
+
+	constructor(private groupService: GroupService) { }
 
 	ngOnInit(): void {
+		this.groupService.homeInfo$
+			.pipe(filter(x => x != null))
+			.subscribe(homeInfo => this.data = homeInfo);
 	}
 
 }

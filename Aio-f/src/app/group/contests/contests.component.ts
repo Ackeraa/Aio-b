@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators'; 
+import { GroupService } from '../group.service';
 
 @Component({
 	selector: 'app-group-contests',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContestsComponent implements OnInit {
 
-	constructor() { }
+	contests: any;
+
+	constructor(private groupService: GroupService) { }
 
 	ngOnInit(): void {
+		this.groupService.contests$
+			.pipe(filter(x => x != null))
+			.subscribe(contests => this.contests = contests);
 	}
 
 }

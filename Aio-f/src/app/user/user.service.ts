@@ -24,7 +24,7 @@ export class UserService {
 		if (id) {
 			this.id = id;
 			this.isSelf = false;
-			let url = `users/${id}/info`;
+			let url = `users/${id}/get_info`;
 			this.authService.get(url)
 				.subscribe(info => {
 					this.homeInfo$.next(info);
