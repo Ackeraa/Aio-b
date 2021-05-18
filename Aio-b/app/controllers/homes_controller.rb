@@ -1,51 +1,25 @@
 class HomesController < ApplicationController
-  before_action :set_home, only: [:show, :update, :destroy]
 
   # GET /homes
   def index
-    @homes = Home.all
+    total_contests = Contest.count
+    total_problems = Problem.count
+    total_submissions = Submission.count
+    total_users = User.count
+    total_groups = Group.count
 
-    render json: @homes
+    recent_problems = Problem.first(5)
+    top_users = User.first(5)
+
+    render json: {
+      total_contests: total_contests,
+      total_problems: total_problems,
+      total_submissions: total_submissions,
+      total_users: total_users,
+      total_groups: total_groups,
+      recent_problems: recent_problems,
+      top_users: top_users
+    }
   end
 
-  # GET /homes/1
-  def show
-    render json: @home
-  end
-
-  # POST /homes
-  def create
-    @home = Home.new(home_params)
-
-    if @home.save
-      render json: @home, status: :created, location: @home
-    else
-      render json: @home.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /homes/1
-  def update
-    if @home.update(home_params)
-      render json: @home
-    else
-      render json: @home.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /homes/1
-  def destroy
-    @home.destroy
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_home
-      @home = Home.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def home_params
-      params.fetch(:home, {})
-    end
 end

@@ -5,7 +5,7 @@
 				Recent Contests
 			</div>
 			<div class="card-body">
-<app-home-calendar></app-home-calendar>
+				<app-home-calendar></app-home-calendar>
 			</div>
 		</div>
 		<div class="card mt-4">
@@ -20,7 +20,9 @@
 				Recent Problems
 			</div>
 			<div class="card-body">
-				asdsdasdsad
+				<div *ngFor="let problem of data.recent_problems" class="row mb-2">
+					{{problem.name}}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -30,6 +32,38 @@
 				Overview
 			</div>
 			<div class="card-body">
+				<div class="row">
+					<div class="col-8">
+						Total Contests
+					</div>
+					<div class="col-4">
+						{{data.total_contests}}
+					</div>
+				</div>
+				<div class="row mt-2">
+					<div class="col-8">
+						Total Problems
+					</div>
+					<div class="col-4">
+						{{data.total_problems}}
+					</div>
+				</div>
+				<div class="row mt-2">
+					<div class="col-8">
+						Total Users
+					</div>
+					<div class="col-4">
+						{{data.total_users}}
+					</div>
+				</div>
+				<div class="row mt-2">
+					<div class="col-8">
+						Total Groups
+					</div>
+					<div class="col-4">
+						{{data.total_groups}}
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -38,6 +72,14 @@
 				Top Scored
 			</div>
 			<div class="card-body">
+				<div *ngFor="let user of data.top_users" class="row mb-2">
+					<div class="col-8">
+						{{user.name}}
+					</div>
+					<div class="col-4">
+						{{user.score}}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
