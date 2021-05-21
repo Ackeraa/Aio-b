@@ -1,4 +1,5 @@
 class Grader
+
   def initialize
 
   end
