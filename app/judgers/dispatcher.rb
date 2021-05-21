@@ -1,5 +1,5 @@
 class Dispatcher
-  #include Singleton
+  include Singleton
   def initialize(gap_time = 0.5, wait_time = 60)
     @gap_time = gap_time
     @wait_time = wait_time
