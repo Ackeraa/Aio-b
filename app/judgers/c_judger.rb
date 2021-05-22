@@ -19,9 +19,11 @@ if __FILE__ == $0
     #include <stdio.h>
     int main()
     {
-      printf("1\n");
+      int n;
+      scanf("%d", &n);
+      printf("%d\n", n);
     }
   }
   judger = CJudger.new
-  judger.submit(code)
+  p judger.submit(code)
 end

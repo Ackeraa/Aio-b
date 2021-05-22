@@ -15,9 +15,9 @@ end
 
 if __FILE__ == $0
   code = %q{
-    n = input()
-    print(n)
-  }
-  judger = CJudger.new
-  judger.submit(code)
+n = input()
+print(n)
+}
+  judger = PyJudger.new
+  p judger.submit(code)
 end
