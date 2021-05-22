@@ -1,9 +1,11 @@
+require('singleton')
+
 class Dispatcher
   include Singleton
   def initialize(gap_time = 0.5, wait_time = 60)
     @gap_time = gap_time
     @wait_time = wait_time
-    @numbers = 5
+    @numbers = 1
     @resources = Array.new(@numbers) do |i|
       system "isolate --init --box-id=#{i}"
       if $?.exitstatus != 0
@@ -44,7 +46,7 @@ if __FILE__ == $0
   dispatcher = Dispatcher.new 
 
   threads = []
-  10.times {
+  1.times {
     threads << Thread.new {
       id = dispatcher.distribute()
       puts id
