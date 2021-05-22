@@ -1,11 +1,11 @@
 require('./judger.rb')
 
-class PyJudger < Judger
+class RbJudger < Judger
 
   def initialize
     super
-    @run_name = 'a.py'
-    runner = `realpath $(which python3)`.strip
+    @run_name = 'a.rb'
+    runner = `realpath $(which ruby)`.strip
     @run_command = "#{runner} #{@run_name}"
   end
 
@@ -18,9 +18,8 @@ end
 
 if __FILE__ == $0
   code = %q{
-n = input()
-print(n)
+  p 2
 }
-  judger = PyJudger.new
+  judger = RbJudger.new
   p judger.submit(code)
 end
