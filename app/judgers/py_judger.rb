@@ -4,11 +4,14 @@ class PyJudger < Judger
 
   def initialize
     super
+    @compile_name = 'a.py'
+    runner = `realpath $(which python3)`.strip
+    @run_command = "#{runner} #{@compile_name}"
   end
 
   def submit(code)
-    self.save(code, 'a.py')
-    self.run('python3 a.py')
+    self.save(code, @compile_name)
+    self.run(@run_command)
   end
   
 end

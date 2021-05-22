@@ -4,12 +4,16 @@ class CJudger < Judger
 
   def initialize
     super
+    @compile_name = 'a.c'
+    compiler = `realpath $(which gcc)`.strip
+    @compile_command = "#{compiler} #{@compile_name}"
+    @run_command = './a.out'
   end
 
   def submit(code)
-    self.save(code, 'a.c')
-    self.compile('gcc a.c')
-    self.run('./a.out')
+    self.save(code, @compile_name)
+    self.compile(@compile_command)
+    self.run(@run_command)
   end
   
 end

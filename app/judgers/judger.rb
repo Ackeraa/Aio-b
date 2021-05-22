@@ -14,7 +14,7 @@ class Judger
   end
 
   def compile(command)
-    result = `isolate -b #{@box} -p --full-env --run -- /usr/bin/#{command}`
+    result = `isolate -b #{@box} -p --full-env --run -- #{command}`
   end
 
   def run(command)
@@ -24,7 +24,8 @@ class Judger
       std_input = "#{@data_path}/in/#{i}.in"
       std_output = "#{@data_path}/out/#{i}.out"
       user_output = "#{@box_path}/out/#{i}.out"
-      system "isolate -b #{@box} --run -- /usr/bin/#{command}<#{std_input}>#{user_output}"
+      system "isolate -b #{@box} --full-env --run -- #{command}<#{std_input}>#{user_output}"
+
       result << `diff #{std_output} #{user_output}`.empty?
     end
     result
