@@ -6,7 +6,7 @@
 #define ARGUMENT_ERROR -1
 #define STD_INPUT_ERROR -2
 #define STD_OUTPUT_ERROR -3
-#define USER_OUTPUT_ERROR -3
+#define USER_OUTPUT_ERROR -4
 
 int spj(FILE* std_input, FILE* std_output, FILE* user_output) {
 	/* This is an example:

@@ -2,9 +2,11 @@ require('./dispatcher.rb')
 
 class Judger
 
-  def initialize
-    @box = 0#Dispatcher.instance.distribute
-    @box_path = "/var/local/lib/isolate/#{@box}/box"
+  def initialize(need_sandbox)
+    if need_sandbox
+      @box = 0#Dispatcher.instance.distribute
+      @box_path = "/var/local/lib/isolate/#{@box}/box"
+    end
     @data_path = "."
   end
   
@@ -17,7 +19,14 @@ class Judger
     `isolate -b #{@box} -p --stderr-to-stdout --full-env --run -- #{command}`
   end
 
-  def run(command, time_limit, memory_limit)
+  def run(*args)
+    if *args.size == 3
+      # normal
+      command, time_limit, memory_limit = args
+    elsif *args.size == 4
+      # with spj
+      command, spj_command, time_limit, memory_limit = args
+    end
     datas = `ls #{@data_path}/in | wc -l`.to_i
     results = []
     (1..datas).each do |i|
@@ -26,7 +35,7 @@ class Judger
       user_output = "#{@box_path}/output"
       meta = "#{@box_path}/meta"
       system "isolate -b #{@box} --full-env --time=#{time_limit} --mem=#{memory_limit} \
-                   --meta=#{meta} --run -- #{command}<#{std_input}>#{user_output}"
+               --meta=#{meta} --run -- #{command}<#{std_input}>#{user_output}"
 
       meta_data = {}
       `cat #{meta}`.split("\n").each do |line|
@@ -36,7 +45,13 @@ class Judger
       time_usage = meta_data['time']
       memory_usage = meta_data['max-rss'].to_f / 1024
       if meta_data['exitcode'] == '0'
-        result = `diff #{std_output} #{user_output}`.empty? ? :AC : :WA
+        if defined? spj_command
+          tmp_result = "isolate -b #{@box} --full-env --time=#{time_limit} --mem=#{memory_limit} \
+                         --meta=#{meta} --dir=#{data_path} --run -- #{spj_command} #{std_input} #{std_output} #{user_output}"
+          result = tmp_result == 0 ? :AC : :WA
+        else
+          result = `diff #{std_output} #{user_output}`.empty? ? :AC : :WA
+        end
       elsif meta_data['message'] == 'Time limit exceeded'
         result = :TLE
       elsif meta_data['message'] == 'Caught fatal signal 11'
