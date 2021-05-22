@@ -10,10 +10,10 @@ class CppJudger < Judger
     @run_command = './a.out'
   end
 
-  def submit(code)
+  def submit(code, time_limit, memory_limit)
     self.save(code, @compile_name)
     self.compile(@compile_command)
-    self.run(@run_command)
+    self.run(@run_command, time_limit, memory_limit * 1024)
   end
   
 end
@@ -26,8 +26,9 @@ if __FILE__ == $0
       int n;
       scanf("%d", &n);
       printf("%d\n", n);
+      while (1) {}
     }
   }
   judger = CppJudger.new
-  p judger.submit(code)
+  p judger.submit(code, 1, 128)
 end
