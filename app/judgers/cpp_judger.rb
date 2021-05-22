@@ -12,8 +12,10 @@ class CppJudger < Judger
 
   def submit(code, time_limit, memory_limit)
     self.save(code, @compile_name)
-    self.compile(@compile_command)
-    self.run(@run_command, time_limit, memory_limit * 1024)
+    compile_result = self.compile(@compile_command)
+    return { result: :CE, error_message: compile_result } unless compile_result.empty?
+    run_result = self.run(@run_command, time_limit, memory_limit * 1025)
+    return run_result
   end
   
 end
@@ -21,14 +23,15 @@ end
 if __FILE__ == $0
   code = %q{
     #include <stdio.h>
+    int a[10000];
     int main()
     {
       int n;
       scanf("%d", &n);
-      printf("%d\n", n);
-      while (1) {}
+      for (int i = -1; i < 1000; i++) a[i] = i;
+      printf("%d\n", n / (n - 1));
     }
   }
   judger = CppJudger.new
-  p judger.submit(code, 1, 128)
+  p judger.submit(code, 2, 20)
 end

@@ -14,21 +14,39 @@ class Judger
   end
 
   def compile(command)
-    result = `isolate -b #{@box} -p --full-env --run -- #{command}`
+    `isolate -b #{@box} -p --stderr-to-stdout --full-env --run -- #{command}`
   end
 
   def run(command, time_limit, memory_limit)
     datas = `ls #{@data_path}/in | wc -l`.to_i
-    result = []
+    results = []
     (1..datas).each do |i|
       std_input = "#{@data_path}/in/#{i}.in"
       std_output = "#{@data_path}/out/#{i}.out"
-      user_output = "#{@box_path}/out/#{i}.out"
-      system "isolate -b #{@box} --full-env --time=#{time_limit} --mem=#{memory_limit} --run -- #{command}<#{std_input}>#{user_output}"
+      user_output = "#{@box_path}/output"
+      meta = "#{@box_path}/meta"
+      system "isolate -b #{@box} --full-env --time=#{time_limit} --mem=#{memory_limit} \
+                   --meta=#{meta} --run -- #{command}<#{std_input}>#{user_output}"
 
-      result << `diff #{std_output} #{user_output}`.empty?
+      meta_data = {}
+      `cat #{meta}`.split("\n").each do |line|
+        tmp = line.split(':')
+        meta_data[tmp[0]] = tmp[1] 
+      end
+      time_usage = meta_data['time']
+      memory_usage = meta_data['max-rss'].to_f / 1024
+      if meta_data['exitcode'] == '0'
+        result = `diff #{std_output} #{user_output}`.empty? ? :AC : :WA
+      elsif meta_data['message'] == 'Time limit exceeded'
+        result = :TLE
+      elsif meta_data['message'] == 'Caught fatal signal 11'
+        result = :MLE
+      else
+        result = :RE
+      end
+      results << { result: result, time_usage: time_usage, memory_usage: memory_usage }
     end
-    result
+    results
   end
 
   def upzip(filename)
