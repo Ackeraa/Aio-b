@@ -2,7 +2,7 @@ require 'securerandom'
 
 class ProblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy]
-  #before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:submit]
 
   # GET /problems
   def index
@@ -33,7 +33,7 @@ class ProblemsController < ApplicationController
     render json: @problem
   end
 
-
+  # POST /problems
   def create
     @problem = Problem.find_by(token: params[:token])
 
@@ -59,26 +59,13 @@ class ProblemsController < ApplicationController
     @problem.destroy
   end
 
-  def upload(type)
-    if params[:token].empty? 
-      params[:token] = SecureRandom.uuid
-      @problem = Problem.new(problem_params)
-    else
-      @problem = Problem.find_by(token: params[:token]) 
-      @problem.update(type.to_sym => params[type]) 
-    end
 
-    if @problem.save
-      render json: @problem.token, status: :ok
-    else
-      render json: @problem.errors, status: :unprocessable_entity
-    end
-  end
-
+  # POST /problems/upload_template
   def upload_template
-    self.upload(:template)
+    upload(:template)
   end
 
+  # POST /problems/delete_template
   def delete_template
     @problem = Problem.find_by(token: params[:token]) 
     @problem.remove_template!
@@ -86,10 +73,12 @@ class ProblemsController < ApplicationController
     render json: @problem, status: :ok
   end
 
+  # POST /problems/upload_spj
   def upload_spj
-    self.upload(:spj)
+    upload(:spj)
   end
 
+  # POST /problems/delete_spj
   def delete_spj
     @problem = Problem.find_by(token: params[:token]) 
     @problem.remove_spj!
@@ -97,10 +86,12 @@ class ProblemsController < ApplicationController
     render json: @problem, status: :ok
   end
 
+  # POST /problems/upload_data
   def upload_data
-    self.upload(:data)
+    upload(:data)
   end
 
+  # POST /problems/delete_data
   def delete_data
     @problem = Problem.find_by(token: params[:token]) 
     @problem.remove_data!
@@ -109,7 +100,32 @@ class ProblemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def upload(type)
+      if params[:token].empty? 
+        params[:token] = SecureRandom.uuid
+        @problem = Problem.new(problem_params)
+      else
+        @problem = Problem.find_by(token: params[:token]) 
+        @problem.update(type.to_sym => params[type]) 
+      end
+
+      if @problem.save
+        unzip(@problem.data.file.file)
+        render json: @problem.token, status: :ok
+      else
+        render json: @problem.errors, status: :unprocessable_entity
+      end
+    end
+
+
+    def unzip(path)
+      dir = path.rpartition('/').first
+      system "cd #{dir}; rm -rf in out; mkdir in out &&\
+              unzip -ojq *.zip *.in *.out && mv *.in in && mv *.out out"
+    end
+
+
     def set_problem
       @problem = Problem.find(params[:id])
     end
