@@ -40,7 +40,7 @@ module Codeforces
 
       split_id = id.split(/(\d+)/, 2)
       url = "https://codeforces.com/problemset/problem/#{split_id[1]}/#{split_id[2]}"
-      page = Nokogiri::HTML(open(url))
+      page = Nokogiri::HTML(URI.open(url))
       page = page.css('div.problem-statement')
       problem = {}
 
@@ -115,7 +115,7 @@ module Codeforces
         contest_id = problem_id.split(/(\d+)/, 2)[1]
         url = "https://codeforces.com/contest/#{contest_id}/submission/#{submission_id}"
         while true
-          page = Nokogiri::HTML(open(url))
+          page = Nokogiri::HTML(URI.open(url))
           result = page.css('div.datatable table tr')[1].css('td')[4].text.lstrip.rstrip
           break unless result.include? 'Running' 
         end 

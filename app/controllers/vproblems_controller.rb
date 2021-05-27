@@ -86,7 +86,7 @@ class VproblemsController < ApplicationController
     source = @problem.source
     vid = @problem.vid
     code = params[:code].dump
-    language = params[:language]
+    language = params[:language]['id']
     contest_id = params[:contest_id] || 0
     user_id = params[:user_id]
     submission = Submission.create(
@@ -142,9 +142,9 @@ class VproblemsController < ApplicationController
     end
 
     Thread.new do
-      #spider = get_spider(source)
-      #submission = spider.submit(vid, language, code)
-      new_submission = submission
+      spider = get_spider(source)
+      new_submission = spider.submit(vid, language, code)
+      #new_submission = submission
       submission.update(new_submission)
       submission_broadcast submission
 

@@ -1,8 +1,8 @@
-module Atcoder
-  class AtcoderSpider
+module Poj
+  class PojSpider
 
     def spide_languages
-      spider, account = AtcoderDispatcher.instance.distribute(:any) 
+      spider, account = PojDispatcher.instance.distribute(:any) 
       login(spider, account)
       page = spider.get('https://atcoder.jp/contests/agc001/tasks/agc001_a')
       languages = page.xpath('//*[@id="select-lang"]/select').css('option')
@@ -15,35 +15,25 @@ module Atcoder
         end 
     end
 
-    def test
-      url = 'https://atcoder.jp/contests/agc001/submissions/22096003'
-      page = Nokogiri::HTML(URI.open(url))
-      status = page.css('table tr').map{ |x| x.css('td').text }
-      status[0]
-    end
-
     def spide_problems(n = nil)
       problems = []
-      i = 1
-      begin
-        puts "spide problems from atcoder page #{i}"
-        url = "https://atcoder.jp/contests/archive?page=#{i}"
-        page = Nokogiri::HTML(URI.open(url))
-        links = page.css('tbody tr').map { |tr| tr.css('td a')[1]['href'] }
-        links.each do |link| 
-          url = "https://atcoder.jp#{link}/tasks"
-          page = Nokogiri::HTML(URI.open(url))
-          page.css('tbody tr').each do |tr| 
+      url = "http://poj.org/problemlist"
+      page = Nokogiri::HTML(URI.open(url))
+      total = page.xpath('/html/body/center').css('a').size
+      (1..total).each do |i|
+        puts "spide problems from poj page #{i}"
+        page.css('table')[4].children[2..]
+          .each do |tr|
             problems << {
-              vid: tr.css('td a')[1]['href'].split('/').last,
-              name: tr.css('td a')[1].text,
-              source: 'atcoder'
-            }
+              vid: tr.css('td')[0].text,
+              name: tr.css('td')[1].text,
+              source: 'poj'
+            } unless tr.text.strip.empty?
           end
-        end
-        i += 1
-      end until links.empty?
-      problems
+        url = "http://poj.org/problemlist?volume=#{i + 1}"
+        page = Nokogiri::HTML(URI.open(url))
+      end
+      problems.last
     end
 
     def spide_problem(problem_id)
@@ -56,39 +46,27 @@ module Atcoder
          .gsub(/\$\w\$/) { |c| "${" + c[1] + "}$" }
       end
 
-      url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/tasks/#{problem_id}"
+      url = "http://poj.org/problem?id=#{problem_id}"
       page = Nokogiri::HTML(URI.open(url))
       problem = {}
 
-      t_m = page.xpath('//*[@id="main-container"]/div[1]/div[2]/p').text
-        .strip.gsub(/[^0-9]/, ' ').split
+      t_m = page.css('div.plm tr')[0].text
+              .strip.gsub(/[^0-9]/, ' ').split
       time_limit = t_m[0].to_i
       memory_limit = t_m[1].to_i
-      page = page.css('div#task-statement span.lang-en').children
-        .select{ |x| x.name == 'div' or x.name == 'hr' }
-      indices = page.each_with_index.select{ |x, i| x.name == 'hr' }.map{ |x| x[1] }
 
-      description = page[0].css('p')
-      page[1...indices[0]].each{ |x| description << x }
-      description = r.(description)
+      description = page.css('div.ptx')[0].text
+      input = page.css('div.ptx')[1].text
+      output = page.css('div.ptx')[2].text
+      sample_input = page.css('pre')[0].text
+      sample_output = page.css('pre')[1].text
 
-      input = r.call page[indices[0] + 1].css('section')[0].children[2..]
-      output = r.call page[indices[0] + 1].css('section')[1].children[2..]
-
-      samples = []
-      i = indices[1] + 1
-      begin
-        sample_input = r.call page[i].css('pre') 
-        sample_output = r.call page[i + 1].css('pre') 
-        sample_hint = r.call page[i + 1].css('p')
-        samples << {
+      samples = [
+        {
           sample_input: sample_input,
           sample_output: sample_output,
-          sample_hint: sample_hint
         }
-        i += 3
-      end until i >= page.length
-
+      ]
       problem = {
         time_limit: time_limit,
         memory_limit: memory_limit,
@@ -100,7 +78,7 @@ module Atcoder
     end
 
     def submit(problem_id, language, code, account = nil)
-      spider, account, spider_id = AtcoderDispatcher.instance.distribute(account)
+      spider, account, spider_id = PojDispatcher.instance.distribute(account)
 
       url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/tasks/#{problem_id}"
       begin
@@ -118,7 +96,7 @@ module Atcoder
       end
       submission_id = page.css('tbody tr')[0].css('td a').last['href'].split('/').last
 
-      AtcoderDispatcher.instance.recycle(spider_id || account)
+      PojDispatcher.instance.recycle(spider_id || account)
 
       get_submission(problem_id, submission_id)
     end
