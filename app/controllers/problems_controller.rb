@@ -1,7 +1,9 @@
 require 'securerandom'
 
 class ProblemsController < ApplicationController
-  before_action :set_problem, only: [:show, :update, :destroy]
+  before_action :set_problem, only: [:show, :update, :destroy, :delete_template,
+                                     :delete_spj, :delete_data, :submit, :upload_template,
+                                     :upload_spj, :upload_data]
   before_action :authenticate_user!, only: [:submit]
 
   # GET /problems
@@ -35,15 +37,17 @@ class ProblemsController < ApplicationController
 
   # POST /problems
   def create
-    @problem = Problem.find_by(token: params[:token])
+    @problem = Problem.new(problem_params)
 
-    if @problem.update(problem_params)
-      render json: @problem.token, status: :ok, location: @problem
+    render json: 1, status: :ok, location: @problem
+    '''
+    if @problem.save
+      render json: @problem.id, status: :ok, location: @problem
     else
       render json: @problem.errors, status: :unprocessable_entity
     end
+    '''
   end
-
 
   # PATCH/PUT /problems/1
   def update
@@ -59,6 +63,21 @@ class ProblemsController < ApplicationController
     @problem.destroy
   end
 
+  # POST /problems/1/submit
+  def submit
+    user = current_user
+    code = params[:code].dump
+    language = params[:language]
+    contest_id = params[:contest_id] || 0
+    submission = Submission.create(
+      problem_id: @problem.id,
+      contest_id: contest_id,
+      user_id: user.id,
+      result: "judging"
+    )
+    p "FUCL", code
+    render json: submission
+  end
 
   # POST /problems/upload_template
   def upload_template
@@ -67,7 +86,6 @@ class ProblemsController < ApplicationController
 
   # POST /problems/delete_template
   def delete_template
-    @problem = Problem.find_by(token: params[:token]) 
     @problem.remove_template!
     @problem.save
     render json: @problem, status: :ok
@@ -80,7 +98,6 @@ class ProblemsController < ApplicationController
 
   # POST /problems/delete_spj
   def delete_spj
-    @problem = Problem.find_by(token: params[:token]) 
     @problem.remove_spj!
     @problem.save
     render json: @problem, status: :ok
@@ -93,7 +110,6 @@ class ProblemsController < ApplicationController
 
   # POST /problems/delete_data
   def delete_data
-    @problem = Problem.find_by(token: params[:token]) 
     @problem.remove_data!
     @problem.save
     render json: @problem, status: :ok
@@ -102,14 +118,7 @@ class ProblemsController < ApplicationController
   private
 
     def upload(type)
-      if params[:token].empty? 
-        params[:token] = SecureRandom.uuid
-        @problem = Problem.new(problem_params)
-      else
-        @problem = Problem.find_by(token: params[:token]) 
-        @problem.update(type.to_sym => params[type]) 
-      end
-
+      @problem.update(type.to_sym => params[type]) 
       if @problem.save
         unzip(@problem.data.file.file)
         render json: @problem.token, status: :ok
@@ -133,6 +142,6 @@ class ProblemsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def problem_params
       params.permit(Problem.column_names - ['created_at', 'updated_at'],
-                    allowed_languages:[], tags:[], samples:[:sampleInput, :sampleOutput])
+                    allowed_languages:[], tags:[], samples:[:sample_input, :sample_output])
     end
 end
