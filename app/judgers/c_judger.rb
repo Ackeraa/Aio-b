@@ -1,5 +1,3 @@
-require('./judger.rb')
-
 class CJudger < Judger
 
   def initialize

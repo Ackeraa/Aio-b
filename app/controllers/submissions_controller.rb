@@ -13,7 +13,7 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/search
   def search
-    if params[:addition] == '{}'
+    if params[:addition].nil?
       total = Submission.count
       @submissions = Submission.limit(20).offset(@page * 20)
     else
@@ -63,7 +63,6 @@ class SubmissionsController < ApplicationController
        JSON.parse(params[:addition], { symbolize_names: true })
     end
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_submission
       @submission = Submission.find(params[:id])
     end

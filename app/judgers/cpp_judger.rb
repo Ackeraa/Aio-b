@@ -1,9 +1,8 @@
-require('./judger.rb')
-
 class CppJudger < Judger
 
-  def initialize(if_need_sandbox = true)
-    super(if_need_sandbox)
+  def initialize(problem_id, if_need_sandbox = true)
+    data_path = "/root/Aio-b/public/uploads/problem/data/#{problem_id}" 
+    super(data_path, if_need_sandbox)
   end
   
   def submit(*args)

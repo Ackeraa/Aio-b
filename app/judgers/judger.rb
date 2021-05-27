@@ -1,13 +1,11 @@
-require('./dispatcher.rb')
-
 class Judger
 
-  def initialize(need_sandbox)
+  def initialize(data_path, need_sandbox)
     if need_sandbox
       @box = 0#Dispatcher.instance.distribute
       @box_path = "/var/local/lib/isolate/#{@box}/box"
     end
-    @data_path = "/root/Aio-b/app/judgers"
+    @data_path = data_path
   end
   
   def save(code, name)
@@ -34,6 +32,7 @@ class Judger
       std_output = "#{@data_path}/out/#{i}.out"
       user_output = "#{@box_path}/out/#{i}.out"
       meta = "#{@box_path}/meta"
+
       system "isolate -b #{@box} --full-env --time=#{time_limit} --mem=#{memory_limit} \
                --meta=#{meta} --run -- #{command}<#{std_input}>#{user_output}"
 
@@ -42,13 +41,13 @@ class Judger
         tmp = line.split(':')
         meta_data[tmp[0]] = tmp[1] 
       end
-      time_usage = meta_data['time']
+      time_usage = meta_data['time'].to_f * 1000
       memory_usage = meta_data['max-rss'].to_f / 1024
       if meta_data['exitcode'] == '0'
-        if defined? spj_command
+        unless spj_command.nil?
           user_output = "out/#{i}.out"
           system "isolate -b #{@box} --full-env --time=#{time_limit} --mem=#{memory_limit} \
-                        --dir=#{@data_path} --run -- #{spj_command} #{std_input} #{std_output} #{user_output}>/dev/null"
+                  --dir=#{@data_path} --run -- #{spj_command} #{std_input} #{std_output} #{user_output}>/dev/null"
           result = $?.exitstatus == 0 ? :AC : :WA
         else
           result = `diff #{std_output} #{user_output}`.empty? ? :AC : :WA
