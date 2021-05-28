@@ -162,6 +162,8 @@ class VproblemsController < ApplicationController
   def respide
     spider = get_spider(@problem.source)
     problem = spider.spide_problem(@problem.vid)
+    allowed_languages = Language.find_by(source: @problem.source).allowed_languages
+    problem[:allowed_languages] = allowed_languages
     @problem.update(problem)
     render json: @problem
   end

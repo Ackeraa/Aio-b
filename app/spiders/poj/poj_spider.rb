@@ -3,13 +3,11 @@ module Poj
 
     def spide_languages
       spider, account = PojDispatcher.instance.distribute(:any) 
-      login(spider, account)
-      page = spider.get('https://atcoder.jp/contests/agc001/tasks/agc001_a')
-      languages = page.xpath('//*[@id="select-lang"]/select').css('option')
-        .reject { |option| option.text.nil? || option.text.empty? }
+      page = login(spider, account)
+      page.css('select').css('option')
         .map do |option|
           {
-            id: option.attributes['value']&.value || nil,
+            id: option.attributes['value'].value,
             value: option.text
           }
         end 
@@ -33,19 +31,10 @@ module Poj
         url = "http://poj.org/problemlist?volume=#{i + 1}"
         page = Nokogiri::HTML(URI.open(url))
       end
-      problems.last
+      problems
     end
 
     def spide_problem(problem_id)
-      r = -> s do
-        s.to_s
-         .gsub("<var>", "$")
-         .gsub("</var>", "$")
-         .gsub("≦", " \\le ")
-         .gsub('&', '\\')
-         .gsub(/\$\w\$/) { |c| "${" + c[1] + "}$" }
-      end
-
       url = "http://poj.org/problem?id=#{problem_id}"
       page = Nokogiri::HTML(URI.open(url))
       problem = {}
@@ -80,55 +69,57 @@ module Poj
     def submit(problem_id, language, code, account = nil)
       spider, account, spider_id = PojDispatcher.instance.distribute(account)
 
-      url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/tasks/#{problem_id}"
-      begin
-        page = spider.get(url)
-        form = page.form(class: 'form-horizontal form-code-submit')
-        raise RuntimeError, "Not Login" unless form
-        form.field_with(name: 'data.LanguageId').value = language
-        form.sourceCode = code
-        page = spider.submit(form)
-        raise RuntimeError, "Redirected" if page.uri.to_s[-2..] != "me"
-      rescue RuntimeError => e
-        puts e
-        e.to_s == "Not Login"? login(spider, account) : sleep(2)
-        retry
-      end
-      submission_id = page.css('tbody tr')[0].css('td a').last['href'].split('/').last
+      url = "http://poj.org/submit?problem_id=#{problem_id}"
+      form = spider.get(url).forms[2]
+      form = login(spider, account).forms[2] if form.nil?
+      form.problem_id = problem_id
+      form.field_with(name: 'language').value = language
+      form.source = code
+      spider.submit(form)
+      
+      url = "http://poj.org/status?user_id=#{account[:name]}"
+      page = spider.get(url)
+      submission_id = page.css('table').last.css('tr')[1].css('td')[0].text
 
       PojDispatcher.instance.recycle(spider_id || account)
 
-      get_submission(problem_id, submission_id)
+      get_submission(account[:name], submission_id)
     end
 
-    private
-
       def login(spider, account)
-        puts "Login......"
-        page = spider.get('https://atcoder.jp/login')
-        form = page.form(:class => 'form-horizontal' )
-        form.username = account[:name]
-        form.password = account[:password]
-        page = spider.submit(form)
-        puts "Login Successful"
+        spider = Mechanize.new
+        page = spider.get('http://poj.org/submit')
+        form = page.form()
+        form.user_id1 = account[:name]
+        form.password1 = account[:password]
+        spider.submit(form)
       end
 
-      def get_submission(problem_id, submission_id)
-        url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/submissions/#{submission_id}"
-        while true
-          page = Nokogiri::HTML(URI.open(url))
-          result = page.css('table tr')[6].css('td').last.text
-          break unless result == 'WJ'
-          sleep 0.5
+      def get_submission(user_id, submission_id)
+        not_finished = -> result do
+          ['Waiting', 'Compiling', 'Running & Judging'].include? result
         end
-        record = page.css('table tr').map{ |x| x.css('td').text }
+
+        url = "http://poj.org/status?user_id=#{user_id}"
+        page = Nokogiri::HTML(URI.open(url))
+        while true
+          while true
+            record = page.css('table').last.css('tr')
+              .find{ |tr| tr.css('td')[0].text == submission_id }
+            break if record
+            a = page.xpath('/html/body/p[2]/a[3]')[0].attributes['href'].value
+            url = "http://poj.org/#{a}"
+            page = Nokogiri::HTML(URI.open(url))
+          end
+          break unless not_finished.(record.css('td')[3].text)
+          sleep 0.5
+        end 
+        record = record.css('td').map{ |td| td.text }
         submission = {
-          #submit_time: record[0],
-          #score: record[4],
-          code_size: record[5],
-          result: record[6],
-          time_usage: record[6] == 'CE' ?  nil : record[7],
-          memory_usage: record[6] == 'CE' ? nil : record[8]
+          solution_size: record[7],
+          result: record[3],
+          time_usage: record[5],
+          memory_usage: record[4]
         }
       end
   end

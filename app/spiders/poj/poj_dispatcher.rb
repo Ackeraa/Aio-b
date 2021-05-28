@@ -4,11 +4,11 @@ module Poj
 
     def initialize
       data = [
-        { name: 'test_for_aio', password: 'test_for_aio_0' },
-        { name: 'test_for_aio1', password: 'test_for_aio_0' },
-        { name: 'test_for_aio2', password: 'test_for_aio_0' },
-        { name: 'test_for_aio3', password: 'test_for_aio_0' },
-        { name: 'test_for_aio4', password: 'test_for_aio_0' },
+        { name: 'test_for_aio', password: 'test_for_aio' },
+        { name: 'test_for_aio1', password: 'test_for_aio' },
+        { name: 'test_for_aio2', password: 'test_for_aio' },
+        { name: 'test_for_aio3', password: 'test_for_aio' },
+        { name: 'test_for_aio4', password: 'test_for_aio' },
       ]
       super(0.5, 40, data)    
     end
