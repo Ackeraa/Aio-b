@@ -35,6 +35,4 @@ class User < ActiveRecord::Base
          :omniauthable,
          :authentication_keys => [:email, :name]
   include DeviseTokenAuth::Concerns::User
-
-
 end
