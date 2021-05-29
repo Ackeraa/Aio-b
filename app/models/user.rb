@@ -25,6 +25,8 @@ class User < ActiveRecord::Base
 
   validates :password, length: { maximum: 16, too_long: "is too long (maximum is 16 characters)"}
 
+  mount_uploader :photo, PhotoUploader
+
   devise :database_authenticatable,
          :registerable,
          :recoverable,
@@ -35,4 +37,5 @@ class User < ActiveRecord::Base
          :omniauthable,
          :authentication_keys => [:email, :name]
   include DeviseTokenAuth::Concerns::User
+
 end

@@ -99,6 +99,10 @@ module Codeforces
       get_submission(problem_id, submission_id)
     end
 
+    def account_available(account)
+      true
+    end
+
     private
 
       def login(spider, account)
