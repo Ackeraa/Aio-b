@@ -75,8 +75,10 @@ module Poj
       form.problem_id = problem_id
       form.field_with(name: 'language').value = language
       form.source = code
+      form.encoded = 0
       spider.submit(form)
-      
+      p "Submit successful"
+
       url = "http://poj.org/status?user_id=#{account[:name]}"
       page = spider.get(url)
       submission_id = page.css('table').last.css('tr')[1].css('td')[0].text
@@ -87,29 +89,47 @@ module Poj
     end
 
       def login(spider, account)
-        spider = Mechanize.new
         page = spider.get('http://poj.org/submit')
         form = page.form()
         form.user_id1 = account[:name]
         form.password1 = account[:password]
+        p "Login Successful.............."
         spider.submit(form)
       end
 
       def get_submission(user_id, submission_id)
         not_finished = -> result do
+          p 'resut', result
           ['Waiting', 'Compiling', 'Running & Judging'].include? result
         end
+        format = -> result do
+          case result
+          when 'Accepted'
+            'AC'
+          when 'Wrong Answer'
+            'WA'
+          when 'Compile Error'
+            'CE'
+          when 'Time Limit Exceeded'
+            'TLE'
+          when 'Memory Limit Exceeded'
+            'MLE'
+          else
+            'Unknown'
+          end
+        end
 
+        p "Begin to get status"
         url = "http://poj.org/status?user_id=#{user_id}"
-        page = Nokogiri::HTML(URI.open(url))
         while true
           while true
+            p "fuck11111"
+            page = Nokogiri::HTML(URI.open(url))
             record = page.css('table').last.css('tr')
               .find{ |tr| tr.css('td')[0].text == submission_id }
             break if record
             a = page.xpath('/html/body/p[2]/a[3]')[0].attributes['href'].value
             url = "http://poj.org/#{a}"
-            page = Nokogiri::HTML(URI.open(url))
           end
           break unless not_finished.(record.css('td')[3].text)
           sleep 0.5
@@ -117,10 +137,12 @@ module Poj
         record = record.css('td').map{ |td| td.text }
         submission = {
           solution_size: record[7],
-          result: record[3],
+          result: format.(record[3]),
           time_usage: record[5],
           memory_usage: record[4]
         }
+        p submission
+        submission
       end
   end
 end

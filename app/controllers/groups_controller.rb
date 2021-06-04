@@ -2,6 +2,7 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy, :get_info,
                                    :get_members, :get_contests, :get_problem_sets]
   before_action :set_page, only: [:search]
+  #before_action :authenticate_user!, only: [:get_my_groups]
 
   # GET /groups
   def index
@@ -30,6 +31,12 @@ class GroupsController < ApplicationController
       total_contests: total_contests,
       total_problem_sets: total_problem_sets
     }
+  end
+
+  # GET /groups/get_my_groups
+  def get_my_groups
+    groups = Group.all
+    render json: groups
   end
 
   # GET /groups/1/members
@@ -83,7 +90,6 @@ class GroupsController < ApplicationController
       @page = (params[:page] || 1).to_i - 1
     end
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_group
       @group = Group.find(params[:id])
     end

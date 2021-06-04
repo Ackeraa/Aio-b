@@ -126,7 +126,7 @@ module Atcoder
     private
 
       def login(spider, account)
-        puts "Login......"
+        puts "Login......", account[:name]
         page = spider.get('https://atcoder.jp/login')
         form = page.form(:class => 'form-horizontal' )
         form.username = account[:name]
@@ -137,17 +137,19 @@ module Atcoder
 
       def get_submission(problem_id, submission_id)
         url = "https://atcoder.jp/contests/#{problem_id.split('_').first}/submissions/#{submission_id}"
+        try = 10
         while true
           page = Nokogiri::HTML(URI.open(url))
           result = page.css('table tr')[6].css('td').last.text
-          break unless result == 'WJ'
-          sleep 0.5
+          try -= 1
+          break unless result == 'WJ' and try > 0
+          sleep 1
         end
         record = page.css('table tr').map{ |x| x.css('td').text }
         submission = {
           #submit_time: record[0],
           #score: record[4],
-          code_size: record[5],
+          solution_size: record[5],
           result: record[6],
           time_usage: record[6] == 'CE' ?  nil : record[7],
           memory_usage: record[6] == 'CE' ? nil : record[8]

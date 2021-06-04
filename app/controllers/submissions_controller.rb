@@ -15,10 +15,10 @@ class SubmissionsController < ApplicationController
   def search
     if params[:addition].nil?
       total = Submission.count
-      @submissions = Submission.limit(20).offset(@page * 20)
+      @submissions = Submission.order(id: :desc).limit(20).offset(@page * 20)
     else
       total = Submission.where(search_params).count
-      @submissions = Submission.where(search_params).limit(20).offset(@page * 20)
+      @submissions = Submission.where(search_params).order(id: :desc).limit(20).offset(@page * 20)
     end
     render json: { total: total, submissions: @submissions.to_json }
   end

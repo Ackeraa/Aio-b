@@ -88,6 +88,7 @@ module Codeforces
       form.submittedProblemCode = problem_id
       form.programTypeId = language 
       form.source = code
+      p  form.source
       page = spider.submit(form)
 
       url = "http://codeforces.com/api/user.status?handle=#{account[:name]}&from=1&count=1"

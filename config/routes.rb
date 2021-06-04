@@ -65,6 +65,7 @@ Rails.application.routes.draw do
       get ':id/get_members',                    :action => 'get_members'
       get ':id/get_contests',                   :action => 'get_contests'
       get ':id/get_problem_sets',               :action => 'get_problem_sets'
+      get 'get_my_groups',                       :action => 'get_my_groups'
     end
   end
 
