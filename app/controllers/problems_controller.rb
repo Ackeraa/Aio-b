@@ -4,6 +4,7 @@ class ProblemsController < ApplicationController
   before_action :set_problem, only: [:show, :update, :destroy, :delete_template,
                                      :delete_spj, :delete_data, :submit, :upload_template,
                                      :upload_spj, :upload_data]
+  before_action :set_page, only: [:search]
   before_action :authenticate_user!, only: [:submit]
 
   # GET /problems
@@ -21,13 +22,15 @@ class ProblemsController < ApplicationController
     source = params[:source]
     query = params[:query]
     if query.nil? 
-      @problems = Problem.where(source: source) 
+      total = Problem.where(source: source).count
+      @problems = Problem.where(source: source).order(:id).limit(20).offset(@page * 20)
     else
       @problems = Problem.where('source=? and lower(name) like (?)',
-                                source.downcase, "%#{query.downcase}%") 
+                    "#{source}", "%#{query.downcase}%").count
+      @problems = Problem.where('source=? and lower(name) like (?)',
+                    "#{source}", "%#{query.downcase}%").order(:id).limit(20).offset(@page * 20)
     end
-
-    render json: @problems
+    render json: { total: total, problems: @problems.to_json }
   end
 
   # GET /problems/1
@@ -178,6 +181,10 @@ class ProblemsController < ApplicationController
   end
 
   private
+
+    def set_page
+      @page = (params[:page] || 1).to_i - 1
+    end
 
     def upload(type)
       @problem.update(type.to_sym => params[type]) 
