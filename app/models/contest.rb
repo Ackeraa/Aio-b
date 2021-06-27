@@ -9,5 +9,5 @@ class Contest < ApplicationRecord
   has_many :user, through: :oi_contest_ranks
 
   has_many :contest_announcements, dependent: :destroy
-  has_many :submission_records, dependent: :destroy
+  has_many :submission_records
 end

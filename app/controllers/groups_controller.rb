@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy, :get_info,
                                    :get_members, :get_contests, :get_problem_sets]
   before_action :set_page, only: [:search]
-  #before_action :authenticate_user!, only: [:get_my_groups]
+  before_action :authenticate_user!, only: [:create]
 
   # GET /groups
   def index
@@ -24,8 +24,10 @@ class GroupsController < ApplicationController
     total_members = @group.users.count
     total_contests = @group.contests.count
     total_problem_sets = @group.problem_sets.count
+    description = @group.description
     
     render json: {
+      description: description,
       leader: leader.to_json,
       total_members: total_members,
       total_contests: total_contests,
@@ -62,7 +64,8 @@ class GroupsController < ApplicationController
   # POST /groups
   def create
     @group = Group.new(group_params)
-
+    @group.creater = current_user.name
+    GroupUser.new(group_id: @group.id, user_id: current_user.id, role: 'leader').save
     if @group.save
       render json: @group, status: :created, location: @group
     else
@@ -96,6 +99,6 @@ class GroupsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def group_params
-      params.fetch(:group, {})
+      params.permit(Group.column_names - ['created_at', 'updated_at'])
     end
 end

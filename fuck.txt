@@ -1,0 +1,118 @@
+DEPRECATION WARNING: Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION is deprecated! Use Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION instead. (called from <main> at /root/Aio-b/config/application.rb:22)
+=> Booting Puma
+=> Rails 6.0.3.7 application starting in development 
+=> Run `rails server --help` for more startup options
+Puma starting in single mode...
+* Version 4.3.8 (ruby 3.0.0-p0), codename: Mysterious Traveller
+* Min threads: 5, max threads: 5
+* Environment: development
+* Listening on tcp://0.0.0.0:3000
+Use Ctrl-C to stop
+Started GET "/auth/validate_token" for 111.26.180.103 at 2021-06-26 16:06:08 +0800
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by DeviseTokenAuth::TokenValidationsController#validate_token as JSON
+  Parameters: {"token_validation"=>{}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "ackertest@qq.com"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 27], ["LIMIT", 1]]
+Completed 200 OK in 113ms (Views: 0.2ms | ActiveRecord: 6.2ms | Allocations: 24979)
+
+
+Started GET "/auth/validate_token" for 111.26.180.103 at 2021-06-26 16:06:08 +0800
+Processing by DeviseTokenAuth::TokenValidationsController#validate_token as JSON
+  Parameters: {"token_validation"=>{}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "ackertest@qq.com"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 27], ["LIMIT", 1]]
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 0.9ms | Allocations: 3103)
+
+
+Started GET "/contests/16/problems" for 111.26.180.103 at 2021-06-26 16:06:08 +0800
+Processing by ContestsController#problems as JSON
+  Parameters: {"id"=>"16", "contest"=>{}}
+  [1m[36mContest Load (0.4ms)[0m  [1m[34mSELECT "contests".* FROM "contests" WHERE "contests"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  ↳ app/controllers/contests_controller.rb:88:in `set_contest'
+  [1m[36mProblem Load (0.9ms)[0m  [1m[34mSELECT "problems".* FROM "problems" INNER JOIN "contest_problems" ON "problems"."id" = "contest_problems"."problem_id" WHERE "contest_problems"."contest_id" = $1[0m  [["contest_id", 16]]
+  ↳ app/controllers/contests_controller.rb:61:in `problems'
+Completed 200 OK in 69ms (Views: 0.2ms | ActiveRecord: 9.9ms | Allocations: 37924)
+
+
+Started GET "/submissions/search?query=&addition=%7B%22contest_id%22:16,%22user_id%22:27%7D" for 111.26.180.103 at 2021-06-26 16:06:08 +0800
+Processing by SubmissionsController#search as JSON
+Started GET "/cable" for 111.26.180.103 at 2021-06-26 16:06:08 +0800
+  Parameters: {"query"=>"", "addition"=>"{\"contest_id\":16,\"user_id\":27}", "submission"=>{}}
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "submissions" WHERE "submissions"."contest_id" = $1 AND "submissions"."user_id" = $2[0m  [["contest_id", 16], ["user_id", 27]]
+  ↳ app/controllers/submissions_controller.rb:20:in `search'
+  [1m[36mSubmission Load (0.5ms)[0m  [1m[34mSELECT "submissions".* FROM "submissions" WHERE "submissions"."contest_id" = $1 AND "submissions"."user_id" = $2 ORDER BY "submissions"."id" DESC LIMIT $3 OFFSET $4[0m  [["contest_id", 16], ["user_id", 27], ["LIMIT", 20], ["OFFSET", 0]]
+  ↳ app/controllers/submissions_controller.rb:23:in `search'
+Completed 200 OK in 29ms (Views: 0.2ms | ActiveRecord: 6.7ms | Allocations: 16088)
+
+
+Started GET "/cable/" [WebSocket] for 111.26.180.103 at 2021-06-26 16:06:08 +0800
+Successfully upgraded to WebSocket (REQUEST_METHOD: GET, HTTP_CONNECTION: Upgrade, HTTP_UPGRADE: websocket)
+STREAAAA
+{"contest_id"=>16, "user_id"=>27, "channel"=>"SubmissionsChannel"}
+STREAM FROM
+submission_16_0_27
+SubmissionsChannel is transmitting the subscription confirmation
+SubmissionsChannel is streaming from submission_16_0_27
+Started POST "/problems/11708/submit" for 111.26.180.103 at 2021-06-26 16:06:15 +0800
+Processing by ProblemsController#submit as JSON
+  Parameters: {"language"=>{"id"=>1, "value"=>"Cpp"}, "code"=>"#include <iostream>\n\nusing namespace std;\n\nint main()\n{\n\tint a, b;\n\tcin >> a >> b;\n\tcout << a + b << endl;\n\n}\n", "contest_id"=>"16", "user_id"=>27, "user_name"=>"ackertest", "contest_problem_id"=>0, "id"=>"11708", "problem"=>{}}
+  [1m[36mProblem Load (0.7ms)[0m  [1m[34mSELECT "problems".* FROM "problems" WHERE "problems"."id" = $1 LIMIT $2[0m  [["id", 11708], ["LIMIT", 1]]
+  ↳ app/controllers/problems_controller.rb:209:in `set_problem'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "ackertest@qq.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/problems_controller.rb:72:in `submit'
+  [1m[36mSubmission Create (1.3ms)[0m  [1m[32mINSERT INTO "submissions" ("result", "problem_id", "contest_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["result", "judging"], ["problem_id", 11708], ["contest_id", 16], ["user_id", 27], ["created_at", "2021-06-26 08:06:15.368038"], ["updated_at", "2021-06-26 08:06:15.368038"]]
+  ↳ app/controllers/problems_controller.rb:72:in `submit'
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/problems_controller.rb:72:in `submit'
+[ActionCable] Broadcasting to submission_16_11708_27: #<Submission id: 229, result: "judging", code: nil, memory_usage: nil, time_usage: nil, solution_size: nil, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+[ActionCable] Broadcasting to submission_16_11708_0}: #<Submission id: 229, result: "judging", code: nil, memory_usage: nil, time_usage: nil, solution_size: nil, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+[ActionCable] Broadcasting to submission_16_0_27: #<Submission id: 229, result: "judging", code: nil, memory_usage: nil, time_usage: nil, solution_size: nil, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+[ActionCable] Broadcasting to submission_16_0_0: #<Submission id: 229, result: "judging", code: nil, memory_usage: nil, time_usage: nil, solution_size: nil, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+SubmissionsChannel transmitting {"id"=>229, "result"=>"judging", "code"=>nil, "memory_usage"=>nil, "time_usage"=>nil, "solution_size"=>nil, "problem_id"=>11708, "contest_id"=>16, "user_id"=>27, "created_at"=>"2021-06-26T08:06:15.368Z", "updated_at"=>"2021-06-26T08:06:15.368Z"} (via streamed from submission_16_0_27)
+  [1m[36mContest Load (0.3ms)[0m  [1m[34mSELECT "contests".* FROM "contests" WHERE "contests"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  ↳ app/controllers/problems_controller.rb:83:in `submit'
+  [1m[36mAcmContestRank Load (0.4ms)[0m  [1m[34mSELECT "acm_contest_ranks".* FROM "acm_contest_ranks" WHERE "acm_contest_ranks"."contest_id" = $1 AND "acm_contest_ranks"."user_id" = $2 LIMIT $3[0m  [["contest_id", 16], ["user_id", 27], ["LIMIT", 1]]
+  ↳ app/controllers/problems_controller.rb:87:in `submit'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/problems_controller.rb:120:in `submit'
+  [1m[36mContest Load (0.4ms)[0m  [1m[34mSELECT "contests".* FROM "contests" WHERE "contests"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  ↳ app/controllers/problems_controller.rb:120:in `submit'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 27], ["LIMIT", 1]]
+  ↳ app/controllers/problems_controller.rb:120:in `submit'
+  [1m[36mAcmContestRank Update (0.4ms)[0m  [1m[33mUPDATE "acm_contest_ranks" SET "submission_info" = $1, "submissions" = $2, "time" = $3, "updated_at" = $4 WHERE "acm_contest_ranks"."id" = $5[0m  [["submission_info", "{\"0\":{\"time\":66.25637650326667,\"submissions\":1,\"result\":\"pending\"}}"], ["submissions", 31], ["time", 1078], ["updated_at", "2021-06-26 08:06:15.412007"], ["id", 11]]
+  ↳ app/controllers/problems_controller.rb:120:in `submit'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/problems_controller.rb:120:in `submit'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 27], ["LIMIT", 1]]
+Completed 200 OK in 61ms (Views: 0.6ms | ActiveRecord: 11.8ms | Allocations: 21657)
+
+
+Started GET "/submissions/search?query=&addition=%7B%22contest_id%22:16,%22user_id%22:27%7D" for 111.26.180.103 at 2021-06-26 16:06:15 +0800
+Processing by SubmissionsController#search as JSON
+  Parameters: {"query"=>"", "addition"=>"{\"contest_id\":16,\"user_id\":27}", "submission"=>{}}
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "submissions" WHERE "submissions"."contest_id" = $1 AND "submissions"."user_id" = $2[0m  [["contest_id", 16], ["user_id", 27]]
+  ↳ app/controllers/submissions_controller.rb:20:in `search'
+  [1m[36mSubmission Load (0.5ms)[0m  [1m[34mSELECT "submissions".* FROM "submissions" WHERE "submissions"."contest_id" = $1 AND "submissions"."user_id" = $2 ORDER BY "submissions"."id" DESC LIMIT $3 OFFSET $4[0m  [["contest_id", 16], ["user_id", 27], ["LIMIT", 20], ["OFFSET", 0]]
+  ↳ app/controllers/submissions_controller.rb:23:in `search'
+Completed 200 OK in 14ms (Views: 0.2ms | ActiveRecord: 1.1ms | Allocations: 4563)
+
+
+OK (0.336 sec real, 0.368 sec wall)
+OK (0.003 sec real, 0.003 sec wall)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/problems_controller.rb:137:in `block in submit'
+  [1m[36mSubmission Update (0.5ms)[0m  [1m[33mUPDATE "submissions" SET "result" = $1, "memory_usage" = $2, "time_usage" = $3, "solution_size" = $4, "updated_at" = $5 WHERE "submissions"."id" = $6[0m  [["result", "WA"], ["memory_usage", 3], ["time_usage", 3], ["solution_size", 110], ["updated_at", "2021-06-26 08:06:15.843613"], ["id", 229]]
+  ↳ app/controllers/problems_controller.rb:137:in `block in submit'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/problems_controller.rb:137:in `block in submit'
+[ActionCable] Broadcasting to submission_16_11708_27: #<Submission id: 229, result: "WA", code: nil, memory_usage: 3, time_usage: 3, solution_size: 110, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+[ActionCable] Broadcasting to submission_16_11708_0}: #<Submission id: 229, result: "WA", code: nil, memory_usage: 3, time_usage: 3, solution_size: 110, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+[ActionCable] Broadcasting to submission_16_0_27: #<Submission id: 229, result: "WA", code: nil, memory_usage: 3, time_usage: 3, solution_size: 110, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+[ActionCable] Broadcasting to submission_16_0_0: #<Submission id: 229, result: "WA", code: nil, memory_usage: 3, time_usage: 3, solution_size: 110, problem_id: 11708, contest_id: 16, user_id: 27, created_at: "2021-06-26 08:06:15", updated_at: "2021-06-26 08:06:15">
+SubmissionsChannel transmitting {"id"=>229, "result"=>"WA", "code"=>nil, "memory_usage"=>3, "time_usage"=>3, "solution_size"=>110, "problem_id"=>11708, "contest_id"=>16, "user_id"=>27, "created_at"=>"2021-06-26T08:06:15.368Z", "updated_at"=>"2021-06-26T08:06:15.843Z"} (via streamed from submission_16_0_27)
+- Gracefully stopping, waiting for requests to finish
+=== puma shutdown: 2021-06-26 16:06:20 +0800 ===
+- Goodbye!
+Exiting

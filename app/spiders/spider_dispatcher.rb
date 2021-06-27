@@ -1,4 +1,4 @@
-class Dispatcher
+class SpiderDispatcher
 
   def initialize(gap_time = 0.5, wait_time = 60, data)
     @gap_time = gap_time

@@ -1,5 +1,5 @@
 module Poj
-  class PojDispatcher < Dispatcher
+  class PojDispatcher < SpiderDispatcher
     include Singleton
 
     def initialize

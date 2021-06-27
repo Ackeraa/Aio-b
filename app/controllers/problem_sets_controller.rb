@@ -15,13 +15,10 @@ class ProblemSetsController < ApplicationController
     which = params[:addition]
     query = params[:query]
     if which == 'public'
-      if query.nil?
-        total = ProblemSet.count
-        @problem_sets = ProblemSet.limit(20).offset(@page * 20)
-      else
-        total = ProblemSet.where('name ilike(?)',  "%#{query}%").count
-        @problem_sets = ProblemSet.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
-      end
+      total = ProblemSet.where('name ilike(?)',  "%#{query}%").count
+      total = ProblemSet.count
+      
+      @problem_sets = ProblemSet.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
     else
       # Need to be fixed.
       total = ProblemSet.count

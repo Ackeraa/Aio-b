@@ -16,7 +16,9 @@ class CommentsController < ApplicationController
     total = Comment.where('which=? and creator ilike(?)', which, "%#{query}%").count
     @comments = Comment.where('which=? and creator ilike(?)',  which, "%#{query}%")
                        .limit(10).offset(@page * 10).hash_tree(limit_depth: 5)
-    render json: { total: total, comments: comments_tree_for(@comments) }
+
+    puts "FUCK", comments_tree_for(@comments)[1]
+    render json: { total: total, comments: comments_tree_for(@comments).to_json }
   end
 
   # GET /comments/1
@@ -108,12 +110,21 @@ class CommentsController < ApplicationController
     def comments_tree_for(comments)
       comments.map do |comment, nested_comments|
         {
-          comment: comment,
-          children: comments_tree_for(nested_comments) 
+          :comment => comment.attributes,
+          :children => comments_tree_for(nested_comments) 
         }
       end
     end
 
+    def comments_tree_for1(comments)
+      a = []
+      comments.each do |comment, nested_comments|
+        a << 
+        Hash[
+          :comment => comment.attributes,
+        ]
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])

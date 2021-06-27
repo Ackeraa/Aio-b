@@ -2,7 +2,7 @@ class Judger
 
   def initialize(data_path, need_sandbox)
     if need_sandbox
-      @box = 0#Dispatcher.instance.distribute
+      @box = 0#JudgerDispatcher.instance.distribute
       @box_path = "/var/local/lib/isolate/#{@box}/box"
     end
     @data_path = data_path
@@ -25,6 +25,7 @@ class Judger
       # with spj
       command, spj_command, time_limit, memory_limit = args
     end
+    time_limit /= 1000
     datas = `ls #{@data_path}/in | wc -l`.to_i
     results = []
     (1..datas).each do |i|

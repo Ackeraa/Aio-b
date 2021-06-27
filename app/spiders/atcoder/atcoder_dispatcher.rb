@@ -1,5 +1,5 @@
 module Atcoder
-  class AtcoderDispatcher < Dispatcher
+  class AtcoderDispatcher < SpiderDispatcher
     include Singleton
 
     def initialize

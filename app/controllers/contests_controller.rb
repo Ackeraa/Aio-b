@@ -15,9 +15,13 @@ class ContestsController < ApplicationController
     query = params[:query]
     which = params[:addition]
     if which == 'recent'
-      total = Contest.where('name ilike(?)',  "%#{query}%").count
-      @contests = Contest.where('name ilike(?)',  "%#{query}%").limit(20).offset(@page * 20)
+      total = Contest.where('name ilike(?) and end_time > ?',  "%#{query}%", Time.now).count
+      @contests = Contest.where('name ilike(?) and end_time > ?',  "%#{query}%", Time.now)
+                         .limit(20).offset(@page * 20)
     else
+      total = Contest.where('name ilike(?) and end_time < ?',  "%#{query}%", Time.now).count
+      @contests = Contest.where('name ilike(?) and end_time < ?',  "%#{query}%", Time.now)
+                         .limit(20).offset(@page * 20)
     end
     render json: { total: total, contests: @contests.to_json }
   end
@@ -54,7 +58,7 @@ class ContestsController < ApplicationController
 
   # GET /contests/1/problems
   def problems
-    render json: { contest: @contest, problems: @contest.problems.to_json }
+    render json: { contest: @contest.to_json, problems: @contest.problems.to_json }
   end
 
   # GET /contests/1/add_problem/1

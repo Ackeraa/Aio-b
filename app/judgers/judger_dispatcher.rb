@@ -1,6 +1,6 @@
 require('singleton')
 
-class Dispatchers
+class JudgerDispatcher
   include Singleton
   def initialize(gap_time = 0.5, wait_time = 60)
     @gap_time = gap_time
@@ -43,7 +43,7 @@ class Dispatchers
 end
 
 if __FILE__ == $0
-  dispatcher = Dispatcher.new 
+  dispatcher = JudgerDispatcher.new 
 
   threads = []
   1.times {

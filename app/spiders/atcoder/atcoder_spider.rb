@@ -150,7 +150,7 @@ module Atcoder
           #submit_time: record[0],
           #score: record[4],
           solution_size: record[5],
-          result: record[6],
+          result: record[6] == 'AC' ? 'AC' : 'WA',
           time_usage: record[6] == 'CE' ?  nil : record[7],
           memory_usage: record[6] == 'CE' ? nil : record[8]
         }

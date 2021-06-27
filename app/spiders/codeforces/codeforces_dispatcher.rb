@@ -1,5 +1,5 @@
 module Codeforces
-  class CodeforcesDispatcher < Dispatcher
+  class CodeforcesDispatcher < SpiderDispatcher
     include Singleton
 
     def initialize

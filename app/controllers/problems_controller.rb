@@ -84,7 +84,7 @@ class ProblemsController < ApplicationController
       start_time = contest.start_time
       end_time = contest.end_time
       cost_time = (Time.now - start_time) / 60
-      acm_contest_rank = AcmContestRank.find_by(contest_id: contest_id, user_id: user_id)
+      acm_contest_rank = AcmContestRank.find_by(contest_id: contest_id, user_id: user.id)
 
       if acm_contest_rank.nil?
         acm_contest_rank = AcmContestRank.create(
@@ -124,18 +124,21 @@ class ProblemsController < ApplicationController
     Thread.new do
       judger = get_judger(language)
       new_submissions = judger.submit(code, 2000, 256)
-      new_submission = { result: :AC, time_usage: 0, memory_usage: 0, solution_size: code.size }
-      new_submissions.each do |item|
-        new_submission[:time_usage] += item[:time_usage]
-        new_submission[:memory_usage] += item[:memory_usage]
-        new_submission[:result] = item[:result] if item[:result] != :AC and
-                                                   new_submission[:result] != :AC 
+      if new_submissions[0][:result] == :CE
+        new_submission = { result: :CE, time_usage: 0, memory_usage: 0, solution_size: code.size }
+      else
+        new_submission = { result: :AC, time_usage: 0, memory_usage: 0, solution_size: code.size }
+        new_submissions.each do |item|
+          new_submission[:time_usage] += item[:time_usage]
+          new_submission[:memory_usage] += item[:memory_usage]
+          new_submission[:result] = item[:result] if item[:result] != :AC 
+        end
       end
       submission.update(new_submission)
       submission_broadcast submission
 
       if is_contest and not is_already_ac
-        acm_contest_rank.submission_info[contest_problem_id][:result] = submission[:result]
+        acm_contest_rank.submission_info[contest_problem_id.to_s][:result] = submission[:result]
         acm_contest_rank.accepts += 1 if submission[:result] == 'AC'
         acm_contest_rank.save
         ranks_broadcast acm_contest_rank

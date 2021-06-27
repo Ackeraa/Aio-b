@@ -17,7 +17,7 @@ class CppJudger < Judger
 
       self.save(code, @compile_name)
       compile_result = self.compile(@compile_command)
-      return { result: :CE, error_message: compile_result } unless compile_result.empty?
+      return [{ result: :CE, error_message: compile_result }] unless compile_result.empty?
 
       run_result = self.run(@run_command, time_limit, memory_limit * 1025)
     elsif args.size == 4
