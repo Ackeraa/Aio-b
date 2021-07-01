@@ -108,13 +108,13 @@ class ProblemsController < ApplicationController
         }
         is_already_ac = false
       else
-        is_already_ac = acm_contest_rank.submission_info[contest_problem_id][:result] == 'AC'
+        is_already_ac = acm_contest_rank.submission_info[contest_problem_id]['result'] == 'AC'
         unless is_already_ac
-          acm_contest_rank.submission += 1
+          acm_contest_rank.submissions += 1
           acm_contest_rank.time += cost_time
-          acm_contest_rank.submission_info[contest_problem_id][:time] += cost_time
-          acm_contest_rank.submission_info[contest_problem_id][:submissions] += 1
-          acm_contest_rank.submission_info[contest_problem_id][:result] = 'pending'
+          acm_contest_rank.submission_info[contest_problem_id]['time'] += cost_time
+          acm_contest_rank.submission_info[contest_problem_id]['submissions'] += 1
+          acm_contest_rank.submission_info[contest_problem_id]['result'] = 'pending'
         end
       end
       acm_contest_rank.save

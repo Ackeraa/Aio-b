@@ -118,6 +118,7 @@ class VproblemsController < ApplicationController
         )
       end
       # First submit.
+      contest_problem_id = contest_problem_id.to_s
       if acm_contest_rank.submission_info[contest_problem_id].nil?
         acm_contest_rank.submissions += 1
         acm_contest_rank.time += cost_time
@@ -128,13 +129,13 @@ class VproblemsController < ApplicationController
         }
         is_already_ac = false
       else
-        is_already_ac = acm_contest_rank.submission_info[contest_problem_id][:result] == 'AC'
+        is_already_ac = acm_contest_rank.submission_info[contest_problem_id]['result'] == 'AC'
         unless is_already_ac
-          acm_contest_rank.submission += 1
+          acm_contest_rank.submissions += 1
           acm_contest_rank.time += cost_time
-          acm_contest_rank.submission_info[contest_problem_id][:time] += cost_time
-          acm_contest_rank.submission_info[contest_problem_id][:submissions] += 1
-          acm_contest_rank.submission_info[contest_problem_id][:result] = 'pending'
+          acm_contest_rank.submission_info[contest_problem_id]['time'] += cost_time
+          acm_contest_rank.submission_info[contest_problem_id]['submissions'] += 1
+          acm_contest_rank.submission_info[contest_problem_id]['result'] = 'pending'
         end
       end
       acm_contest_rank.save
@@ -148,8 +149,8 @@ class VproblemsController < ApplicationController
       submission_broadcast submission
 
       if is_contest and not is_already_ac
-        acm_contest_rank.submission_info[contest_problem_id][:result] = submission[:result]
-        acm_contest_rank.accepts += 1 if submission[:result] == 'AC'
+        acm_contest_rank.submission_info[contest_problem_id]['result'] = submission['result']
+        acm_contest_rank.accepts += 1 if submission['result'] == 'AC'
         acm_contest_rank.save
         ranks_broadcast acm_contest_rank
       end

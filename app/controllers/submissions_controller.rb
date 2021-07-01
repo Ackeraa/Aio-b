@@ -18,6 +18,7 @@ class SubmissionsController < ApplicationController
       @submissions = Submission.order(id: :desc).limit(20).offset(@page * 20)
     else
       total = Submission.where(search_params).count
+      p "FUCL", search_params, total
       @submissions = Submission.where(search_params).order(id: :desc).limit(20).offset(@page * 20)
     end
     render json: { total: total, submissions: @submissions.to_json }

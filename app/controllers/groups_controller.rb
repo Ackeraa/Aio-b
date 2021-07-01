@@ -25,8 +25,10 @@ class GroupsController < ApplicationController
     total_contests = @group.contests.count
     total_problem_sets = @group.problem_sets.count
     description = @group.description
+    name = @group.name
     
     render json: {
+      name: name,
       description: description,
       leader: leader.to_json,
       total_members: total_members,
